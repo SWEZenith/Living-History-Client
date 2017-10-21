@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import style from '@style/main';
-import { ZImageView } from '@components/index';
-import { View, Text} from 'react-native';
+import { ZImageView, ZTextArea, ZButton } from '@components/index';
+import { View } from 'react-native';
+import {createImageAnnotation} from '@actions';
+
 
 
 export class ImageAnnotationContainer extends Component {
@@ -11,7 +13,6 @@ export class ImageAnnotationContainer extends Component {
 
         super(props);
     }
-
 
     render(){
     	return(
@@ -23,7 +24,8 @@ export class ImageAnnotationContainer extends Component {
 
 
           <View style={{flex:2}}>
-          <Text>BRK</Text>
+            <ZTextArea placeHolder="Enter annotation content here."/>
+            <ZButton text="Annotate" onPress={() => this.props.createImageAnnotation()}/>
           </View>
 
 
@@ -36,11 +38,13 @@ export class ImageAnnotationContainer extends Component {
 
 function mapStateToProps (state) {
   return {
+    contentData: state.imageAnnotationReducer
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
+    createImageAnnotation: () => dispatch(createImageAnnotation())
   }
 }
 
