@@ -10,7 +10,7 @@ import { ImageTarget, BaseAnnotationBody } from '@models';
 
 
 
-export class ImageAnnotationContainer extends Component {
+export class ImageAnnotationScene extends Component {
 
     constructor(props) {
 
@@ -71,4 +71,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(ImageAnnotationContainer);
+export default connect( mapStateToProps, mapDispatchToProps)(ImageAnnotationScene);

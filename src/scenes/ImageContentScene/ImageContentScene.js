@@ -8,7 +8,7 @@ import { fetchAnnotations } from '@actions';
 
 
 
-export class ImageContentContainer extends Component {
+export class ImageContentScene extends Component {
 
     constructor(props) {
 
@@ -39,11 +39,15 @@ export class ImageContentContainer extends Component {
             <View style={styles.container}>
                 <FlatList
                   data={annotations}
-                  renderItem={ ({item}) => <View style={styles.item}><Text>{item.body.value}</Text></View> }
+                  renderItem={ ({item}) => 
+                    <View style={styles.item}>
+                      <Text>{item.body.value}</Text>
+                    </View> 
+                  }
                 />
             </View>
           </View>
-            
+
         </View>
 		  )
     }
@@ -76,4 +80,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(ImageContentContainer);
+export default connect( mapStateToProps, mapDispatchToProps)(ImageContentScene);
