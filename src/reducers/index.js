@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import dataReducer from './dataReducer';
-import imageAnnotationReducer from './imageAnnotationReducer';
+import ImageAnnotationReducer from './imageAnnotationReducer';
+import ImageContentReducer from './imageContentReducer';
 
 const rootReducer = combineReducers({
     dataReducer,
-    imageAnnotationReducer
+    ImageAnnotationReducer,
+    ImageContentReducer
 })
 
 export default rootReducer;

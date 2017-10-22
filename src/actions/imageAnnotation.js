@@ -2,6 +2,10 @@ import * as actionTypes from '@actions/actionTypes';
 import { NetworkManager, ContentTypes } from '@utils';
 
 
+///
+/// Create image annotation
+///
+
 export function createImageAnnotation(content) {
 
    return (dispatch) => {
@@ -23,9 +27,10 @@ export function createImgAnnotation() {
   }
 }
 
-export function createImgAnnotationSuccess() {
+export function createImgAnnotationSuccess(annotations) {
   return {
-    type: actionTypes.CREATING_IMG_ANNOTATION_SUCCESS
+    type: actionTypes.CREATING_IMG_ANNOTATION_SUCCESS,
+    annotations
   }
 }
 
@@ -36,7 +41,7 @@ export function createImgAnnotationFailure() {
 }
 
 function saveImageAnnotation(imageAnnotation) {
-console.log('wqewqew')
+
 	return new Promise((resolve, reject) => {
 
 		return resolve(NetworkManager.post('/annotations', 
@@ -45,4 +50,53 @@ console.log('wqewqew')
     );
     
 	});
+}
+
+
+///
+/// Fetch annotation list
+///
+
+export function fetchAnnotations(contentId) {
+
+   return (dispatch) => {
+      dispatch(fetchAnnotationsStart())
+      getAnnotations(contentId)
+          .then((annotations) => {
+            dispatch(fetchAnnotationsSuccess(annotations))
+          })
+          .catch((err) => {
+            console.log('err:', err)
+            dispatch(fetchAnnotationsFailure())
+          })
+    }
+}
+
+export function fetchAnnotationsStart() {
+  return {
+    type: actionTypes.FETCH_ANNOTATIONS
+  }
+}
+
+export function fetchAnnotationsSuccess(annotations) {
+  
+  return {
+    type: actionTypes.FETCH_ANNOTATIONS_SUCCESS,
+    annotations
+  }
+}
+
+export function fetchAnnotationsFailure() {
+  return {
+    type: actionTypes.FETCH_ANNOTATIONS_FAILURE
+  }
+}
+
+function getAnnotations(contentId) {
+
+  return new Promise((resolve, reject) => {
+
+    return resolve(NetworkManager.get(`/annotations?contentId=${contentId}`, ContentTypes.jsonLD));
+    
+  });
 }

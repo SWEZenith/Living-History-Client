@@ -74,7 +74,7 @@ class NetworkManager {
     let options = Object.assign({ method: verb }, body ? { body: JSON.stringify(body) } : null );
 
     options.headers = NetworkManager.headers(contentType);
-
+    
     return fetch(url, options).then( response => {
 
       let json = response.json();

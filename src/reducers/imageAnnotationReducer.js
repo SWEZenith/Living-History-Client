@@ -2,8 +2,7 @@ import * as actionTypes from '@actions/actionTypes';
 
 const initialState = {
   started:false,
-  error: false,
-  content: ''
+  error: false
 }
 
 export default function imageAnnotationReducer (state = initialState, action) {
