@@ -17,7 +17,10 @@ export class ImageAnnotationScene extends Component {
         super(props);
     }
 
+
     render(){
+
+      const { navigate } = this.props.navigation;
 
       let imageAnnotation = AnnotationFactory.createAnnotation(AnnotationTypes.ImageAnnotation);
       imageAnnotation.target = new ImageTarget();
@@ -48,7 +51,10 @@ export class ImageAnnotationScene extends Component {
             <ZTextArea placeHolder="Enter annotation content here." 
               onChangeText={(text) => { imageAnnotation.body.value = text }}/>
             <ZButton text="Annotate" 
-            onPress={() => this.props.createImageAnnotation(imageAnnotation)}/>
+            onPress={() => { 
+              this.props.createImageAnnotation(imageAnnotation);
+              navigate('ImageContent');
+            }}/>
 
           </View>
 
