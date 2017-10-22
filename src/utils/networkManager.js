@@ -1,7 +1,13 @@
+import * as constants from '@utils/constants';
+
+/**
+ *  Http call processor.
+ */
 class NetworkManager {
 
-  static host = 'http://localhost:8080/api';
-
+  /**
+   * Creates headers according to given content type value.
+   */
   static headers(contentType) {
 
     let retVal = {};
@@ -26,25 +32,45 @@ class NetworkManager {
     return retVal;
   }
 
+  /**
+   *  Fires a get method.
+   */
   static get(route, contentType) {
+
     return this.xhr(route, null, 'GET', contentType);
   }
 
+  /**
+   *  Fires a put method.
+   */
   static put(route, body, contentType) {
+
     return this.xhr(route, body, 'PUT', contentType)
   }
 
+  /**
+   *  Fires a post method.
+   */
   static post(route, body, contentType) {
+
     return this.xhr(route, body, 'POST', contentType)
   }
 
+  /**
+   *  Fires a delete method.
+   */
   static delete(route, body, contentType) {
+
     return this.xhr(route, body, 'DELETE', contentType)
   }
 
+  /**
+   *  Makes a http call.
+   */
   static xhr(route, body, verb, contentType) {
 
-    const url = `${NetworkManager.host}${route}`;
+    const url = `${constants.API_URI}${route}`;
+
     let options = Object.assign({ method: verb }, body ? { body: JSON.stringify(body) } : null );
 
     options.headers = NetworkManager.headers(contentType);
@@ -56,12 +82,15 @@ class NetworkManager {
       if (response.ok)
         return json;
       
-      return json.then(err => {throw err} );
+      return json.then(err => { throw err });
 
     });
   }
 }
 
+/**
+ *  Enumeration of content types.
+ */
 class ContentTypes { 
 
   static json = 'json';

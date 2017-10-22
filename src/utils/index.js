@@ -1,1 +1,1 @@
-export * from './networkManager';
+export { NetworkManager, ContentTypes } from './NetworkManager';

@@ -5,12 +5,16 @@ import style from './style';
 class ZTextArea extends Component {
 
 	render(){
+
+		let {onChangeText, placeHolder} = this.props;
+
 		return(
-      <TextInput
-        placeholder={this.props.placeHolder}
-        style={style.input}
-        multiline={true}
-      />
+      		<TextInput
+        		placeholder={placeHolder}
+        		style={style.input}
+        		multiline={true}
+        		onChangeText={(text) => onChangeText(text)}
+      		/>
 		)
 	}
 }

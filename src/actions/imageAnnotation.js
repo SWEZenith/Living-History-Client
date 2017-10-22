@@ -1,12 +1,12 @@
 import * as actionTypes from '@actions/actionTypes';
 import { NetworkManager, ContentTypes } from '@utils';
-import getPeople from '@utils/api';
 
 
-export function createImageAnnotation() {
+export function createImageAnnotation(content) {
+
    return (dispatch) => {
    		dispatch(createImgAnnotation())
-    	saveImageAnnotation()
+    	saveImageAnnotation(content)
       		.then(() => {
         		dispatch(createImgAnnotationSuccess())
       		})
@@ -35,10 +35,14 @@ export function createImgAnnotationFailure() {
   }
 }
 
-function saveImageAnnotation(body){
-console.log('vallsss : ', body)
+function saveImageAnnotation(imageAnnotation) {
+console.log('wqewqew')
 	return new Promise((resolve, reject) => {
 
-		return resolve(NetworkManager.post('/annotations', null, ContentTypes.jsonLD));
+		return resolve(NetworkManager.post('/annotations', 
+      imageAnnotation.getObjectRepresentation(), 
+      ContentTypes.jsonLD)
+    );
+    
 	});
 }
