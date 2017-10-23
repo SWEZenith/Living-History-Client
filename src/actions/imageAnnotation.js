@@ -44,7 +44,7 @@ function saveImageAnnotation(imageAnnotation) {
 
 	return new Promise((resolve, reject) => {
 
-		return resolve(NetworkManager.post('/annotations', 
+		return resolve(NetworkManager.post('/annotations/', 
       imageAnnotation.getObjectRepresentation(), 
       ContentTypes.jsonLD)
     );
@@ -96,7 +96,8 @@ function getAnnotations(contentId) {
 
   return new Promise((resolve, reject) => {
 
-    return resolve(NetworkManager.get(`/annotations?contentId=${contentId}`, ContentTypes.jsonLD));
+    //return resolve(NetworkManager.get(`/annotations?contentId=${contentId}`, ContentTypes.jsonLD));
+    return resolve(NetworkManager.get(`/annotations/`, ContentTypes.jsonLD));
     
   });
 }
