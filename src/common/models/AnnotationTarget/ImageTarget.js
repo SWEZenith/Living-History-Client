@@ -41,7 +41,7 @@ import { Target } from '@models';
 	get url(){ return this._url ; }
 	set url(value){ this._url  = value; }
 
-	get id(){ return `${this.url}'#xywh='${this.x}','${this.y}','${this.w}','${this.h}`; }
+	get id(){ return `${this.url}#xywh=${this.x},${this.y},${this.w},${this.h}`; }
 	set id(value) { 
 
 		let values = value.split('=')[1].split(',');
