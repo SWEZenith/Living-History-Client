@@ -5,28 +5,28 @@ const initialState = {
   error: false
 }
 
-export default function imageAnnotationReducer (state = initialState, action) {
+export default function RegistrationReducer (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.CREATING_IMG_ANNOTATION:
+    case actionTypes.REGISTER_TO_SYSTEM:
       return {
         ...state,
         started: true,
         error: false,
-        actionType: actionTypes.CREATING_IMG_ANNOTATION
+        actionType: actionTypes.REGISTER_TO_SYSTEM
       }
-    case actionTypes.CREATING_IMG_ANNOTATION_SUCCESS:
+    case actionTypes.REGISTER_TO_SYSTEM_SUCCESS:
       return {
         ...state,
         started:false,
         error:false,
-        actionType: actionTypes.CREATING_IMG_ANNOTATION_SUCCESS
+        actionType: actionTypes.REGISTER_TO_SYSTEMSUCCESS
       }
-    case actionTypes.CREATING_IMG_ANNOTATION_FAILURE:
+    case actionTypes.REGISTER_TO_SYSTEM:
       return {
         ...state,
         started:false,
         error: true,
-        actionType: actionTypes.CREATING_IMG_ANNOTATION_FAILURE
+        actionType: actionTypes.REGISTER_TO_SYSTEM_FAILURE
       }
     default:
       return state

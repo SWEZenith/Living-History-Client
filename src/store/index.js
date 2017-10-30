@@ -7,7 +7,7 @@ import logger from 'redux-logger';
 export default function configureStore() {
   
   let store = createStore(
-  	app,
+  	app:app,
   	applyMiddleware(thunk),
   	applyMiddleware(logger)
   );

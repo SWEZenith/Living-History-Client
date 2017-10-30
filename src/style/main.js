@@ -11,8 +11,18 @@ const main = StyleSheet.create({
 		paddingRight: '3%',
 		paddingTop:10,
 		paddingBottom:10
+	},
+	logo:{
+		width: 150,
+		height: 150
+	},
+	logoText:{
+		marginTop:10,
+		fontSize:32,
+		color:'#4F4F4F',
+		fontFamily: 'Cochin',
+		textAlign:'center'
 	}
-
 });
 
 export default main;

@@ -2,14 +2,18 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import configureStore from '@store';
 import { StackNavigator } from 'react-navigation';
-import { ImageAnnotationScene, ImageContentScene } from '@scenes';
+import { ImageAnnotationScene, ImageContentScene, LoginScene, SignUpScene } from '@scenes';
 
 
 const store = configureStore();
 
 const Navigation = StackNavigator({
-  ImageContent: { screen: ImageContentScene },
-  ImageAnnotation: { screen: ImageAnnotationScene }
+	Login: {screen: LoginScene},
+	SignUp: {screen: SignUpScene},
+	
+	
+	ImageContent: { screen: ImageContentScene },
+  	ImageAnnotation: { screen: ImageAnnotationScene }
 });
 
 const Kernel = () => (

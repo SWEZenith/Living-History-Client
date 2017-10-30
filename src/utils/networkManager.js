@@ -1,4 +1,7 @@
 import * as constants from '@utils/constants';
+import { StorageHelper } from '@utils';
+import {AsyncStorage} from 'react-native';
+
 
 /**
  *  Http call processor.
@@ -8,7 +11,7 @@ class NetworkManager {
   /**
    * Creates headers according to given content type value.
    */
-  static headers(contentType) {
+  static async headers(contentType) {
 
     let retVal = {};
 
@@ -28,7 +31,12 @@ class NetworkManager {
         'dataType': 'json+ld'
       }
     }
-    
+
+    var token = await StorageHelper.get(constants.AUTH_TOKEN_KEY);
+
+    if(token)
+      retVal['X-Authorization'] = 'Bearer ' + token;
+      
     return retVal;
   }
 
