@@ -27,7 +27,7 @@ export class ImageContentScene extends Component {
 
       let annotations = this.props.appData.annotations;
       const { navigate } = this.props.navigation;
-
+console.log(annotations)
 
       //BRK DELETE
       let contentUri = 'https://berlincon2016.symfony.com/bundles/sensiosymfonylive/images/berlincon2016/assets/postcard.jpg';
@@ -43,8 +43,6 @@ export class ImageContentScene extends Component {
           <View style={{flex:1}}>
             <ZButton text="Annotate" onPress={() => navigate('ImageAnnotation')}/>
           </View>
-                    
-
 
           <View style={{flex:3}}>
             <View style={styles.container}>

@@ -11,8 +11,8 @@ export function register(formInfo) {
    return (dispatch) => {
    		dispatch(registerToSystem())
     	signUp(formInfo)
-      		.then(() => {
-        		dispatch(registerToSystemSuccess())
+      		.then((response) => {
+        		dispatch(registerToSystemSuccess(response))
       		})
       		.catch((err) => {
       			console.log('err:', err)
@@ -27,7 +27,7 @@ export function registerToSystem() {
   }
 }
 
-export function registerToSystemSuccess(annotations) {
+export function registerToSystemSuccess(response) {
   return {
     type: actionTypes.REGISTER_TO_SYSTEM_SUCCESS
   }

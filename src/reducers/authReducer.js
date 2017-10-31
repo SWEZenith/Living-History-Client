@@ -1,12 +1,16 @@
 import * as actionTypes from '@actions/actionTypes';
 
+
 const initialState = {
   isLoggingIn:false,
-  isAuthenticated: false
+  isAuthenticated: false,
+  error: '',
+  actionType: ''
 }
 
 export default function AuthReducer (state = initialState, action) {
   switch (action.type) {
+
     case actionTypes.LOGIN_TO_SYSTEM:
       return {
         ...state,
@@ -14,6 +18,7 @@ export default function AuthReducer (state = initialState, action) {
         isAuthenticated: false,
         actionType: actionTypes.LOGIN_TO_SYSTEM
       }
+
     case actionTypes.LOGIN_TO_SYSTEM_SUCCESS:
       return {
         ...state,
@@ -22,6 +27,7 @@ export default function AuthReducer (state = initialState, action) {
         error: '',
         actionType: actionTypes.LOGIN_TO_SYSTEM_SUCCESS
       }
+
     case actionTypes.LOGIN_TO_SYSTEM_FAILURE:
       return {
         ...state,
@@ -30,7 +36,8 @@ export default function AuthReducer (state = initialState, action) {
         error: action.error,
         actionType: actionTypes.LOGIN_TO_SYSTEM_FAILURE
       }
+
     default:
-      return state
+      return state;
   }
 }

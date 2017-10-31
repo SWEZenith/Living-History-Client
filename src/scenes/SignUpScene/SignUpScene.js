@@ -14,8 +14,9 @@ export class SignUpScene extends Component {
 
     	const { navigate } = this.props.navigation;
       let formInfo = {
-        userName: '',
-        password: '',
+        username: '',
+        password1: '',
+        password2: '',
         email: ''
       }
 
@@ -35,18 +36,21 @@ export class SignUpScene extends Component {
           <View style={{flex:2, alignItems:'center', justifyContent:'flex-end'}}>
             <View style={[privateStyle.componentContainer]}>
               <ZTextBox placeHolder="User name" 
-                onChangeText={(text) => { formInfo.userName = text }}/>
+                autoCapitalize="none"
+                onChangeText={(text) => { formInfo.username = text }}/>
             </View>
 
             <View style={[privateStyle.componentContainer]}>
               <ZTextBox placeHolder="Email"
+                autoCapitalize="none"
                 onChangeText={(text) => { formInfo.email = text }}/>
             </View>
 
             <View style={[privateStyle.componentContainer]}>
               <ZTextBox placeHolder="Password"
+                autoCapitalize="none"
                 secureTextEntry={true}
-                onChangeText={(text) => { formInfo.password = text }}/>
+                onChangeText={(text) => { formInfo.password1 = text; formInfo.password2 = text; }}/>
             </View>
             
             <View style={[privateStyle.componentContainer]}>

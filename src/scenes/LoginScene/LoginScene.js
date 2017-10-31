@@ -19,7 +19,7 @@ export class LoginScene extends Component {
 
     componentWillReceiveProps(nextProps) {
 
-    	if(this.props.appData != null && this.props.appData.isAuthenticated == true)
+    	if(this.props.appData.isAuthenticated == false && nextProps.appData.isAuthenticated == true)
     		this.props.navigation.navigate('ImageContent');
 
     	console.log('isAuthenticated: ', this.props.appData.isAuthenticated);
@@ -27,6 +27,9 @@ export class LoginScene extends Component {
 	}
 
     render(){
+
+
+
 
     	const { navigate } = this.props.navigation;
     	let credentials = {
@@ -76,7 +79,7 @@ export class LoginScene extends Component {
 					<Button
 						color='#4F4F4F'
 						style={{height:5}}
-						title="Don't have an account? Create one"
+						title="Create new account"
 					  	onPress={() => navigate('SignUp')}/>
 					  	</View>
 				</View>

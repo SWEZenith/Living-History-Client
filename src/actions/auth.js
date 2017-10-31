@@ -2,7 +2,6 @@ import * as actionTypes from '@actions/actionTypes';
 import { NetworkManager, ContentTypes, StorageHelper } from '@utils';
 import * as constants from '@utils/constants';
 
-
 ///
 /// Login
 ///
@@ -10,8 +9,10 @@ import * as constants from '@utils/constants';
 export function login(credentials) {
 
    return (dispatch) => {
-   		dispatch(loginToSystem())
-    	authenticate(credentials)
+
+   		dispatch(loginToSystem());
+    	
+      authenticate(credentials)
       		.then((tokens) => {
 
             StorageHelper.set(constants.REFRESH_TOKEN_KEY, tokens.refreshToken);
@@ -26,11 +27,6 @@ export function login(credentials) {
 
       		})
   	}
-
-
-
-
-
 }
 
 export function loginToSystem() {
@@ -40,7 +36,6 @@ export function loginToSystem() {
 }
 
 export function loginToSystemSuccess(tokens) {
-
   return {
     type: actionTypes.LOGIN_TO_SYSTEM_SUCCESS,
     tokens
