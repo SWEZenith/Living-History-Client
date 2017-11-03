@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import style from '@style/main';
+import { style } from '@style/main';
 import privateStyle from './style';
 import { View, Button, Text, Image } from 'react-native';
 import { ZTextBox, ZButton } from '@components';
@@ -9,6 +9,13 @@ import { register } from '@actions';
 
 
 export class SignUpScene extends Component {
+
+    componentWillReceiveProps(nextProps) {
+
+      if(this.props.appData.isRegistered === false && nextProps.appData.isRegistered === true)
+        this.props.navigation.navigate('Login');
+    }
+
 
     render(){
 
@@ -25,7 +32,7 @@ export class SignUpScene extends Component {
         <View style={[style.zPage]}>
 
         <View style={{flex:2, justifyContent:'center', alignItems:'center'}}>
-          <Image source={require('../../assets/img/AppIcon.png')}
+          <Image source={require('../../assets/img/app-icon-purple.png')}
             style={style.logo} />
           <Text style={style.logoText}>
             living memories

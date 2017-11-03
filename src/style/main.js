@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 
 
-const main = StyleSheet.create({
+const style = StyleSheet.create({
 	zPage: {
 		flex: 1,
 		justifyContent: 'flex-start',
@@ -21,8 +21,14 @@ const main = StyleSheet.create({
 		fontSize:32,
 		color:'#4F4F4F',
 		fontFamily: 'Cochin',
-		textAlign:'center'
+		textAlign:'center',
+		backgroundColor:'transparent'
 	}
 });
 
-export default main;
+const colors = {
+	
+  	mainColor: '#9B51E0'
+};
+
+export { style, colors};

@@ -1,8 +1,8 @@
 import * as actionTypes from '@actions/actionTypes';
 
 const initialState = {
-  started:false,
-  error: false
+  isRegistered:false,
+  error: ''
 }
 
 export default function RegistrationReducer (state = initialState, action) {
@@ -10,22 +10,19 @@ export default function RegistrationReducer (state = initialState, action) {
     case actionTypes.REGISTER_TO_SYSTEM:
       return {
         ...state,
-        started: true,
-        error: false,
         actionType: actionTypes.REGISTER_TO_SYSTEM
       }
     case actionTypes.REGISTER_TO_SYSTEM_SUCCESS:
       return {
         ...state,
-        started:false,
-        error:false,
+        isRegistered: true,
         actionType: actionTypes.REGISTER_TO_SYSTEMSUCCESS
       }
     case actionTypes.REGISTER_TO_SYSTEM:
       return {
         ...state,
-        started:false,
-        error: true,
+        isRegistered: false,
+        error: action.error,
         actionType: actionTypes.REGISTER_TO_SYSTEM_FAILURE
       }
     default:

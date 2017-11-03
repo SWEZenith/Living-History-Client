@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import style from '@style/main';
+import { style } from '@style/main';
 import { ZImageView, ZButton } from '@components/index';
 import { View } from 'react-native';
 import { FlatList, StyleSheet, Text } from 'react-native';
@@ -11,16 +11,11 @@ import { fetchAnnotations } from '@actions';
 export class ImageContentScene extends Component {
 
     constructor(props) {
-
         super(props);
     }
 
     componentDidMount(){
       this.props.fetchAnnotations(22);
-    }
-
-    componentWillMount(){
-     this.props.fetchAnnotations(22); 
     }
 
     render(){
