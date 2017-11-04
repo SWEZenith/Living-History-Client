@@ -1,4 +1,7 @@
 import * as constants from '@utils/constants';
+import { StorageHelper } from '@utils';
+import {AsyncStorage} from 'react-native';
+
 
 /**
  *  Http call processor.
@@ -8,7 +11,7 @@ class NetworkManager {
   /**
    * Creates headers according to given content type value.
    */
-  static headers(contentType) {
+  static async headers(contentType, route) {
 
     let retVal = {};
 
@@ -28,7 +31,14 @@ class NetworkManager {
         'dataType': 'json+ld'
       }
     }
-    
+
+    if(route.indexOf('auth') == -1) {
+      var token = await StorageHelper.get(constants.AUTH_TOKEN_KEY);
+
+      if(token)
+        retVal['X-Authorization'] = 'Bearer ' + token;
+    }
+      
     return retVal;
   }
 
@@ -67,23 +77,21 @@ class NetworkManager {
   /**
    *  Makes a http call.
    */
-  static xhr(route, body, verb, contentType) {
+  static async xhr(route, body, verb, contentType) {
 
     const url = `${constants.API_URI}${route}`;
 
     let options = Object.assign({ method: verb }, body ? { body: JSON.stringify(body) } : null );
 
-    options.headers = NetworkManager.headers(contentType);
+    options.headers = await NetworkManager.headers(contentType, route);
  console.log(url)
  console.log(options)   
     return fetch(url, options).then( response => {
-
-      let json = response.json();
-
+console.log(response)
       if (response.ok)
-        return json;
+        return response.json();
       
-      return json.then(err => { throw err });
+      return null;
 
     });
   }

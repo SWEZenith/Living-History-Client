@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import style from '@style/main';
+import { style } from '@style/main';
 import { ZImageView, ZButton } from '@components/index';
 import { View } from 'react-native';
 import { FlatList, StyleSheet, Text } from 'react-native';
@@ -11,7 +11,6 @@ import { fetchAnnotations } from '@actions';
 export class ImageContentScene extends Component {
 
     constructor(props) {
-
         super(props);
     }
 
@@ -19,15 +18,11 @@ export class ImageContentScene extends Component {
       this.props.fetchAnnotations(22);
     }
 
-    componentWillMount(){
-     this.props.fetchAnnotations(22); 
-    }
-
     render(){
 
       let annotations = this.props.appData.annotations;
       const { navigate } = this.props.navigation;
-
+console.log(annotations)
 
       //BRK DELETE
       let contentUri = 'https://berlincon2016.symfony.com/bundles/sensiosymfonylive/images/berlincon2016/assets/postcard.jpg';
@@ -43,8 +38,6 @@ export class ImageContentScene extends Component {
           <View style={{flex:1}}>
             <ZButton text="Annotate" onPress={() => navigate('ImageAnnotation')}/>
           </View>
-                    
-
 
           <View style={{flex:3}}>
             <View style={styles.container}>

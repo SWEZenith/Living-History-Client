@@ -24,7 +24,7 @@ export default function imageAnnotationReducer (state = initialState, action) {
     case actionTypes.CREATING_IMG_ANNOTATION_FAILURE:
       return {
         ...state,
-        state:false,
+        started:false,
         error: true,
         actionType: actionTypes.CREATING_IMG_ANNOTATION_FAILURE
       }

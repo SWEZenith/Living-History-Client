@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import style from '@style/main';
+import { style } from '@style/main';
 import { ZImageView, ZTextArea, ZButton } from '@components/index';
 import { View } from 'react-native';
 import { createImageAnnotation } from '@actions';

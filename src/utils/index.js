@@ -1,1 +1,2 @@
-export { NetworkManager, ContentTypes } from './NetworkManager';
+export { NetworkManager, ContentTypes } from './networkManager';
+export { StorageHelper } from './storageHelper';
