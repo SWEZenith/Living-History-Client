@@ -5,7 +5,7 @@ import SignUpScene from './SignUpScene/SignUpScene';
 import HomeScene from './HomeScene/HomeScene';
 import CreateContentScene from './CreateContentScene/CreateContentScene';
 import ProfileScene from './ProfileScene/ProfileScene';
-import CreateImageContentScene from './CreateImageContentScene/CreateImageContentScene';
+import ImageContentCreateScene from './ImageContentCreateScene/ImageContentCreateScene';
 import CreateTextContentScene from './CreateTextContentScene/CreateTextContentScene';
 
 export { 
@@ -16,6 +16,6 @@ export {
 	HomeScene,
 	CreateContentScene,
 	ProfileScene,
-	CreateImageContentScene,
+	ImageContentCreateScene,
 	CreateTextContentScene
 }

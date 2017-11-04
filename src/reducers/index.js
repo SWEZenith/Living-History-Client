@@ -4,6 +4,7 @@ import ImageAnnotationReducer from './imageAnnotationReducer';
 import ImageContentReducer from './imageContentReducer';
 import AuthReducer from './authReducer';
 import RegistrationReducer from './registrationReducer';
+import HomeReducer from './homeReducer';
 
 const rootReducer = combineReducers({
     dataReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
     ImageContentReducer,
     AuthReducer: AuthReducer,
     RegistrationReducer
+    HomeReducer,
 })
 
 export default rootReducer;
