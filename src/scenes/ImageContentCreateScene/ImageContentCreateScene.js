@@ -3,10 +3,8 @@ import { connect } from 'react-redux';
 import style from '@style/main';
 import { ZImageView, ZTextArea, ZButton } from '@components/index';
 import ReactNative from 'react-native';
-import { createImageAnnotation } from '@actions';
-import { AnnotationFactory } from '@common';
-import { AnnotationTypes } from '@enums';
-import { ImageTarget, BaseAnnotationBody } from '@models';
+import { createImageContent } from '@actions';
+
 const {
   ScrollView,
   View,
@@ -23,10 +21,27 @@ export class ImageContentCreateScene extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { title: '', description: '', tags: '', d: '', m: '', y: '', location: '', href: '' }
+        this.state = { title: '', description: '', tags: '', d: '', m: '', y:'', location:'', href:''}
+        this._submitForm = this._submitForm.bind(this);
     }
 
     render(){
+
+      console.log('in imagecontentcreatescene');
+
+      let imageContentFields = {
+        title: '',
+        description: '',
+        tags: '',
+        d: '',
+        m: '',
+        y: '',
+        location: '',
+        href: ''
+      }
+      let error = this.props.appData.error;
+      let errText = error != undefined ? error.message != null ? error.message  : "" : "";
+
       return(
       <View style={styles.scene}>
         <ScrollView style={styles.scrollSection} >
@@ -36,38 +51,38 @@ export class ImageContentCreateScene extends Component {
         <View style={styles.formSection}>
           <TextInput style={styles.formInput}
             placeholder=" Title "
+            value =  {this.state.title}
             onChangeText={(title) => this.setState({title})}
-            value={this.state.title}
           />
           <TextInput style={styles.formInput}
             placeholder=" Tags (please use comma in between tags) "
+            value =  {this.state.tags}
             onChangeText={(tags) => this.setState({tags})}
-            value={this.state.tags}
           />
           <TextInput style={styles.formInputBox}
             placeholder=" Decription "
             multiline={true}
             numberOfLines = {10}
-            onChangeText={(description) => this.setState({description})}
             maxLength = {490}
             blurOnSubmit={false}
-            value={this.state.description}
+            value =  {this.state.description}
+            onChangeText={(description) => this.setState({description})}
           />
           <TextInput style={styles.formInput}
             placeholder=" Image URL "
+            value =  {this.state.href}
             onChangeText={(href) => this.setState({href})}
-            value={this.state.href}
           />
           <TextInput style={styles.formInput}
             placeholder=" Location "
-            onChangeText={(location) => this.setState({location})}
-            value={this.state.location}
+            value =  {this.state.location}
+            onChangeText={(description) => this.setState({location})}
           />
         </View>
         <View style={styles.datePickerSection}>
-          <Picker style={styles.datePicker}
+          <Picker style={styles.datePickerDay}
             selectedValue={this.state.d}
-            onValueChange={(itemValue, itemIndex) => this.setState({d: itemValue})}>
+            onValueChange={(itemValue, itemIndex) => { this.setState({d: itemValue})} }>
             <Picker.Item label="Day" value="" />
             <Picker.Item label="01" value="01" />
             <Picker.Item label="02" value="02" />
@@ -101,9 +116,9 @@ export class ImageContentCreateScene extends Component {
             <Picker.Item label="30" value="30" />
             <Picker.Item label="31" value="31" />
           </Picker>
-          <Picker style={styles.datePicker}
+          <Picker style={styles.datePickerMonth}
             selectedValue={this.state.m}
-            onValueChange={(itemValue, itemIndex) => this.setState({m: itemValue})}>
+            onValueChange={(itemValue, itemIndex) => { this.setState({m: itemValue})} }>
             <Picker.Item label="Month" value="" />
             <Picker.Item label="January" value="January" />
             <Picker.Item label="February" value="February" />
@@ -120,13 +135,14 @@ export class ImageContentCreateScene extends Component {
           </Picker>
           <TextInput style={styles.datePickerYear}
             placeholder=" Year "
-            onChangeText={(z) => this.setState({z})}
-            value={this.state.z}
+            value =  {this.state.y}
+            onChangeText={(y) => this.setState({y})}
           />
         </View>
         <View style={styles.buttonSection}>
           <TouchableHighlight style={styles.createButton}>
-            <Text style= {styles.searchText}> Create Content! </Text>
+            <Text style= {styles.searchText} onPress={() => { this._submitForm(); this.props.navigation.navigate('Home'); }}> 
+            Create Content! </Text>
           </TouchableHighlight>
         </View>
         </ScrollView>
@@ -134,6 +150,10 @@ export class ImageContentCreateScene extends Component {
       )
     }
 
+    _submitForm() {
+      imageContentFields = this.state
+      createImageContent(imageContentFields)
+    };
 }
 
 
@@ -155,8 +175,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 20,
   },
-  datePicker: {
-    flex: 0.3,
+  datePickerDay: {
+    flex: 0.25,
+  },
+  datePickerMonth: {
+    flex: 0.35,
   },
   datePickerYear: {
     flex: 0.4,
@@ -178,7 +201,7 @@ const styles = StyleSheet.create({
   createButton: {
     flex: 0.1,
     height: 30,
-    backgroundColor:'#eb5758',
+    backgroundColor:'#9B51E0',
     padding:5,
     borderRadius:50,
   },
@@ -203,20 +226,13 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
   return {
-    title: state.imageContentTitle,
-    description: state.imageContentDescription,
-    tags: state.imageContentTags,
-    d: state.imageContentD,
-    m: state.imageContentM,
-    y: state.imageContentY,
-    location: state.imageContentLocation,
-    href: state.imageContentHref,
+    appData: state.CreateImageContentReducer
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    createImageContent: (imageContent) => dispatch(createImageContent(imageContent))
+    createImageContent: (imageContentFields) => dispatch(createImageContent(imageContentFields))
   }
 }
 

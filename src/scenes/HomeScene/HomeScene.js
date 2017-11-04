@@ -123,14 +123,14 @@ const styles = StyleSheet.create({
   searchButton: {
     flex: 0.12,
     height: 30,
-    backgroundColor:'#eb5758',
+    backgroundColor:'#9B51E0',
     padding:5,
     borderRadius:50,
   },
   createButton: {
     flex: 1,
     height: 30,
-    backgroundColor:'#eb5758',
+    backgroundColor:'#9B51E0',
     padding:5,
     borderRadius:50,
   },

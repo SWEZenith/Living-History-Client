@@ -1,102 +1,54 @@
 import * as actionTypes from '@actions/actionTypes';
-import { NetworkManager, ContentTypes } from '@utils';
+import { NetworkManager, ContentTypes, StorageHelper } from '@utils';
+import * as constants from '@utils/constants';
 
+export function createImageContent(contentFields) {
 
-///
-/// Create image annotation
-///
-
-export function createImageContent(content) {
+    console.log('ImageContentFields', contentFields);
 
    return (dispatch) => {
-   		dispatch(createImgContent())
-    	saveImageContent(content)
-      		.then(() => {
-        		dispatch(createImgcontentSuccess())
-      		})
-      		.catch((err) => {
-      			console.log('err:', err)
-      			dispatch(createImgContentFailure())
-      		})
-  	}
-}
 
-export function createImgContent() {
-  return {
-    type: actionTypes.CREATING_IMG_CONTENT
-  }
-}
+      dispatch(createContent());
+      
+      sendContent(contentFields)
+          .then(() => {
 
-export function createImgContentSuccess(content) {
-  return {
-    type: actionTypes.CREATING_IMG_CONTENT_SUCCESS,
-    content
-  }
-}
-
-export function createImgContentFailure() {
-  return {
-    type: actionTypes.CREATING_IMG_CONTENT_FAILURE
-  }
-}
-
-function saveImageContent(content) {
-
-	return new Promise((resolve, reject) => {
-
-		return resolve(NetworkManager.post('/contents/', 
-      content.getObjectRepresentation(), 
-      ContentTypes.jsonLD)
-    );
-    
-	});
-}
-
-
-///
-/// Fetch content list
-///
-
-export function fetchContents(contentId) {
-
-   return (dispatch) => {
-      dispatch(fetchContentsStart())
-      getContents(contentId)
-          .then((content) => {
-            dispatch(fetchContentsSuccess(contents))
+            dispatch(createContentSuccess());
+            
           })
           .catch((err) => {
+
             console.log('err:', err)
-            dispatch(fetchContentsFailure())
+            dispatch(createContentFailure(err))
+
           })
     }
 }
 
-export function fetchContentsStart() {
+export function createContent() {
   return {
-    type: actionTypes.FETCH_CONTENTS
+    type: actionTypes.CREATE_IMAGE_CONTENT
   }
 }
 
-export function fetchContentsSuccess(content) {
+export function createContentSuccess() {
   return {
-    type: actionTypes.FETCH_CONTENTS_SUCCESS,
-    content
+    type: actionTypes.CREATE_IMAGE_CONTENT_SUCCESS,
   }
 }
 
-export function fetchContentsFailure() {
+export function createContentFailure(error) {
   return {
-    type: actionTypes.FETCH_CONTENTS_FAILURE
+    type: actionTypes.CREATE_IMAGE_CONTENT_FAILURE,
+    error
   }
 }
 
-function getContents(contentId) {
+function sendContent(contentFields) {
 
   return new Promise((resolve, reject) => {
 
-    //return resolve(NetworkManager.get(`/annotations?contentId=${contentId}`, ContentTypes.jsonLD));
-    return resolve(NetworkManager.get(`/content/`, ContentTypes.jsonLD));
+    return resolve(NetworkManager.post('/contents', contentFields, ContentTypes.json));
     
   });
 }
