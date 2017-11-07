@@ -1,19 +1,23 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
 
+<<<<<<< HEAD
 import {
 	CreateContentScene,
 	CreateImageContentScene,
 	CreateTextContentScene,
 	TextAnnotationScene
 } from '@scenes';
+=======
+import { CreateContentScene, ImageContentCreateScene, CreateTextContentScene } from '@scenes';
+>>>>>>> upstream/master
 
 const CreateStackNavigator = StackNavigator({
   CreateContent: {
     screen: CreateContentScene
   },
   CreateImageContent: {
-  	screen: CreateImageContentScene
+  	screen: ImageContentCreateScene
   },
   CreateTextContent: {
   	screen: CreateTextContentScene

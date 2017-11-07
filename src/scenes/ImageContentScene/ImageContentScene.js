@@ -21,7 +21,6 @@ export class ImageContentScene extends Component {
     render(){
 
       let annotations = this.props.appData.annotations;
-      const { navigate } = this.props.navigation;
 console.log(annotations)
 
       //BRK DELETE
@@ -32,11 +31,11 @@ console.log(annotations)
         <View style={[style.zPage]}>
 
           <View style={{flex:2}}>
-            <ZImageView imageUrl={contentUri}/>
+            <ZImageView imageUrl={this.props.navigation.state.params.href}/>
           </View>
 
           <View style={{flex:1}}>
-            <ZButton text="Annotate" onPress={() => navigate('ImageAnnotation')}/>
+            <ZButton text="Annotate" onPress={() => this.props.navigation.navigate('ImageAnnotation')}/>
           </View>
 
           <View style={{flex:3}}>

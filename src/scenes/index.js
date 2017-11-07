@@ -22,4 +22,5 @@ export {
 	CreateTextContentScene,
 	TextAnnotationScene,
 	TextContentScene
+	CreateTextContentScene
 }
