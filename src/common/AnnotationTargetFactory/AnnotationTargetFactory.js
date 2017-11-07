@@ -1,5 +1,5 @@
 import { AnnotationTargetTypes } from '@enums';
-import { AnnotationTarget } from '@models';
+import { ImageTarget, TextTarget } from '@models';
 
 
 /**
@@ -10,14 +10,15 @@ class AnnotationTargetFactory {
 	/**
 	 *	Creates an annotation with specified type.
 	 */
-	static createAnnotation(annotationTargetType){
+	static createTarget(annotationTargetType){
 
 		switch(annotationTargetType) {
 
 			case AnnotationTargetTypes.ImageTarget:
-			default:
-				return new AnnotationTarget();		
-				
+				return new ImageTarget();
+
+			case AnnotationTargetTypes.TextTarget:
+				return new TextTarget();
 		}
 	}
 }

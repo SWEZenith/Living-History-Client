@@ -8,17 +8,17 @@ import { View, Text } from 'react-native';
 
 export class CreateImageContentScene extends Component {
 
-    render(){
-    	return(
-        <View style={[style.zPage]}>
-          <View style={{flex:1}}>
-            <Text>
-              Create Image Content Scene
-            </Text>
-          </View>
+  render(){
+  	return(
+      <View style={[style.zPage]}>
+        <View style={{flex:1}}>
+          <Text>
+            Create Image Content Scene
+          </Text>
         </View>
-		  )
-    }
+      </View>
+	  )
+  }
 
 }
 

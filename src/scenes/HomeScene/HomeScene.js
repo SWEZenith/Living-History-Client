@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { style } from '@style/main';
 import privateStyle from './style';
 import { View, Text } from 'react-native';
+import { ZButton } from '@components';
 
 
 
@@ -11,13 +12,16 @@ export class HomeScene extends Component {
   static navigationOptions = { header: <Text style={{ display:"none" }} ></Text> };
   
   render(){
+
+    const { navigate } = this.props.navigation;
+
   	return(
       <View style={[style.zPage]}>
-        <View style={{flex:2}}>
-          <Text>
-            Home Scene
-          </Text>
-        </View>
+
+        <ZButton text="Create Text Annotation" 
+                            buttonStyle={{width:170}}
+                            onPress={() => navigate('TextAnnotation')}/>
+
       </View>
 	  )
   }
