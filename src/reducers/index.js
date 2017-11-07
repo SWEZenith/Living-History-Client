@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
     ImageContentReducer,
     AuthReducer,
     RegistrationReducer,
-    TextAnnotationReducer
+    TextAnnotationReducer,
     HomeReducer,
     CreateImageContentReducer
 })

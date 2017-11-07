@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import style from '@style/main';
+import privateStyle from './style';
 import { ZImageView, ZTextArea, ZButton } from '@components/index';
 import ReactNative from 'react-native';
 import { fetchContents } from '@actions';
@@ -70,91 +71,34 @@ export class HomeScene extends Component {
       }];
 
     	return(
-      <View style={styles.scene}>
-        <View style={styles.searchSection}>
-          <TextInput style={styles.searchInput}
+      <View style={privateStyle.scene}>
+        <View style={privateStyle.searchSection}>
+          <TextInput style={privateStyle.searchInput}
             returnKeyType="search"
             placeholder=" Browse Memories... "
             onChangeText={(searchInput) => this.setState({searchInput})}
             value={this.state.searchInput}
           />
-          <TouchableHighlight style={styles.searchButton}>
-            <Text style= {styles.searchText}>Search</Text>
+          <TouchableHighlight style={privateStyle.searchButton}>
+            <Text style= {privateStyle.searchText}>Search</Text>
           </TouchableHighlight>
         </View>
-        <ScrollView style={styles.scrollSection} >
+        <ScrollView style={privateStyle.scrollSection} >
           {content_array.map((content) => {
-            return <TouchableHighlight key={content.key} style={styles.resultButton} onPress={ 
+            return <TouchableHighlight key={content.key} style={privateStyle.resultButton} onPress={ 
               () => this.props.navigation.navigate('ImageContent', { href: content.href }) }>
             <View>
-              <Image source={ { uri: content.href } } style={styles.resultImage} />
-              <Text style={ styles.resultText } >{content.title}</Text>
+              <Image source={ { uri: content.href } } style={privateStyle.resultImage} />
+              <Text style={ privateStyle.resultText } >{content.title}</Text>
             </View>
           </TouchableHighlight>
           })}
         </ScrollView>
-        <View style={styles.searchSection}>
-          <TouchableHighlight style={styles.createButton} onPress={() => this.props.navigation.navigate('CreateImageContent')}>
-            <Text style= {styles.searchText}> Create Content! </Text>
-          </TouchableHighlight>
-        </View>
       </View>
 		  )
     }
 
 }
-
-
-const styles = StyleSheet.create({
-  scene: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  searchSection: {
-    height: 40,
-    flexDirection: 'row',
-    borderBottomColor: '#000',
-    borderBottomWidth: 1,
-    padding: 5,
-  },
-  scrollSection: {
-    flex: 0.8
-  },
-  searchButton: {
-    flex: 0.12,
-    height: 30,
-    backgroundColor:'#9B51E0',
-    padding:5,
-    borderRadius:50,
-  },
-  createButton: {
-    flex: 1,
-    height: 30,
-    backgroundColor:'#9B51E0',
-    padding:5,
-    borderRadius:50,
-  },
-  searchText: {
-    color:'#fff',
-    textAlign:'center',
-  },
-  resultButton: {
-    flex: 0.3,
-  },
-  searchInput: {
-    flex: 0.88,
-    height: 40,
-    backgroundColor: 'white'
-  },
-  resultText: {
-    backgroundColor: '#000',
-    color: '#FFF',
-    height: 20,
-  },
-  resultImage: {
-    height: 150,
-  },
-});
 
 function mapStateToProps (state) {
   return {
