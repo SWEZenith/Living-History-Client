@@ -1,14 +1,14 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
 
-import { CreateContentScene, CreateImageContentScene, CreateTextContentScene } from '@scenes';
+import { CreateContentScene, ImageContentCreateScene, CreateTextContentScene } from '@scenes';
 
 const CreateStackNavigator = StackNavigator({
   CreateContent: {
     screen: CreateContentScene
   },
   CreateImageContent: {
-  	screen: CreateImageContentScene
+  	screen: ImageContentCreateScene
   },
   CreateTextContent: {
   	screen: CreateTextContentScene
