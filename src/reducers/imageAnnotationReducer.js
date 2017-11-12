@@ -2,7 +2,8 @@ import * as actionTypes from '@actions/actionTypes';
 
 const initialState = {
   started:false,
-  error: false
+  isSuccessfull: false,
+  error: ''
 }
 
 export default function imageAnnotationReducer (state = initialState, action) {
@@ -11,21 +12,21 @@ export default function imageAnnotationReducer (state = initialState, action) {
       return {
         ...state,
         started: true,
-        error: false,
         actionType: actionTypes.CREATING_IMG_ANNOTATION
       }
     case actionTypes.CREATING_IMG_ANNOTATION_SUCCESS:
       return {
         ...state,
         started:false,
-        error:false,
+        isSuccessfull: true,
         actionType: actionTypes.CREATING_IMG_ANNOTATION_SUCCESS
       }
     case actionTypes.CREATING_IMG_ANNOTATION_FAILURE:
       return {
         ...state,
         started:false,
-        error: true,
+        isSuccessfull: false,
+        error: action.error,
         actionType: actionTypes.CREATING_IMG_ANNOTATION_FAILURE
       }
     default:

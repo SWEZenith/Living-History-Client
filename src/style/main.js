@@ -1,16 +1,25 @@
 import { StyleSheet } from 'react-native';
 
 
+const colors = {
+	
+  	mainColor: '#9B51E0',
+  	pageBackgroundColor: '#FFF'
+};
+
+const values = {
+	pagePadding: 10
+};
 
 const style = StyleSheet.create({
 	zPage: {
 		flex: 1,
 		justifyContent: 'flex-start',
-		backgroundColor: '#ecf0f1',
-		paddingLeft: 10,
-		paddingRight: '3%',
-		paddingTop:10,
-		paddingBottom:10
+		backgroundColor: colors.pageBackgroundColor,
+		paddingLeft: values.pagePadding,
+		paddingRight: values.pagePadding,
+		paddingTop: values.pagePadding,
+		paddingBottom: values.pagePadding
 	},
 	logo:{
 		width: 150,
@@ -26,9 +35,4 @@ const style = StyleSheet.create({
 	}
 });
 
-const colors = {
-	
-  	mainColor: '#9B51E0'
-};
-
-export { style, colors};
+export { style, colors, values};

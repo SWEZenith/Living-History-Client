@@ -14,9 +14,9 @@ export function register(formInfo) {
       		.then((response) => {
         		dispatch(registerToSystemSuccess(response))
       		})
-      		.catch((err) => {
-      			console.log('err:', err)
-      			dispatch(registerToSystemFailure())
+      		.catch((error) => {
+      			console.log('error:', error)
+      			dispatch(registerToSystemFailure(error))
       		})
   	}
 }
@@ -33,14 +33,15 @@ export function registerToSystemSuccess(response) {
   }
 }
 
-export function registerToSystemFailure() {
+export function registerToSystemFailure(error) {
   return {
-    type: actionTypes.REGISTER_TO_SYSTEM_FAILURE
+    type: actionTypes.REGISTER_TO_SYSTEM_FAILURE,
+    error
   }
 }
 
 function signUp(formInfo) {
-console.log(formInfo);
+
 	return new Promise((resolve, reject) => {
 
 		return resolve(NetworkManager.post('/auth/signup', 
