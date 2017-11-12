@@ -9,11 +9,10 @@ const main = StyleSheet.create({
 	backgroundImage:{
 		backgroundColor: '#ccc',
       	flex: 1,
-  		resizeMode:'center',
+  		resizeMode:'stretch',
       	position: 'absolute',
     	width: '100%',
         height: '100%',
-        justifyContent: 'center'
     },
     darkLayer:{
     	flex:1, 

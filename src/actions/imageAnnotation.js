@@ -14,9 +14,9 @@ export function createImageAnnotation(content) {
       		.then(() => {
         		dispatch(createImgAnnotationSuccess())
       		})
-      		.catch((err) => {
-      			console.log('err:', err)
-      			dispatch(createImgAnnotationFailure())
+      		.catch((error) => {
+      			console.log('error:', error)
+      			dispatch(createImgAnnotationFailure(error))
       		})
   	}
 }
@@ -27,16 +27,16 @@ export function createImgAnnotation() {
   }
 }
 
-export function createImgAnnotationSuccess(annotations) {
+export function createImgAnnotationSuccess() {
   return {
-    type: actionTypes.CREATING_IMG_ANNOTATION_SUCCESS,
-    annotations
+    type: actionTypes.CREATING_IMG_ANNOTATION_SUCCESS
   }
 }
 
-export function createImgAnnotationFailure() {
+export function createImgAnnotationFailure(error) {
   return {
-    type: actionTypes.CREATING_IMG_ANNOTATION_FAILURE
+    type: actionTypes.CREATING_IMG_ANNOTATION_FAILURE,
+    error
   }
 }
 
@@ -65,9 +65,9 @@ export function fetchAnnotations(contentId) {
           .then((annotations) => {
             dispatch(fetchAnnotationsSuccess(annotations))
           })
-          .catch((err) => {
-            console.log('err:', err)
-            dispatch(fetchAnnotationsFailure())
+          .catch((error) => {
+            console.log('error:', error)
+            dispatch(fetchAnnotationsFailure(error))
           })
     }
 }
@@ -86,9 +86,10 @@ export function fetchAnnotationsSuccess(annotations) {
   }
 }
 
-export function fetchAnnotationsFailure() {
+export function fetchAnnotationsFailure(error) {
   return {
-    type: actionTypes.FETCH_ANNOTATIONS_FAILURE
+    type: actionTypes.FETCH_ANNOTATIONS_FAILURE,
+    error
   }
 }
 

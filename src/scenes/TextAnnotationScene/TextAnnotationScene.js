@@ -48,7 +48,6 @@ export class TextAnnotationScene extends Component {
       
       if(this.props.isSuccessfull === false && this.nextProps.isSuccessfull === true)
         this.props.navigation.goBack();
-
     }
 
     handleEditorTextChange(text) {
