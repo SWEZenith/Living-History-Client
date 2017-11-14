@@ -26,49 +26,15 @@ export class HomeScene extends Component {
         super(props);
         this.state = { searching: false, searchInput: '' }
     }
+    
+    componentDidMount(){
+      this.props.fetchContents();
+    }
 
     render(){
       
-      // BRK DELETE
-      let contentUri = 'https://berlincon2016.symfony.com/bundles/sensiosymfonylive/images/berlincon2016/assets/postcard.jpg';
-      let contentUri2 = 'http://en.istanbul.com/Files/Content/bebek-istanbul.JPG';
-      let contentUri3 = 'http://cdn.yemek.com/mncrop/940/625/uploads/2014/11/boza-tarifi.jpg';
-      let contentUri4 = 'http://eslidanslar.metu.edu.tr/system/files/1779693_10152320102595432_757168409_n.jpg';
-      let contentUri5 = 'https://cdn1.nenerede.com.tr/wp-content/uploads/2017/04/%C4%B0zmir-Fen-Lisesi.jpg';
-      let contentUri6 = 'https://media.licdn.com/mpr/mpr/shrinknp_674_240/p/2/005/02c/392/2295ca5.jpg';
-      // BRK DELETE
-
-      var content_array = [
-      {
-        key: 1,
-        href: contentUri,
-        title: 'Berlin',
-      },
-      {
-        key: 2,
-        href: contentUri2,
-        title: 'Bebek',
-      },
-      {
-        key: 3,
-        href: contentUri3,
-        title: 'Boza',
-      },
-      {
-        key: 4,
-        href: contentUri4,
-        title: 'ODTÜ',
-      },
-      {
-        key: 5,
-        href: contentUri5,
-        title: 'İzmir Fen Lisesi',
-      },
-      {
-        key: 6,
-        href: contentUri6,
-        title: 'Boğaziçi Üniversitesi',
-      }];
+      let contents = this.props.appData.contents;
+      console.log(contents);
 
     	return(
       <View style={privateStyle.scene}>
@@ -84,11 +50,11 @@ export class HomeScene extends Component {
           </TouchableHighlight>
         </View>
         <ScrollView style={privateStyle.scrollSection} >
-          {content_array.map((content) => {
+          {contents.map((content) => {
             return <TouchableHighlight key={content.key} style={privateStyle.resultButton} onPress={ 
-              () => this.props.navigation.navigate('ImageContent', { href: content.href }) }>
+              () => this.props.navigation.navigate('ImageContent', { href: content.description }) }>
             <View>
-              <Image source={ { uri: content.href } } style={privateStyle.resultImage} />
+              <Image source={ { uri: content.description } } style={privateStyle.resultImage} />
               <Text style={ privateStyle.resultText } >{content.title}</Text>
             </View>
           </TouchableHighlight>
@@ -102,13 +68,13 @@ export class HomeScene extends Component {
 
 function mapStateToProps (state) {
   return {
-    searchInput: state.searchInput
+    appData: state.HomeReducer
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    fetchContents: (contentId) => dispatch(fetchContents(contentId))
+    fetchContents: () => dispatch(fetchContents())
   }
 }
 

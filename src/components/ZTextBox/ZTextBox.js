@@ -16,7 +16,7 @@ class ZTextBox extends Component {
         		placeholder={placeHolder}
                 autoCapitalize={autoCapitalize}
         		style={[privateStyle.input, style]}
-        		multiline={true}
+        		multiline={multiline || defaultMultiline}
                 blurOnSubmit={blurOnSubmit || defaultBlurOnSubmit}
                 secureTextEntry={secureTextEntry}
                 value={value}
