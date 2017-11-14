@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import style from '@style/main';
-import { ZImageView, ZTextArea, ZButton } from '@components/index';
+import { ZImageView, ZTextArea, ZButton, ZRichTextEditor, ZTextBox} from '@components/index';
 import ReactNative from 'react-native';
+import Dimensions from 'Dimensions';
 import { createImageContent } from '@actions';
 
 const {
@@ -48,36 +49,49 @@ export class CreateImageContentScene extends Component {
         <View style={styles.textSection}>
           <Text style={styles.text}> Please fill in the following information then click the {"\n"}"Create Content!" button at the bottom. </Text>
         </View>
-        <View style={styles.formSection}>
-          <TextInput style={styles.formInput}
-            placeholder=" Title "
-            value =  {this.state.title}
-            onChangeText={(title) => this.setState({title})}
-          />
-          <TextInput style={styles.formInput}
-            placeholder=" Tags (please use comma in between tags) "
-            value =  {this.state.tags}
-            onChangeText={(tags) => this.setState({tags})}
-          />
-          <TextInput style={styles.formInputBox}
-            placeholder=" Decription "
-            multiline={true}
-            numberOfLines = {10}
-            maxLength = {490}
-            blurOnSubmit={false}
-            value =  {this.state.description}
-            onChangeText={(description) => this.setState({description})}
-          />
-          <TextInput style={styles.formInput}
-            placeholder=" Image URL "
-            value =  {this.state.href}
-            onChangeText={(href) => this.setState({href})}
-          />
-          <TextInput style={styles.formInput}
-            placeholder=" Location "
-            value =  {this.state.location}
-            onChangeText={(description) => this.setState({location})}
-          />
+        <View style={styles.formContainer}>
+          <View style={styles.componentContainer}>
+            <ZTextBox placeHolder=" Title "
+                  placeholderTextColor="#9B51E0"
+                  style={styles.textInput}
+                  autoCapitalize="none"
+                  value = {this.state.title}
+                  onChangeText={(title) => this.setState({title})}/>
+          </View>
+          <View style={styles.componentContainer}>
+            <ZTextBox placeHolder=" Tags (please use comma in between tags) "
+                  placeholderTextColor="#9B51E0"
+                  style={styles.textInput}
+                  autoCapitalize="none"
+                  value = {this.state.tags}
+                  onChangeText={(tags) => this.setState({tags})}/>
+          </View>
+          <View style={styles.componentContainer}>
+            <ZTextBox placeHolder=" Image URL "
+                  placeholderTextColor="#9B51E0"
+                  style={styles.textInput}
+                  autoCapitalize="none"
+                  value = {this.state.href}
+                  onChangeText={(href) => this.setState({href})}/>
+          </View>
+          <View style={styles.componentContainer}>
+            <ZTextBox placeHolder=" Your Story... "
+                  placeholderTextColor="#9B51E0"
+                  style={styles.textEditor}
+                  multiline={true}
+                  blurOnSubmit={false}
+                  autoCapitalize="none"
+                  value = {this.state.description}
+                  onChangeText={(description) => this.setState({description})}/>
+          </View>
+          <View style={styles.componentContainer}>
+            <ZTextBox placeHolder=" Location "
+                  placeholderTextColor="#9B51E0"
+                  style={styles.textInput}
+                  autoCapitalize="none"
+                  value = {this.state.location}
+                  onChangeText={(location) => this.setState({location})}/>
+          </View>
         </View>
         <View style={styles.datePickerSection}>
           <Picker style={styles.datePickerDay}
@@ -135,6 +149,7 @@ export class CreateImageContentScene extends Component {
           </Picker>
           <TextInput style={styles.datePickerYear}
             placeholder=" Year "
+            placeholderTextColor="#9B51E0"
             value =  {this.state.y}
             onChangeText={(y) => this.setState({y})}
           />
@@ -156,13 +171,39 @@ export class CreateImageContentScene extends Component {
     };
 }
 
-
+const win = Dimensions.get('window');
 const styles = StyleSheet.create({
   scene: {
     flex: 1,
     flexDirection: 'column',
     backgroundColor: 'white',
     justifyContent: 'space-between',
+  },
+  formContainer:{
+    flex:2, 
+    alignItems:'center', 
+    textAlign: 'left',
+  },
+  componentContainer:{
+    marginBottom:16
+  },
+  textInput: {
+    borderRadius: 0,
+    width: win.width * 0.95,
+    textAlign: 'left',
+  },
+  textEditor: {
+    borderRadius: 0,
+    width: win.width * 0.95,
+    height: win.height * 0.5,
+    textAlign: 'left',
+  },
+  editorContainer: {
+    flex:2,
+    width: win.width * 0.95,
+    height: win.height * 0.5,
+    marginTop:16,
+    marginLeft: win.width * 0.025,
   },
   textSection: {
     flex: 0.1,
@@ -185,7 +226,7 @@ const styles = StyleSheet.create({
     flex: 0.4,
   },
   text: {
-    color:'black',
+    color:'#9B51E0',
     textAlign:'center',
     height: 50,
   },
