@@ -10,6 +10,7 @@ import { AnnotationTypes } from '@enums';
 import { ImageTarget, BaseAnnotationBody } from '@models';
 import {createResponder} from 'react-native-gesture-responder';
 const {width, height} = Dimensions.get('window');
+import * as constants from '@utils/constants';
 
 
 export class ImageAnnotationScene extends Component {
@@ -30,8 +31,8 @@ export class ImageAnnotationScene extends Component {
         y: y,
         contentWidth: 0,
         contentHeight: 0,
-        // BRK TODO delete this line after getting content.
-        contentUri: 'https://berlincon2016.symfony.com/bundles/sensiosymfonylive/images/berlincon2016/assets/postcard.jpg',
+        contentUri: '',
+        contentId: '',
         annotationText:''
       }
 
@@ -51,7 +52,9 @@ export class ImageAnnotationScene extends Component {
         annotation.target = new ImageTarget();
         annotation.body = new BaseAnnotationBody();
         // BRK TODO get target url from content object.
-        annotation.target.url = 'http://brk.com';
+        //annotation.target.url = constants.API_URI + "/content/" + this.state.contentId;
+        annotation.target.url = this.state.contentId;
+        annotation.creator = "bulent";
         // BRK TODO
         annotation.target.x = ((actualWidth * (this.state.x - this.state.selectorSize / 2)) / this.state.contentWidth);
         annotation.target.y = ((actualHeight * (this.state.y - this.state.selectorSize / 2)) / this.state.contentHeight);
@@ -125,6 +128,13 @@ export class ImageAnnotationScene extends Component {
     componentDidMount() {
 
       //BRK TODO fetch content here.
+
+      let content = this.props.contents.contents.find(content => content.id === this.props.navigation.state.params.contentId);
+
+      this.setState({
+        contentUri: content.description,
+        contentId: content.id
+      });
     }
 
     render(){
@@ -174,7 +184,8 @@ export class ImageAnnotationScene extends Component {
 
 function mapStateToProps (state) {
   return {
-    appData: state.imageAnnotationReducer
+    appData: state.imageAnnotationReducer,
+    contents: state.HomeReducer
   }
 }
 

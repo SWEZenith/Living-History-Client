@@ -14,18 +14,9 @@ export class ImageContentScene extends Component {
         super(props);
     }
 
-    componentDidMount(){
-      this.props.fetchAnnotations(22);
-    }
-
     render(){
 
-      let annotations = this.props.appData.annotations;
-console.log(annotations)
-
-      //BRK DELETE
-      let contentUri = 'https://berlincon2016.symfony.com/bundles/sensiosymfonylive/images/berlincon2016/assets/postcard.jpg';
-      //BRK DELETE
+      let annotations = this.props.contents.contents.find(content => content.id === this.props.navigation.state.params.contentId).annotations;
 
     	return(
         <View style={[style.zPage]}>
@@ -35,7 +26,7 @@ console.log(annotations)
           </View>
 
           <View style={{flex:1}}>
-            <ZButton text="Annotate" onPress={() => this.props.navigation.navigate('ImageAnnotation')}/>
+            <ZButton text="Annotate" onPress={() => this.props.navigation.navigate('ImageAnnotation', {contentId: this.props.navigation.state.params.contentId})}/>
           </View>
 
           <View style={{flex:3}}>
@@ -74,7 +65,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
   return {
-    appData: state.ImageContentReducer
+    appData: state.ImageContentReducer,
+    contents: state.HomeReducer
   }
 }
 

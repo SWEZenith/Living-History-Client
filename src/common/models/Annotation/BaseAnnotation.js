@@ -13,7 +13,7 @@
 
  		// Initialize repository with default values.
  		this._propertyRepository = new Map();
- 		this._propertyRepository.set('@content', 'http://www.w3.org/ns/anno.jsonld');
+ 		this._propertyRepository.set('@context', 'http://www.w3.org/ns/anno.jsonld');
  		this._propertyRepository.set('type', 'Annotation');
  		this._propertyRepository.set('body', null);
  		this._propertyRepository.set('target', null);
@@ -22,8 +22,8 @@
  	///
  	///	Getters and Setters
  	///
- 	get content() { return this.getProperty('@content'); }
- 	set content(value) { this.setProperty('@content', value); }
+ 	get context() { return this.getProperty('@context'); }
+ 	set context(value) { this.setProperty('@context', value); }
 
  	get id() { return this.getProperty('id'); }
  	set id(value) { this.setProperty('id', value); }
@@ -108,7 +108,7 @@
 
  		let retVal = true;
 
-		if(this.getProperty('@content') != 'http://www.w3.org/ns/anno.jsonld' ||
+		if(this.getProperty('@context') != 'http://www.w3.org/ns/anno.jsonld' ||
 			this.getProperty('type') != 'Annotation' ||
 			this.getProperty('target') == null) {
 
