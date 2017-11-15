@@ -7,6 +7,8 @@ import RegistrationReducer from './registrationReducer';
 import TextAnnotationReducer from './textAnnotationReducer';
 import HomeReducer from './homeReducer';
 import CreateImageContentReducer from './createImageContentReducer';
+import SemanticBodiesReducer from './semanticBodiesReducer';
+import SemanticAnnotationReducer from './semanticAnnotationReducer';
 
 const rootReducer = combineReducers({
     dataReducer,
@@ -16,7 +18,9 @@ const rootReducer = combineReducers({
     RegistrationReducer,
     TextAnnotationReducer,
     HomeReducer,
-    CreateImageContentReducer
+    CreateImageContentReducer,
+    SemanticBodiesReducer,
+    SemanticAnnotationReducer
 })
 
 export default rootReducer;

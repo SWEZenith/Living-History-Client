@@ -9,6 +9,7 @@ import ImageAnnotationScene from './ImageAnnotationScene/ImageAnnotationScene';
 import ImageContentScene from './ImageContentScene/ImageContentScene';
 import TextAnnotationScene from './TextAnnotationScene/TextAnnotationScene';
 import TextContentScene from './TextContentScene/TextContentScene';
+import SemanticAnnotationScene from './SemanticAnnotationScene/SemanticAnnotationScene';
 
 export { 
 	ImageAnnotationScene,
@@ -21,5 +22,6 @@ export {
 	CreateImageContentScene,
 	CreateTextContentScene,
 	TextAnnotationScene,
-	TextContentScene
+	TextContentScene,
+	SemanticAnnotationScene
 }

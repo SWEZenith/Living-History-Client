@@ -6,16 +6,18 @@ import {
 	ImageContentScene,
 	ImageAnnotationScene, 
 	TextContentScene, 
-	TextAnnotationScene 
+	TextAnnotationScene,
+	SemanticAnnotationScene 
 } from '@scenes';
 
 const HomeStackNavigator = StackNavigator({
-  Home: { screen: HomeScene },
-  ImageContent: { screen: ImageContentScene },
-  ImageAnnotation: { screen: ImageAnnotationScene },
-  TextContent: { screen: TextContentScene },
-  TextAnnotation: { screen: TextAnnotationScene }
-
+	//BRKBRK
+	SemanticAnnotation: { screen: SemanticAnnotationScene },
+  	Home: { screen: HomeScene },
+  	ImageContent: { screen: ImageContentScene },
+  	ImageAnnotation: { screen: ImageAnnotationScene },
+  	TextContent: { screen: TextContentScene },
+  	TextAnnotation: { screen: TextAnnotationScene }
 });
 
 export default HomeStackNavigator;
