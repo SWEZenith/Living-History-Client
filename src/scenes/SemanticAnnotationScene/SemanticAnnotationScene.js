@@ -22,7 +22,7 @@ export class SemanticAnnotationScene extends Component {
       super(props);
 
       this.state = {
-        textVal: `Raskolnikov is the protagonist of the novel, and the story is told almost exclusively from his point of view. His name derives from the Russian word raskolnik, meaning “schismatic” or “divided,” which is appropriate since his most fundamental character trait is his alienation from human society.`,
+        textVal: `Raskolnikov is the protagonist of the novel, and the story is told almost exclusively from his point Berlin of view. His name derives from the Russian word raskolnik, meaning “schismatic” or “divided,” which is appropriate since his most fundamental character trait is his alienation from human society.`,
         startIndex: -1,
         endIndex: -1,
         selectedText: '',
@@ -47,7 +47,7 @@ export class SemanticAnnotationScene extends Component {
           selectedText: selectedText
         });
 
-        this.props.fetchSemanticBodies();
+        this.props.fetchSemanticBodies(selectedText);
       }
     }
 
@@ -107,22 +107,12 @@ export class SemanticAnnotationScene extends Component {
       return textContentPats;
     }
 
-    renderDropdownRow(rowData){
-
-      return(
-        <TouchableHighlight>
-          <Text>
-            {rowData.name}
-          </Text>
-        </TouchableHighlight>
-      );
-    }
-
     render(){
 
       const { navigate } = this.props.navigation;
-      let semanticBodies = this.props.semanticBodyData.semanticBodies.map(i => i.name);
-
+      let semanticBodies = this.props.semanticBodyData.semanticBodies.results != null
+        ? this.props.semanticBodyData.semanticBodies.results.bindings.map(i => i.name.value)
+        : [];
 
     	return(
         <View style={[style.zPage]}>
@@ -154,8 +144,7 @@ export class SemanticAnnotationScene extends Component {
                                 {item.text}
                               </Text> 
                               : 
-                              <Text key={key}
-                                selectable="true">
+                              <Text key={key}>
                                   {item.text}
                               </Text>
                           );
@@ -203,7 +192,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     createSemanticAnnotation: (annotation) => dispatch(createSemanticAnnotation(annotation)),
-    fetchSemanticBodies: () => dispatch(fetchSemanticBodies())
+    fetchSemanticBodies: (keyword) => dispatch(fetchSemanticBodies(keyword))
   }
 }
 

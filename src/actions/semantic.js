@@ -61,11 +61,11 @@ function saveSemanticAnnotation(semanticAnnotation) {
 /// Get semantic data
 ///
 
-export function fetchSemanticBodies() {
+export function fetchSemanticBodies(keyword) {
 
    return (dispatch) => {
       dispatch(fetchSemanticBodiesStart())
-      getSemanticBodies()
+      getSemanticBodies(keyword)
           .then((semanticBodies) => {
             dispatch(fetchSemanticBodiesSuccess(semanticBodies))
           })
@@ -97,14 +97,10 @@ export function fetchSemanticBodiesFailure(error) {
   }
 }
 
-function getSemanticBodies() {
+function getSemanticBodies(keyword) {
 
   return new Promise((resolve, reject) => {
 
-    //return resolve(NetworkManager.get(`/contents/`, ContentTypes.jsonLD));
-    return resolve([
-    { name: 'brk', val: 3},
-    { name: 'brk2', val: 4},
-    ])
+    return resolve(NetworkManager.get(`/semantic/entities/${keyword}`, ContentTypes.json));
   });
 }
