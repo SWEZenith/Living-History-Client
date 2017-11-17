@@ -39,11 +39,15 @@ const main = StyleSheet.create({
 	dropdown:{
 		marginTop:20,
 		width:300,
+		height:30,
 		borderWidth:1,
 		borderColor: colors.mainColor
 	},
 	dropdownText:{
 	    fontSize: constants.fontSize,
+	    marginTop:1,
+	    marginBottom:1,
+	    lineHeight: 28
 	},
   	dropdownBody: {
 	    width: 300,
