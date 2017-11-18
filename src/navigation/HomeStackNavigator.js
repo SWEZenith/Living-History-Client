@@ -2,11 +2,17 @@ import React from 'react';
 import { StackNavigator } from 'react-navigation';
 
 import { 
-	HomeScene
+	HomeScene,
+	ContentDetailScene,
+	AnnotationDetailScene,
+	CreateAnnotationScene
 } from '@scenes';
 
 const HomeStackNavigator = StackNavigator({
-  Home: { screen: HomeScene }
+  Home: { screen: HomeScene },
+  ContentDetail: { screen: ContentDetailScene },
+  AnnotationDetail:{ screen: AnnotationDetailScene },
+  CreateAnnotation: { screen: CreateAnnotationScene }
 
 });
 
