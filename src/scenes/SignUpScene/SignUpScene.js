@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { style } from '@style/main';
 import privateStyle from './style';
-import { View, Button, Text, Image } from 'react-native';
+import { View, Button, Text, Image, ScrollView } from 'react-native';
 import { ZTextBox, ZButton } from '@components';
 import { register } from '@actions';
 
@@ -30,42 +30,41 @@ export class SignUpScene extends Component {
     return (
 
       <View style={[style.zPage]}>
-
-        <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
-          <Image source={require('../../assets/img/app-icon-purple.png')}
-            style={style.logo} />
-          <Text style={style.logoText}>
-            living memories
+        <ScrollView scrollEnabled={false} >
+          <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
+            <Image source={require('../../assets/img/app-icon-purple.png')}
+              style={style.logo} />
+            <Text style={style.logoText}>
+              living memories
           </Text>
-        </View>
-
-
-        <View style={{ flex: 2, alignItems: 'center', justifyContent: 'flex-end' }}>
-          <View style={[privateStyle.componentContainer]}>
-            <ZTextBox placeHolder="User name"
-              autoCapitalize="none"
-              onChangeText={(text) => { formInfo.username = text }} />
           </View>
 
-          <View style={[privateStyle.componentContainer]}>
-            <ZTextBox placeHolder="Email"
-              autoCapitalize="none"
-              onChangeText={(text) => { formInfo.email = text }} />
-          </View>
+          <View style={{ flex: 2, alignItems: 'center', justifyContent: 'flex-end' }}>
+            <View style={[privateStyle.componentContainer]}>
+              <ZTextBox placeHolder="User name"
+                autoCapitalize="none"
+                onChangeText={(text) => { formInfo.username = text }} />
+            </View>
 
-          <View style={[privateStyle.componentContainer]}>
-            <ZTextBox placeHolder="Password"
-              autoCapitalize="none"
-              secureTextEntry={true}
-              onChangeText={(text) => { formInfo.password1 = text; formInfo.password2 = text; }} />
-          </View>
+            <View style={[privateStyle.componentContainer]}>
+              <ZTextBox placeHolder="Email"
+                autoCapitalize="none"
+                onChangeText={(text) => { formInfo.email = text }} />
+            </View>
 
-          <View style={[privateStyle.componentContainer]}>
-            <ZButton text="Create Account"
-              onPress={() => this.props.register(formInfo)} />
-          </View>
-        </View>
+            <View style={[privateStyle.componentContainer]}>
+              <ZTextBox placeHolder="Password"
+                autoCapitalize="none"
+                secureTextEntry={true}
+                onChangeText={(text) => { formInfo.password1 = text; formInfo.password2 = text; }} />
+            </View>
 
+            <View style={[privateStyle.componentContainer]}>
+              <ZButton text="Create Account"
+                onPress={() => this.props.register(formInfo)} />
+            </View>
+          </View>
+        </ScrollView>
       </View>
     )
   }
