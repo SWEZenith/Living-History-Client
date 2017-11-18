@@ -24,7 +24,21 @@ export class CreateContentScene extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { contentType: 'image', title: '', description: '', tags: '', d: '', m: '', y:'', location:{longitude: '', latitude: ''}, href:''}
+        this.state = { 
+          title: '', 
+          tags: '', 
+          day: '', 
+          month: '', 
+          year:'', 
+          location: {
+            longitude: '', 
+            latitude: '', 
+            name: 'Add Location' 
+          },
+          creator: constants.API_URI + "/users/" + constants.USERNAME, 
+          text: '',
+          story_items: []
+        }
         this._submitForm = this._submitForm.bind(this);
     }
 
@@ -36,10 +50,77 @@ export class CreateContentScene extends Component {
       })
       .then((place) => {
         console.log(place);
-        this.state.location.longitude = place.longitude;
-        this.state.location.latitude = place.latitude;
+        let loc = {
+          longitude: place.longitude,
+          latitude: place.latitude,
+          name: place.name
+        };
+        this.setState({location: loc});
+        console.log(this.state.location);
       })
       .catch(error => console.log(error.message));  // error is a Javascript Error object
+    }
+
+    handleEditorTextChange(text) {
+      console.log('text', text)
+      let prefix = '<';
+      let postfix = '>'
+      let start = 0;
+      let imageCounter = 0;
+      let textCounter = 0;
+      let content_items = [];
+
+      let imageStart = [];
+      let imageEnd = [];
+      let textStart = [];
+      let textEnd = [];
+
+      if (text.indexOf(prefix, start) != 0) {
+        textStart.push(0);
+      }
+console.log('here1')
+      while (text.indexOf(prefix, start) != -1) {
+        if (text.indexOf(prefix, start) != 0) {
+          textEnd.push((text.indexOf(prefix, start) - 1));
+        }
+        imageStart.push(text.indexOf(prefix, start) + 10);
+        start = imageStart[(imageStart.length - 1)];
+      }
+console.log('here2')
+      start = 0;
+
+      while (text.indexOf(postfix, start) != -1) {
+        imageEnd.push(text.indexOf(postfix, start) - 3);
+        if (text.indexOf(postfix, start) != (text.length - 1)) {
+          textStart.push(text.indexOf(postfix, start) + 1);
+          start = imageEnd[(imageEnd.length + 4)];
+        } else {
+          break;
+        }
+      }
+console.log('here3', textStart, textEnd, imageStart, imageEnd)
+      while ((textCounter < textStart.length) || (imageCounter < imageStart.length)) { 
+        if (textStart[textCounter] < imageStart[imageCounter]) {
+          let textObject = {
+            type: "text",
+            content: text.substring(textStart[textCounter], (textEnd[textCounter] + 1))
+          }
+          textCounter += 1;
+          console.log('TEXT OBJ', textObject);
+          content_items.push(textObject);
+        } else {
+          let imageObject = {
+            type: "image",
+            content: text.substring(imageStart[imageCounter], (imageEnd[imageCounter] + 1))
+          }
+          imageCounter += 1;
+          console.log('IMG OBJ', imageObject);
+          content_items.push(imageObject);
+        }
+      }
+console.log('here4', content_items)
+      this.setState({story_items: content_items});
+console.log('here5', this.state.story_items)
     }
 
     render(){
@@ -47,13 +128,14 @@ export class CreateContentScene extends Component {
       console.log('in imagecontentcreatescene');
 
       let imageContentFields = {
-        contentType: '',
         title: '',
-        description: '',
         tags: '',
-        date: '',
+        day: '',
+        month: '',
+        year: '',
         location: '',
-        creator: ''
+        creator: '',
+        story_items: []
       }
       let error = this.props.appData.error;
       let errText = error != undefined ? error.message != null ? error.message  : "" : "";
@@ -81,35 +163,21 @@ export class CreateContentScene extends Component {
                   value = {this.state.tags}
                   onChangeText={(tags) => this.setState({tags})}/>
           </View>
-          <View style={styles.componentContainer}>
-            <ZTextBox placeHolder=" Image URL "
-                  placeholderTextColor="#9B51E0"
-                  style={styles.textInput}
-                  autoCapitalize="none"
-                  value = {this.state.href}
-                  onChangeText={(href) => this.setState({href})}/>
-          </View>
-          <View style={styles.componentContainer}>
-            <ZTextBox placeHolder=" Your Story... "
-                  placeholderTextColor="#9B51E0"
-                  style={styles.textEditor}
-                  multiline={true}
-                  blurOnSubmit={false}
-                  autoCapitalize="none"
-                  value = {this.state.description}
-                  onChangeText={(description) => this.setState({description})}/>
-          </View>
+        </View>
+        <View style={styles.editorContainer}>
+          <ZRichTextEditor placeholder={'Enter annotation content here.'}
+              onTextChange={(text) => this.setState({text})}/>
         </View>
         <View style={styles.buttonSection}>
-          <TouchableHighlight style={styles.createButton}>
-            <Text style= {styles.searchText} onPress={() => this.openSearchModal()}> 
-            Add Location </Text>
+          <TouchableHighlight style={styles.locationButton}>
+            <Text style= {styles.text} onPress={() => this.openSearchModal()}> 
+            {this.state.location.name} </Text>
           </TouchableHighlight>
         </View>
         <View style={styles.datePickerSection}>
           <Picker style={styles.datePickerDay}
-            selectedValue={this.state.d}
-            onValueChange={(itemValue, itemIndex) => { this.setState({d: itemValue})} }>
+            selectedValue={this.state.day}
+            onValueChange={(itemValue, itemIndex) => { this.setState({day: itemValue})} }>
             <Picker.Item label="Day" value="" />
             <Picker.Item label="01" value="01" />
             <Picker.Item label="02" value="02" />
@@ -144,8 +212,8 @@ export class CreateContentScene extends Component {
             <Picker.Item label="31" value="31" />
           </Picker>
           <Picker style={styles.datePickerMonth}
-            selectedValue={this.state.m}
-            onValueChange={(itemValue, itemIndex) => { this.setState({m: itemValue})} }>
+            selectedValue={this.state.month}
+            onValueChange={(itemValue, itemIndex) => { this.setState({month: itemValue})} }>
             <Picker.Item label="Month" value="" />
             <Picker.Item label="January" value="January" />
             <Picker.Item label="February" value="February" />
@@ -163,8 +231,8 @@ export class CreateContentScene extends Component {
           <TextInput style={styles.datePickerYear}
             placeholder=" Year "
             placeholderTextColor="#9B51E0"
-            value =  {this.state.y}
-            onChangeText={(y) => this.setState({y})}
+            value =  {this.state.year}
+            onChangeText={(year) => this.setState({year})}
           />
         </View>
         <View style={styles.buttonSection}>
@@ -179,14 +247,9 @@ export class CreateContentScene extends Component {
     }
 
     _submitForm() {
-      imageContentFields.contentType = this.state.contentType;
-      imageContentFields.title = this.state.title;
-      imageContentFields.description = this.state.href;
-      imageContentFields.tags = this.state.tags;
-      imageContentFields.date = this.state.y +'-'+ this.state.m +'-'+ this.state.d;
-      imageContentFields.location = this.state.location;
-      imageContentFields.creator = constants.USERNAME;
-      createImageContent(imageContentFields);
+      this.handleEditorTextChange(this.state.text);
+      imageContentFields = this.state
+      createImageContent(imageContentFields)
     };
 }
 
@@ -263,6 +326,14 @@ const styles = StyleSheet.create({
     backgroundColor:'#9B51E0',
     padding:5,
     borderRadius:50,
+  },
+  locationButton: {
+    flex: 0.1,
+    height: 30,
+    backgroundColor:'white',
+    padding:5,
+    borderRadius:50,
+    borderColor:'#9B51E0',
   },
   searchText: {
     color:'#fff',
