@@ -52,9 +52,9 @@ export class HomeScene extends Component {
         <ScrollView style={privateStyle.scrollSection} >
           {contents.map((content) => {
             return <TouchableHighlight key={content.key} style={privateStyle.resultButton} onPress={ 
-              () => this.props.navigation.navigate('ImageContent', { contentId: content.id, href: content.description }) }>
+              () => this.props.navigation.navigate('ImageContent', { contentId: content.id, href: content.cover_image }) }>
             <View>
-              <Image source={ { uri: content.description } } style={privateStyle.resultImage} />
+              <Image source={ { uri: content.cover_image } } style={privateStyle.resultImage} />
               <Text style={ privateStyle.resultText } >{content.title}</Text>
             </View>
           </TouchableHighlight>
