@@ -1,28 +1,36 @@
 import { StyleSheet } from 'react-native';
-
-
+import Dimensions from 'Dimensions';
+const {width, height} = Dimensions.get('window');
 
 const main = StyleSheet.create({
 	pageContainer:{
 		flex: 1,
         flexDirection: 'column',
-        justifyContent: 'space-between',
+		justifyContent: 'space-between',
+		alignItems: 'center'
+	},
+    scrollSection: {
+		justifyContent: 'space-between',
+		width: width,
+		height: height
+	},
+	scrollSectionDimension: {
+		flex: 1,
+		flexDirection: 'column'
 	},
 	backgroundImage:{
 		backgroundColor: '#ccc',
       	flex: 1,
   		resizeMode:'stretch',
-      	position: 'absolute',
-    	width: '100%',
-        height: '100%',
+		position: 'absolute'
     },
     darkLayer:{
     	flex:1, 
     	backgroundColor:'#333333', 
     	opacity:0.7, 
-    	position: 'absolute',
-        width: '100%',
-        height: '100%'
+		position: 'absolute',
+		width: width,
+		height: height
     },
     logoContainer:{
     	flex:2, 
@@ -38,7 +46,7 @@ const main = StyleSheet.create({
 		marginBottom:16
 	},
 	footerContainer:{
-		flex:1, 
+		flex:1,
 		alignItems:'center', 
 		justifyContent:'flex-start'
 	},
@@ -50,9 +58,6 @@ const main = StyleSheet.create({
     newAccountButtonContainer: {
         marginBottom:20
     },
-	newAccountButton:{
-		height:5
-	},
     newAccountButtonText:{
         backgroundColor:'transparent',
         color:'#FFF',
@@ -63,12 +68,7 @@ const main = StyleSheet.create({
     },
     textInput: {
         borderColor:'#FFF', color:'#FFF'
-    },
-    scrollSection: {
-        flex: 1,
-        flexDirection: 'column',
     }
-
 });
 
 export default main;

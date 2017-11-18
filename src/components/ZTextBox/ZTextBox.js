@@ -21,7 +21,8 @@ class ZTextBox extends Component {
                 secureTextEntry={secureTextEntry}
                 value={value}
                 placeholderTextColor={placeholderTextColor || defaultPlaceHolderColor}
-        		onChangeText={(text) => onChangeText(text)}
+				onChangeText={(text) => onChangeText(text)}
+				underlineColorAndroid="transparent"
       		/>
 		)
 	}
