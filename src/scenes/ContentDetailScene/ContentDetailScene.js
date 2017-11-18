@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { style } from '@style/main';
 import privateStyle from './style';
 import { ZImageView, ZButton } from '@components/index';
-import { FlatList, Text, TouchableHighlight, View, Image, ScrollView} from 'react-native';
-
+import { FlatList, Text, TouchableHighlight, View, Image, ScrollView } from 'react-native';
+import { fetchAnnotations } from '@actions';
+import Accordion from 'react-native-collapsible/Accordion';
 
 
 export class ContentDetailScene extends Component {
@@ -42,7 +43,23 @@ export class ContentDetailScene extends Component {
                                       ? 'Show details' : 'Show annotations'
       })
     }
-
+    
+    _renderHeader(item) {
+      return (
+        <View>
+          <Text>{item.id}</Text>
+        </View>
+      );
+    }
+  
+    _renderContent(item) {
+      return (
+        <View>
+          <Text>{item.body.value}</Text>
+        </View>
+      );
+    }
+  
     render(){
 
       let content = this.props.contents.find(content => content.id === this.props.navigation.state.params.contentId);
@@ -122,26 +139,17 @@ export class ContentDetailScene extends Component {
             </ScrollView>
           </View>
 
-          {
-            this.renderIf(
-              (content.annotations.length > 0 && this.state.isAnnotationShown),
-              <View style={privateStyle.annotationSection}>
-                <View style={privateStyle.annotationContainer}>
-                    <FlatList
-                      data={content.annotations}
-                      keyExtractor={(annotation, index) => annotation.id}
-                      renderItem={ ({item}) =>
-                        <TouchableHighlight onPress={() => {}}>
-                          <View style={privateStyle.annotationItem}>
-                            <Text>{item.body.value}</Text>
-                          </View> 
-                        </TouchableHighlight>
-                      }
-                    />
-                </View>
-              </View>
-            )
-          }
+
+          <View style={privateStyle.annotationSection}>
+            <View style={privateStyle.annotationContainer}>
+              <Accordion 
+                sections={content.annotations}
+                renderHeader={this._renderHeader}
+                renderContent={this._renderContent}
+              />
+            </View>
+
+          </View>
 
           <View style={privateStyle.footer}>
             <View style={privateStyle.footerLeftContainer}>
@@ -160,7 +168,7 @@ export class ContentDetailScene extends Component {
                 </TouchableHighlight>
              </View>
           </View>
-
+          
         </View>
 		  )
     }
