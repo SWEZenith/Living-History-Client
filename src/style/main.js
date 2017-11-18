@@ -8,7 +8,8 @@ const colors = {
 };
 
 const values = {
-	pagePadding: 10
+	pagePadding: 10,
+	fontSize: 15
 };
 
 const style = StyleSheet.create({
