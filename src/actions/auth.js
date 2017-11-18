@@ -17,6 +17,7 @@ export function login(credentials) {
 
             StorageHelper.set(constants.REFRESH_TOKEN_KEY, tokens.refreshToken);
             StorageHelper.set(constants.AUTH_TOKEN_KEY, tokens.token);
+            StorageHelper.set(constants.USERNAME, credentials.username);
             dispatch(loginToSystemSuccess(tokens));
             
       		})

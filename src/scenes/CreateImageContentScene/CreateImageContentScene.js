@@ -5,6 +5,8 @@ import { ZImageView, ZTextArea, ZButton, ZRichTextEditor, ZTextBox} from '@compo
 import ReactNative from 'react-native';
 import Dimensions from 'Dimensions';
 import { createImageContent } from '@actions';
+import RNGooglePlaces from 'react-native-google-places';
+import * as constants from '@utils/constants';
 
 const {
   ScrollView,
@@ -22,8 +24,22 @@ export class CreateImageContentScene extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { title: '', description: '', tags: '', d: '', m: '', y:'', location:'', href:''}
+        this.state = { contentType: 'image', title: '', description: '', tags: '', d: '', m: '', y:'', location:{longitude: '', latitude: ''}, href:''}
         this._submitForm = this._submitForm.bind(this);
+    }
+
+    openSearchModal() {
+      RNGooglePlaces.openPlacePickerModal({
+        latitude: 41.0082376,
+        longitude: 28.9783589,
+        radius: 0.1
+      })
+      .then((place) => {
+        console.log(place);
+        this.state.location.longitude = place.longitude;
+        this.state.location.latitude = place.latitude;
+      })
+      .catch(error => console.log(error.message));  // error is a Javascript Error object
     }
 
     render(){
@@ -31,14 +47,13 @@ export class CreateImageContentScene extends Component {
       console.log('in imagecontentcreatescene');
 
       let imageContentFields = {
+        contentType: '',
         title: '',
         description: '',
         tags: '',
-        d: '',
-        m: '',
-        y: '',
+        date: '',
         location: '',
-        href: ''
+        creator: ''
       }
       let error = this.props.appData.error;
       let errText = error != undefined ? error.message != null ? error.message  : "" : "";
@@ -84,14 +99,12 @@ export class CreateImageContentScene extends Component {
                   value = {this.state.description}
                   onChangeText={(description) => this.setState({description})}/>
           </View>
-          <View style={styles.componentContainer}>
-            <ZTextBox placeHolder=" Location "
-                  placeholderTextColor="#9B51E0"
-                  style={styles.textInput}
-                  autoCapitalize="none"
-                  value = {this.state.location}
-                  onChangeText={(location) => this.setState({location})}/>
-          </View>
+        </View>
+        <View style={styles.buttonSection}>
+          <TouchableHighlight style={styles.createButton}>
+            <Text style= {styles.searchText} onPress={() => this.openSearchModal()}> 
+            Add Location </Text>
+          </TouchableHighlight>
         </View>
         <View style={styles.datePickerSection}>
           <Picker style={styles.datePickerDay}
@@ -166,8 +179,14 @@ export class CreateImageContentScene extends Component {
     }
 
     _submitForm() {
-      imageContentFields = this.state
-      createImageContent(imageContentFields)
+      imageContentFields.contentType = this.state.contentType;
+      imageContentFields.title = this.state.title;
+      imageContentFields.description = this.state.href;
+      imageContentFields.tags = this.state.tags;
+      imageContentFields.date = this.state.y +'-'+ this.state.m +'-'+ this.state.d;
+      imageContentFields.location = this.state.location;
+      imageContentFields.creator = constants.USERNAME;
+      createImageContent(imageContentFields);
     };
 }
 
