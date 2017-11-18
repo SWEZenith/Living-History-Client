@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { style } from '@style/main';
 import privateStyle from './style';
-import { View, Button, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Button, Text, Image, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { ZTextBox, ZButton } from '@components';
 import { login } from '@actions';
 import * as actionTypes from '@actions/actionTypes';
@@ -27,7 +27,7 @@ export class LoginScene extends Component {
 
     	return(
 
-    		<View style={privateStyle.pageContainer}>
+    		<KeyboardAvoidingView style={privateStyle.pageContainer}       behavior="padding">
 
     			<Image style={privateStyle.backgroundImage}
     					source={require('../../assets/img/city.png')}/>
@@ -83,7 +83,7 @@ export class LoginScene extends Component {
 				</View>
 			
 
-			</View>
+			</KeyboardAvoidingView>
 		)
     }
 }

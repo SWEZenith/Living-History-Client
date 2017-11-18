@@ -8,8 +8,6 @@ import { View, Text } from 'react-native';
 
 export class ProfileScene extends Component {
 
-  static navigationOptions = { header: <Text style={{ display:"none" }} ></Text> };
-
   render(){
   	return(
       <View style={[style.zPage]}>
