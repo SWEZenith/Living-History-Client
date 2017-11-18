@@ -30,7 +30,7 @@ export class SignUpScene extends Component {
     return (
 
       <View style={[style.zPage]}>
-        <ScrollView scrollEnabled={false} >
+        <ScrollView>
           <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
             <Image source={require('../../assets/img/app-icon-purple.png')}
               style={style.logo} />
