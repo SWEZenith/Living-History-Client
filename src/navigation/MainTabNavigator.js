@@ -49,7 +49,7 @@ const MainTabNavigator = TabNavigator({
     }
   }
 }, {
-  initialRouteName: 'CreateContentStack',
+  initialRouteName: 'HomeStack',
   tabBarPosition: 'bottom',
   swipeEnabled: false,
   animationEnabled: true,
