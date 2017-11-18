@@ -4,7 +4,9 @@ import { StyleSheet } from 'react-native';
 
 const main = StyleSheet.create({
 	pageContainer:{
-		flex: 1
+		flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
 	},
 	backgroundImage:{
 		backgroundColor: '#ccc',
@@ -61,6 +63,10 @@ const main = StyleSheet.create({
     },
     textInput: {
         borderColor:'#FFF', color:'#FFF'
+    },
+    scrollSection: {
+        flex: 1,
+        flexDirection: 'column',
     }
 
 });

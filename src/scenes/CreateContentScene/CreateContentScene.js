@@ -201,7 +201,6 @@ const styles = StyleSheet.create({
   formContainer:{
     flex:2, 
     alignItems:'center', 
-    textAlign: 'left',
   },
   componentContainer:{
     marginBottom:16
