@@ -27,7 +27,7 @@ export class LoginScene extends Component {
 
 		return (
 			<View style={privateStyle.pageContainer}>
-				<ScrollView scrollEnabled={false} style={privateStyle.scrollSectionDimension} contentContainerStyle={privateStyle.scrollSection} >
+				<ScrollView style={privateStyle.scrollSectionDimension} contentContainerStyle={privateStyle.scrollSection} >
 					<Image style={privateStyle.backgroundImage}
 						source={require('../../assets/img/city.png')} />
 
