@@ -44,6 +44,23 @@ const main = StyleSheet.create({
 	    height: 44,
 	    borderBottomWidth: 1,
 	    borderBottomColor: colors.mainColor
+	},
+	content:{
+		flex:3,
+		borderWidth:1,
+		borderColor: colors.mainColor,
+		padding:5
+	},
+	contentBody:{
+		flex:1
+	},
+	imageContent:{
+		flex:1,
+		resizeMode: 'contain',
+		marginBottom: 10
+	},
+	textContent:{
+		marginBottom: 10
 	}
 });
 
