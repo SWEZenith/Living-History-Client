@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { style } from '@style/main';
 import privateStyle from './style';
 import { ZImageView, ZButton } from '@components/index';
-import { FlatList, Text, TouchableHighlight, View, Image, ScrollView } from 'react-native';
+import { FlatList, Text, TouchableHighlight, View, Image, ScrollView, Button } from 'react-native';
 import { fetchAnnotations } from '@actions';
 
 
@@ -15,10 +15,12 @@ export class ContentDetailScene extends Component {
 
         this.state = {
           containerWidth:0,
-          containerWidth:0
+          containerWidth:0,
+          isAnnotationShown: false,
+          showAnnotationButtonCaption: 'Show annotations'
+          
         }
     }
-
 
     calculateContentContainerSize(...params){
       
@@ -33,51 +35,64 @@ export class ContentDetailScene extends Component {
       return condition ? content : null;
     }
 
+    changeAnnotationVisibility(){
+
+      this.setState({
+        isAnnotationShown: !this.state.isAnnotationShown,
+        showAnnotationButtonCaption: this.state.showAnnotationButtonCaption == 'Show annotations'
+                                      ? 'Show details' : 'Show annotations'
+      })
+    }
+
     render(){
 
       let content = this.props.contents.find(content => content.id === this.props.navigation.state.params.contentId);
     	return(
         <View style={[style.zPage]}>
 
-          <View style={privateStyle.propertyContainer}>
-            {
-              content.title &&
-              <View style={privateStyle.titleContainer}>
-                <Text style={privateStyle.title}>
-                  {content.title}
-                </Text>
-              </View>
-            }
-
-            {
-              content.tags.length > 0 &&
-              <View style={privateStyle.tagContainer}>
+          {
+            this.renderIf(
+              !this.state.isAnnotationShown,
+              <View style={privateStyle.propertyContainer}>
                 {
-                  content.tags.map((tag) => {
-                    return (
-                        <Text key={tag} style={privateStyle.tag}>
-                          {tag}
-                        </Text>
-                      
-                    )
-                  })
+                  content.title &&
+                  <View style={privateStyle.titleContainer}>
+                    <Text style={privateStyle.title}>
+                      {content.title}
+                    </Text>
+                  </View>
+                }
+
+                {
+                  content.tags.length > 0 &&
+                  <View style={privateStyle.tagContainer}>
+                    {
+                      content.tags.map((tag) => {
+                        return (
+                            <Text key={tag} style={privateStyle.tag}>
+                              {tag}
+                            </Text>
+                          
+                        )
+                      })
+                    }
+                  </View>
+                }
+
+                {
+                  this.renderIf((content.day || content.month || content.year),
+                    <View style={privateStyle.dateContainer}>
+                      { content.day && <Text>{content.day}</Text> }
+                      { content.day && content.month && <Text>.</Text>}
+                      { content.month && <Text>{content.month}</Text> }
+                      { content.month && content.year && <Text>.</Text>}
+                      { content.year && <Text>{content.year}</Text> }
+                    </View>
+                  )
                 }
               </View>
-            }
-
-            {
-              this.renderIf((content.day || content.month || content.year),
-                <View style={privateStyle.dateContainer}>
-                  { content.day && <Text>{content.day}</Text> }
-                  { content.day && content.month && <Text>.</Text>}
-                  { content.month && <Text>{content.month}</Text> }
-                  { content.month && content.year && <Text>.</Text>}
-                  { content.year && <Text>{content.year}</Text> }
-                </View>
-              )
-            }
-          </View>
-
+            )
+          }
 
           <View style={privateStyle.content} 
                 onLayout={(event) => { this.calculateContentContainerSize(event.nativeEvent.layout) }}>
@@ -108,40 +123,51 @@ export class ContentDetailScene extends Component {
             </ScrollView>
           </View>
 
-
-
-
-
-          <View style={{flex:1, alignItems:'center'}}>
-            <ZButton text="Annotate" 
-              onPress={() => 
-                this.props.navigation.navigate(
-                  'CreateAnnotation', 
-                  { contentId: content.id })
-              }/>
-          </View>
-
-          <View style={privateStyle.annotationSection}>
-            <View style={privateStyle.annotationContainer}>
-                <FlatList
-                  data={content.annotations}
-                  keyExtractor={(annotation, index) => annotation.id}
-                  renderItem={ ({item}) =>
-                    <TouchableHighlight onPress={() => {
-                        this.props.navigation.navigate(
-                          'AnnotationDetail', 
-                          { annotationId: item.id }
-                        )
+          {
+            this.renderIf(
+              (content.annotations.length > 0 && this.state.isAnnotationShown),
+              <View style={privateStyle.annotationSection}>
+                <View style={privateStyle.annotationContainer}>
+                    <FlatList
+                      data={content.annotations}
+                      keyExtractor={(annotation, index) => annotation.id}
+                      renderItem={ ({item}) =>
+                        <TouchableHighlight onPress={() => {
+                            this.props.navigation.navigate(
+                              'AnnotationDetail', 
+                              { annotationId: item.id }
+                            )
+                          }
+                        }>
+                          <View style={privateStyle.annotationItem}>
+                            <Text>{item.body.value}</Text>
+                          </View> 
+                        </TouchableHighlight>
                       }
-                    }>
-                      <View style={privateStyle.annotationItem}>
-                        <Text>{item.body.value}</Text>
-                      </View> 
-                    </TouchableHighlight>
-                  }
-                />
-            </View>
+                    />
+                </View>
+              </View>
+            )
+          }
+
+          <View style={privateStyle.footer}>
+            <View style={privateStyle.footerLeftContainer}>
+                <TouchableHighlight style={privateStyle.button} onPress={()=> this.changeAnnotationVisibility()}>
+                  <Text style={privateStyle.buttonText}> 
+                    {this.state.showAnnotationButtonCaption}
+                  </Text>
+                </TouchableHighlight>
+             </View>
+             <View style={privateStyle.footerRightContainer}>
+                <TouchableHighlight style={privateStyle.button}
+                onPress={() =>  this.props.navigation.navigate('CreateAnnotation', { contentId: content.id })}>
+                  <Text style={privateStyle.buttonText}> 
+                    Create Annotation
+                  </Text>
+                </TouchableHighlight>
+             </View>
           </View>
+
         </View>
 		  )
     }
