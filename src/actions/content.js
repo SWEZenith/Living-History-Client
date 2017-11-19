@@ -50,3 +50,58 @@ function getContents() {
     
   });
 }
+
+
+
+///
+/// Create content
+///
+
+
+export function createContent(content) {
+
+   return (dispatch) => {
+
+      dispatch(createContentStart());
+      sendContent(content)
+          .then(() => {
+
+            dispatch(createContentSuccess());
+            
+          })
+          .catch((err) => {
+
+            console.log('err:', err)
+            dispatch(createContentFailure(err))
+
+          })
+    }
+}
+
+export function createContentStart() {
+  return {
+    type: actionTypes.CREATE_CONTENT
+  }
+}
+
+export function createContentSuccess() {
+  return {
+    type: actionTypes.CREATE_CONTENT_SUCCESS,
+  }
+}
+
+export function createContentFailure(error) {
+  return {
+    type: actionTypes.CREATE_CONTENT_FAILURE,
+    error
+  }
+}
+
+function sendContent(content) {
+
+  return new Promise((resolve, reject) => {
+
+    return resolve(NetworkManager.post('/contents', content, ContentTypes.json));
+    
+  });
+}

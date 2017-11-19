@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import style from '@style/main';
+import styles from './style';
 import { ZImageView, ZTextArea, ZButton, ZRichTextEditor, ZTextBox} from '@components/index';
 import ReactNative from 'react-native';
-import Dimensions from 'Dimensions';
-import { createImageContent } from '@actions';
+import { createContent } from '@actions';
 import RNGooglePlaces from 'react-native-google-places';
 import * as constants from '@utils/constants';
-
 const {
   ScrollView,
   View,
@@ -37,106 +36,57 @@ export class CreateContentScene extends Component {
           },
           creator: constants.API_URI + "/users/" + constants.USERNAME, 
           text: '',
-          story_items: []
         }
-        this._submitForm = this._submitForm.bind(this);
     }
 
     openSearchModal() {
+
       RNGooglePlaces.openPlacePickerModal({
         latitude: 41.0082376,
         longitude: 28.9783589,
         radius: 0.1
       })
       .then((place) => {
-        console.log(place);
-        let loc = {
+        
+        this.setState({location: {
           longitude: place.longitude,
           latitude: place.latitude,
           name: place.name
-        };
-        this.setState({location: loc});
-        console.log(this.state.location);
+        }});
       })
-      .catch(error => console.log(error.message));  // error is a Javascript Error object
+      .catch(error => console.log(error.message));
     }
 
-    handleEditorTextChange(text) {
-      console.log('text', text)
-      let prefix = '<';
-      let postfix = '>'
-      let start = 0;
-      let imageCounter = 0;
-      let textCounter = 0;
-      let content_items = [];
+    createStoryItems(text) {
 
-      let imageStart = [];
-      let imageEnd = [];
-      let textStart = [];
-      let textEnd = [];
+      const prefix = '<img src="';
+      const postfix = '"/>';
+      let prefixSeparated;
+      let postfixSeparated = [];
 
-      if (text.indexOf(prefix, start) != 0) {
-        textStart.push(0);
-      }
-console.log('here1')
-      while (text.indexOf(prefix, start) != -1) {
-        if (text.indexOf(prefix, start) != 0) {
-          textEnd.push((text.indexOf(prefix, start) - 1));
-        }
-        imageStart.push(text.indexOf(prefix, start) + 10);
-        start = imageStart[(imageStart.length - 1)];
-      }
-console.log('here2')
-      start = 0;
-
-      while (text.indexOf(postfix, start) != -1) {
-        imageEnd.push(text.indexOf(postfix, start) - 3);
-        if (text.indexOf(postfix, start) != (text.length - 1)) {
-          textStart.push(text.indexOf(postfix, start) + 1);
-          start = imageEnd[(imageEnd.length + 4)];
-        } else {
-          break;
+      prefixSeparated = text.split(prefix);
+      
+      for(let part of prefixSeparated){
+        for (let candidate of part.split(postfix)){
+          if(candidate != "")
+            postfixSeparated.push(candidate)
         }
       }
-console.log('here3', textStart, textEnd, imageStart, imageEnd)
-      while ((textCounter < textStart.length) || (imageCounter < imageStart.length)) { 
-        if (textStart[textCounter] < imageStart[imageCounter]) {
-          let textObject = {
-            type: "text",
-            content: text.substring(textStart[textCounter], (textEnd[textCounter] + 1))
-          }
-          textCounter += 1;
-          console.log('TEXT OBJ', textObject);
-          content_items.push(textObject);
-        } else {
-          let imageObject = {
-            type: "image",
-            content: text.substring(imageStart[imageCounter], (imageEnd[imageCounter] + 1))
-          }
-          imageCounter += 1;
-          console.log('IMG OBJ', imageObject);
-          content_items.push(imageObject);
-        }
+
+      let story_items = [];
+      for(let storyItem of postfixSeparated){
+        
+        if(storyItem.indexOf("http") != -1)
+          story_items.push({ type: 'image', content: storyItem});
+        else
+          story_items.push({ type: 'text', content: storyItem});
       }
-console.log('here4', content_items)
-      this.setState({story_items: content_items});
-console.log('here5', this.state.story_items)
+
+      return story_items;
     }
 
     render(){
 
-      console.log('in imagecontentcreatescene');
-
-      let imageContentFields = {
-        title: '',
-        tags: '',
-        day: '',
-        month: '',
-        year: '',
-        location: '',
-        creator: '',
-        story_items: []
-      }
       let error = this.props.appData.error;
       let errText = error != undefined ? error.message != null ? error.message  : "" : "";
 
@@ -215,21 +165,22 @@ console.log('here5', this.state.story_items)
             selectedValue={this.state.month}
             onValueChange={(itemValue, itemIndex) => { this.setState({month: itemValue})} }>
             <Picker.Item label="Month" value="" />
-            <Picker.Item label="January" value="January" />
-            <Picker.Item label="February" value="February" />
-            <Picker.Item label="March" value="March" />
-            <Picker.Item label="April" value="April" />
-            <Picker.Item label="May" value="May" />
-            <Picker.Item label="June" value="June" />
-            <Picker.Item label="July" value="July" />
-            <Picker.Item label="August" value="August" />
-            <Picker.Item label="September" value="September" />
-            <Picker.Item label="October" value="October" />
-            <Picker.Item label="November" value="November" />
-            <Picker.Item label="December" value="December" />
+            <Picker.Item label="January" value="1" />
+            <Picker.Item label="February" value="2" />
+            <Picker.Item label="March" value="3" />
+            <Picker.Item label="April" value="4" />
+            <Picker.Item label="May" value="5" />
+            <Picker.Item label="June" value="6" />
+            <Picker.Item label="July" value="7" />
+            <Picker.Item label="August" value="8" />
+            <Picker.Item label="September" value="9" />
+            <Picker.Item label="October" value="10" />
+            <Picker.Item label="November" value="11" />
+            <Picker.Item label="December" value="12" />
           </Picker>
           <TextInput style={styles.datePickerYear}
             placeholder=" Year "
+            keyboardType="numeric"
             placeholderTextColor="#9B51E0"
             value =  {this.state.year}
             onChangeText={(year) => this.setState({year})}
@@ -237,7 +188,8 @@ console.log('here5', this.state.story_items)
         </View>
         <View style={styles.buttonSection}>
           <TouchableHighlight style={styles.createButton}>
-            <Text style= {styles.searchText} onPress={() => { this._submitForm(); this.props.navigation.navigate('Home'); }}> 
+            <Text style= {styles.searchText} 
+            onPress={() => { this._submitForm();  }}> 
             Create Content! </Text>
           </TouchableHighlight>
         </View>
@@ -247,122 +199,49 @@ console.log('here5', this.state.story_items)
     }
 
     _submitForm() {
-      this.handleEditorTextChange(this.state.text);
-      imageContentFields = this.state
-      createImageContent(imageContentFields)
+
+      let state = Object.assign({},this.state);
+      
+      let content = {};
+      content.creator = state.creator;
+
+      if(state.title != '')
+        content['title'] = state.title;
+
+      if(state.tags != '')
+        content['tags'] = state.tags.split(',');
+
+      if(state.day != '')
+        content['day'] = state.day;
+
+      if(state.month != '')
+        content['month'] = state.month;
+
+      if(state.year != '')
+        content['year'] = state.year;
+
+      if(state.location.latitude != '' || state.location.longitude != '' || state.location.name !='Add Location')
+        content['location'] = state.location;
+
+      if(state.text != '')
+        content['story_items'] = this.createStoryItems(state.text);
+
+      this.props.createContent(content)
+      this.props.navigation.navigate('Home');
     };
 }
 
-const win = Dimensions.get('window');
-const styles = StyleSheet.create({
-  scene: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: 'white',
-    justifyContent: 'space-between',
-  },
-  formContainer:{
-    flex:2, 
-    alignItems:'center', 
-  },
-  componentContainer:{
-    marginBottom:16
-  },
-  textInput: {
-    borderRadius: 0,
-    width: win.width * 0.95,
-    textAlign: 'left',
-  },
-  textEditor: {
-    borderRadius: 0,
-    width: win.width * 0.95,
-    height: win.height * 0.5,
-    textAlign: 'left',
-  },
-  editorContainer: {
-    flex:2,
-    width: win.width * 0.95,
-    height: win.height * 0.5,
-    marginTop:16,
-    marginLeft: win.width * 0.025,
-  },
-  textSection: {
-    flex: 0.1,
-    backgroundColor: 'white',
-    marginTop: 20,
-  },
-  datePickerSection: {
-    flex: 0.1,
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  datePickerDay: {
-    flex: 0.25,
-  },
-  datePickerMonth: {
-    flex: 0.35,
-  },
-  datePickerYear: {
-    flex: 0.4,
-  },
-  text: {
-    color:'#9B51E0',
-    textAlign:'center',
-    height: 50,
-  },
-  formSection: {
-    flex: 0.5,
-    flexDirection: 'column',
-    padding: 5,
-  },
-  scrollSection: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  createButton: {
-    flex: 0.1,
-    height: 30,
-    backgroundColor:'#9B51E0',
-    padding:5,
-    borderRadius:50,
-  },
-  locationButton: {
-    flex: 0.1,
-    height: 30,
-    backgroundColor:'white',
-    padding:5,
-    borderRadius:50,
-    borderColor:'#9B51E0',
-  },
-  searchText: {
-    color:'#fff',
-    textAlign:'center',
-  },
-  formInput: {
-    flex: 0.05,
-    backgroundColor: 'white'
-  },
-  formInputBox: {
-    flex: 0.2,
-    backgroundColor: 'white',
-    textAlignVertical: 'top'
-  },
-  buttonSection: {
-    flex: 0.1,
-    padding: 5,
-  },
-});
+
 
 function mapStateToProps (state) {
   return {
-    appData: state.CreateImageContentReducer
+    appData: state.ContentReducer
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    createImageContent: (imageContentFields) => dispatch(createImageContent(imageContentFields))
+    createContent: (content) => dispatch(createContent(content))
   }
 }
 

@@ -6,30 +6,30 @@ const initialState = {
   actionType: ''
 }
 
-export default function CreateImageContent (state = initialState, action) {
+export default function ContentReducer (state = initialState, action) {
   switch (action.type) {
 
-    case actionTypes.CREATE_IMAGE_CONTENT:
+    case actionTypes.CREATE_CONTENT:
       return {
         ...state,
         saving: true,
-        actionType: actionTypes.CREATE_IMAGE_CONTENT
+        actionType: actionTypes.CREATE_CONTENT
       }
 
-    case actionTypes.CREATE_IMAGE_CONTENT_SUCCESS:
+    case actionTypes.CREATE_CONTENT_SUCCESS:
       return {
         ...state,
         error: '',
         saving: false,
-        actionType: actionTypes.CREATE_IMAGE_CONTENT_SUCCESS
+        actionType: actionTypes.CREATE_CONTENT_SUCCESS
       }
 
-    case actionTypes.CREATE_IMAGE_CONTENT_FAILURE:
+    case actionTypes.CREATE_CONTENT_FAILURE:
       return {
         ...state,
         error: action.error,
         saving: false,
-        actionType: actionTypes.CREATE_IMAGE_CONTENT_FAILURE
+        actionType: actionTypes.CREATE_CONTENT_FAILURE
       }
 
     default:

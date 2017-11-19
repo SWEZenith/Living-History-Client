@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { style } from '@style/main';
 import privateStyle from './style';
 import { ZImageView, ZButton } from '@components/index';
-import { View } from 'react-native';
-import { FlatList, StyleSheet, Text, TouchableHighlight } from 'react-native';
+import { FlatList, Text, TouchableHighlight, View, Image, ScrollView } from 'react-native';
 import { fetchAnnotations } from '@actions';
 
 
@@ -13,6 +12,25 @@ export class ContentDetailScene extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+          containerWidth:0,
+          containerWidth:0
+        }
+    }
+
+
+    calculateContentContainerSize(...params){
+      
+      this.setState({ 
+        containerWidth: params[0].width,
+        containerHeight: params[0].height 
+      }) 
+    }
+
+    renderIf(condition, content){
+      
+      return condition ? content : null;
     }
 
     render(){
@@ -48,16 +66,51 @@ export class ContentDetailScene extends Component {
             }
 
             {
-              (content.day || content.month || content.year) &&
-              <View style={privateStyle.dateContainer}>
-                { content.day && <Text>{content.day}</Text> }
-                { content.day && content.month && <Text>.</Text>}
-                { content.month && <Text>{content.month}</Text> }
-                { content.month && content.year && <Text>.</Text>}
-                { content.year && <Text>{content.year}</Text> }
-              </View>
+              this.renderIf((content.day || content.month || content.year),
+                <View style={privateStyle.dateContainer}>
+                  { content.day && <Text>{content.day}</Text> }
+                  { content.day && content.month && <Text>.</Text>}
+                  { content.month && <Text>{content.month}</Text> }
+                  { content.month && content.year && <Text>.</Text>}
+                  { content.year && <Text>{content.year}</Text> }
+                </View>
+              )
             }
           </View>
+
+
+          <View style={privateStyle.content} 
+                onLayout={(event) => { this.calculateContentContainerSize(event.nativeEvent.layout) }}>
+            <ScrollView style={privateStyle.contentBody}>
+            {
+              content.story_items.map((story) => {
+
+                if(story.type === 'image'){
+
+                  return(
+                    <Image key={story.id} style={privateStyle.imageContent} 
+                      source={{uri: story.content}}
+                      style={{ width: this.state.containerWidth, height: this.state.containerHeight }}>
+                    </Image>
+                  )
+
+                } else if(story.type === 'text') {
+
+                  return(
+                    <Text key={story.id} style={privateStyle.textContent}>
+                      {story.content}
+                    </Text>
+                  )
+                }
+
+              })
+            }
+            </ScrollView>
+          </View>
+
+
+
+
 
           <View style={{flex:1, alignItems:'center'}}>
             <ZButton text="Annotate" 
