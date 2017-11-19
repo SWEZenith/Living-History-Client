@@ -10,7 +10,6 @@ import HTMLView from 'react-native-htmlview';
 
 
 
-
 export class ContentDetailScene extends Component {
 
     constructor(props) {
