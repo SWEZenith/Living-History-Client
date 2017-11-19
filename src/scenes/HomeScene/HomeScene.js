@@ -31,6 +31,10 @@ export class HomeScene extends Component {
       this.props.fetchContents();
     }
 
+    componentWillMount(){
+     this.props.fetchContents(); 
+    }
+
     render(){
       
       let contents = this.props.appData.contents;
@@ -49,15 +53,19 @@ export class HomeScene extends Component {
             <Text style= {privateStyle.searchText}>Search</Text>
           </TouchableHighlight>
         </View>
-        <ScrollView style={privateStyle.scrollSection} >
+
+        <ScrollView style={privateStyle.scrollSection}>
           {contents.map((content) => {
-            return <TouchableHighlight key={content.id} style={privateStyle.resultButton} onPress={ 
-              () => this.props.navigation.navigate('ContentDetail', { contentId: content.id }) }>
-            <View>
-              <Image source={ { uri: content.cover_image } } style={privateStyle.resultImage} />
-              <Text style={ privateStyle.resultText } >{content.title}</Text>
-            </View>
-          </TouchableHighlight>
+            return (
+              <TouchableHighlight key={content.id} 
+                  style={privateStyle.resultButton} 
+                  onPress={ () => this.props.navigation.navigate('ContentDetail', { contentId: content.id }) }>
+                <View>
+                  <Image source={ { uri: content.cover_image } } style={privateStyle.resultImage} />
+                  <Text style={ privateStyle.resultText } >{content.title}</Text>
+                </View>
+              </TouchableHighlight>
+            )
           })}
         </ScrollView>
       </View>
