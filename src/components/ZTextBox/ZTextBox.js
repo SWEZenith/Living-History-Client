@@ -6,7 +6,18 @@ class ZTextBox extends Component {
 
 	render(){
 
-		let {onChangeText, placeHolder, secureTextEntry, autoCapitalize, placeholderTextColor, style, value, multiline, blurOnSubmit} = this.props;
+		let {
+            onChangeText,
+            placeHolder, 
+            secureTextEntry, 
+            autoCapitalize,
+            placeholderTextColor,
+            style,
+            value,
+            multiline,
+            blurOnSubmit,
+            keyboardType
+        } = this.props;
         let defaultPlaceHolderColor = '#9B51E0';
         let defaultMultiline = false;
         let defaultBlurOnSubmit = true;
@@ -23,6 +34,7 @@ class ZTextBox extends Component {
                 placeholderTextColor={placeholderTextColor || defaultPlaceHolderColor}
 				onChangeText={(text) => onChangeText(text)}
 				underlineColorAndroid="transparent"
+                keyboardType={keyboardType}
       		/>
 		)
 	}

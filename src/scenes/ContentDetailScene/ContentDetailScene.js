@@ -28,6 +28,11 @@ export class ContentDetailScene extends Component {
       }) 
     }
 
+    renderIf(condition, content){
+      
+      return condition ? content : null;
+    }
+
     render(){
 
       let content = this.props.contents.find(content => content.id === this.props.navigation.state.params.contentId);
@@ -61,14 +66,15 @@ export class ContentDetailScene extends Component {
             }
 
             {
-              (content.day || content.month || content.year) &&
-              <View style={privateStyle.dateContainer}>
-                { content.day && <Text>{content.day}</Text> }
-                { content.day && content.month && <Text>.</Text>}
-                { content.month && <Text>{content.month}</Text> }
-                { content.month && content.year && <Text>.</Text>}
-                { content.year && <Text>{content.year}</Text> }
-              </View>
+              this.renderIf((content.day || content.month || content.year),
+                <View style={privateStyle.dateContainer}>
+                  { content.day && <Text>{content.day}</Text> }
+                  { content.day && content.month && <Text>.</Text>}
+                  { content.month && <Text>{content.month}</Text> }
+                  { content.month && content.year && <Text>.</Text>}
+                  { content.year && <Text>{content.year}</Text> }
+                </View>
+              )
             }
           </View>
 
