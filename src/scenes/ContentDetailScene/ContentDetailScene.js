@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { style } from '@style/main';
 import privateStyle from './style';
 import { ZImageView, ZButton } from '@components/index';
-import { FlatList, Text, TouchableHighlight, View, Image, ScrollView, Button } from 'react-native';
-import { fetchAnnotations } from '@actions';
+import { FlatList, Text, TouchableHighlight, View, Image, ScrollView} from 'react-native';
 
 
 
@@ -132,13 +131,7 @@ export class ContentDetailScene extends Component {
                       data={content.annotations}
                       keyExtractor={(annotation, index) => annotation.id}
                       renderItem={ ({item}) =>
-                        <TouchableHighlight onPress={() => {
-                            this.props.navigation.navigate(
-                              'AnnotationDetail', 
-                              { annotationId: item.id }
-                            )
-                          }
-                        }>
+                        <TouchableHighlight onPress={() => {}}>
                           <View style={privateStyle.annotationItem}>
                             <Text>{item.body.value}</Text>
                           </View> 
@@ -182,7 +175,6 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    fetchAnnotations: (contentId) => dispatch(fetchAnnotations(contentId))
   }
 }
 
