@@ -2,6 +2,7 @@ import * as actionTypes from '@actions/actionTypes';
 
 const initialState = {
   semanticBodies: [],
+  isSemanticBodiesFetched: false,
   error: ''
 }
 
@@ -15,6 +16,7 @@ export default function SemanticBodiesReducer (state = initialState, action) {
     case actionTypes.FETCH_SEMANTIC_BODIES_SUCCESS:
       return {
         ...state,
+        isSemanticBodiesFetched: true,
         semanticBodies: action.semanticBodies,
         actionType: actionTypes.FETCH_SEMANTIC_BODIES_SUCCESS
       }

@@ -4,7 +4,8 @@ import { StyleSheet } from 'react-native';
 const colors = {
 	
   	mainColor: '#9B51E0',
-  	pageBackgroundColor: '#FFF'
+  	pageBackgroundColor: '#FFF',
+  	spinnerColor: '#FFF'
 };
 
 const values = {
@@ -32,6 +33,27 @@ const style = StyleSheet.create({
 		fontFamily: 'Cochin',
 		textAlign:'center',
 		backgroundColor:'transparent'
+	},
+	spinnerContainer:{
+		position:'absolute', 
+        top:0, 
+        left:0, 
+        right:0, 
+        bottom:0, 
+        zIndex:9
+	},
+	spinnerDarkLayer:{
+		position:'absolute', 
+        top:0, 
+        left:0, 
+        right:0, 
+        bottom:0, 
+        zIndex:9,
+        backgroundColor:'#000',
+        opacity:0.3
+	},
+	spinner:{
+		zIndex:10
 	}
 });
 
