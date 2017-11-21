@@ -6,6 +6,9 @@ import { ZImageView, ZButton } from '@components/index';
 import { FlatList, Text, TouchableHighlight, View, Image, ScrollView } from 'react-native';
 import { fetchAnnotations } from '@actions';
 import Accordion from 'react-native-collapsible/Accordion';
+import HTMLView from 'react-native-htmlview';
+
+
 
 
 export class ContentDetailScene extends Component {
@@ -46,8 +49,8 @@ export class ContentDetailScene extends Component {
     
     _renderHeader(item) {
       return (
-        <View>
-          <Text>{item.id}</Text>
+        <View style={{borderBottomWidth:1, borderColor:'#9B51E0', height:30}}>
+          <Text style={{fontSize:15}}>{item.id}</Text>
         </View>
       );
     }
@@ -55,7 +58,10 @@ export class ContentDetailScene extends Component {
     _renderContent(item) {
       return (
         <View>
-          <Text>{item.body.value}</Text>
+          <HTMLView
+            value={item.body.value}
+            style={{minHeight:100, borderBottomWidth:1, borderColor:'#9B51E0'}}
+          />
         </View>
       );
     }
@@ -139,17 +145,20 @@ export class ContentDetailScene extends Component {
             </ScrollView>
           </View>
 
-
-          <View style={privateStyle.annotationSection}>
-            <View style={privateStyle.annotationContainer}>
-              <Accordion 
-                sections={content.annotations}
-                renderHeader={this._renderHeader}
-                renderContent={this._renderContent}
-              />
-            </View>
-
-          </View>
+          {
+            this.renderIf(
+              (content.annotations.length > 0 && this.state.isAnnotationShown),
+              <View style={privateStyle.annotationSection}>
+                <View style={privateStyle.annotationContainer}>
+                  <Accordion 
+                    sections={content.annotations}
+                    renderHeader={this._renderHeader}
+                    renderContent={this._renderContent}
+                  />
+                </View>
+              </View>
+            )
+          }
 
           <View style={privateStyle.footer}>
             <View style={privateStyle.footerLeftContainer}>
@@ -168,7 +177,7 @@ export class ContentDetailScene extends Component {
                 </TouchableHighlight>
              </View>
           </View>
-          
+
         </View>
 		  )
     }

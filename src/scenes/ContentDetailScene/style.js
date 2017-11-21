@@ -38,7 +38,8 @@ const main = StyleSheet.create({
 	annotationContainer:{
 	   flex: 1,
    		borderWidth: 1,
-   		borderColor: colors.mainColor
+   		borderColor: colors.mainColor,
+   		overflow:'scroll'
 	},
 	annotationItem:{
 	    padding: 10,
