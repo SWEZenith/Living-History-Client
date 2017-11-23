@@ -5,15 +5,16 @@ import {
 	HomeScene,
 	ContentDetailScene,
 	AnnotationDetailScene,
-	CreateAnnotationScene
+	CreateAnnotationScene,
+	SemanticAnnotationScene
 } from '@scenes';
 
 const HomeStackNavigator = StackNavigator({
   Home: { screen: HomeScene },
   ContentDetail: { screen: ContentDetailScene },
   AnnotationDetail:{ screen: AnnotationDetailScene },
-  CreateAnnotation: { screen: CreateAnnotationScene }
-
+  CreateAnnotation: { screen: CreateAnnotationScene },
+  SemanticAnnotation: { screen: SemanticAnnotationScene },
 });
 
 export default HomeStackNavigator;
