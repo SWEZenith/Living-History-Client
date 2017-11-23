@@ -18,7 +18,7 @@ const rootReducer = combineReducers({
     RegistrationReducer,
     TextAnnotationReducer,
     HomeReducer,
-    ContentReducer
+    ContentReducer,
     SemanticBodiesReducer,
     SemanticAnnotationReducer
 })
