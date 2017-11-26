@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { style } from '@style/main';
 import privateStyle from './style';
 import { ZImageView, ZTextArea, ZButton, ZRichTextEditor } from '@components/index';
-import { View, Dimensions, Image, Text, ScrollView, TouchableHighlight } from 'react-native';
+import { View, Dimensions, Image, Text, ScrollView, TouchableHighlight, TextInput } from 'react-native';
 
 
 export class CreateAnnotationScene extends Component {
@@ -52,9 +52,14 @@ export class CreateAnnotationScene extends Component {
                 } else if(story.type === 'text') {
 
                   return(
-                    <Text key={story.id} style={privateStyle.textContent}>
-                      {story.content}
-                    </Text>
+                    <TextInput 
+                      key={story.id} 
+                      multiline={true}
+                      autoFocus={true}
+                      editable={false}
+                      value={story.content}
+                      style={privateStyle.textContent}>
+                    </TextInput>
                   )
                 }
 
