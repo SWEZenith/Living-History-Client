@@ -6,7 +6,7 @@ import {
 	ContentDetailScene,
 	AnnotationDetailScene,
 	CreateAnnotationScene,
-	SemanticAnnotationScene
+	CreateSemanticAnnotationScene
 } from '@scenes';
 
 const HomeStackNavigator = StackNavigator({
@@ -14,7 +14,7 @@ const HomeStackNavigator = StackNavigator({
   ContentDetail: { screen: ContentDetailScene },
   AnnotationDetail:{ screen: AnnotationDetailScene },
   CreateAnnotation: { screen: CreateAnnotationScene },
-  SemanticAnnotation: { screen: SemanticAnnotationScene },
+  CreateSemanticAnnotation: { screen: CreateSemanticAnnotationScene },
 });
 
 export default HomeStackNavigator;

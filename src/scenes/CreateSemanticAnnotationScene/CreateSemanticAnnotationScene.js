@@ -25,7 +25,7 @@ let startIndex = 0;
 
 
 
-export class SemanticAnnotationScene extends Component {
+export class CreateSemanticAnnotationScene extends Component {
 
     constructor(props) {
       
@@ -233,4 +233,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(SemanticAnnotationScene);
+export default connect( mapStateToProps, mapDispatchToProps)(CreateSemanticAnnotationScene);

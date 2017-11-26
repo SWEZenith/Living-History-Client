@@ -10,7 +10,8 @@ const main = StyleSheet.create({
 		borderWidth:1,
 		borderColor: colors.mainColor,
 		padding:5,
-		marginBottom: 10
+		marginBottom: 10,
+		alignItems:'center'
 	},
 	contentBody:{
 		flex:1
@@ -42,7 +43,23 @@ const main = StyleSheet.create({
   	buttonText:{
   		textAlign:'center',
   		color:'#FFF'
-  	}
+  	},
+	areaSelector: {
+		position: 'absolute',
+		borderWidth:3,
+		borderColor: '#08ff20',
+		alignItems: 'center',
+		justifyContent: 'center',
+		width:50,
+		height:50
+	},
+	contentPresenter:{
+		flex:1
+	},
+	contentContainer:{
+		flex:1,
+		width:300
+	}
 
 });
 
