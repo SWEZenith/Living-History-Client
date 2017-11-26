@@ -18,8 +18,6 @@ const {
   StyleSheet,
 } = ReactNative
 
-
-
 export class HomeScene extends Component {
 
     constructor(props) {
@@ -57,7 +55,8 @@ export class HomeScene extends Component {
                   style={privateStyle.resultButton} 
                   onPress={ () => this.props.navigation.navigate('ContentDetail', { contentId: content.id }) }>
                 <View>
-                  <Image source={ { uri: content.cover_image } } style={privateStyle.resultImage} />
+                  <Image source={ (content.cover_image == "" ? require('../../assets/img/city.png') : { uri: content.cover_image })} 
+                    style={privateStyle.resultImage} />
                   <Text style={ privateStyle.resultText } >{content.title}</Text>
                 </View>
               </TouchableHighlight>
