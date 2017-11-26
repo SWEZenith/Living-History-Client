@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import style from '@style/main';
 import styles from './style';
 import { ZImageView, ZTextArea, ZButton, ZRichTextEditor, ZTextBox} from '@components/index';
+import { StorageHelper } from '@utils';
 import ReactNative from 'react-native';
 import { createContent } from '@actions';
 import RNGooglePlaces from 'react-native-google-places';
@@ -187,10 +188,10 @@ export class CreateContentScene extends Component {
           />
         </View>
         <View style={styles.buttonSection}>
-          <TouchableHighlight style={styles.createButton}>
-            <Text style= {styles.searchText} 
-            onPress={() => { this._submitForm();  }}> 
-            Create Content! </Text>
+          <TouchableHighlight style={styles.createButton} onPress={() => { this._submitForm() }}>
+            <Text style= {styles.searchText}> 
+              Create Content! 
+            </Text>
           </TouchableHighlight>
         </View>
         </ScrollView>
@@ -198,7 +199,7 @@ export class CreateContentScene extends Component {
       )
     }
 
-    _submitForm() {
+    async _submitForm() {
 
       let state = Object.assign({},this.state);
       
@@ -225,6 +226,10 @@ export class CreateContentScene extends Component {
 
       if(state.text != '')
         content['story_items'] = this.createStoryItems(state.text);
+
+      let userName = await StorageHelper.get(constants.USERNAME);
+      content['creator'] = constants.API_URI + '/users/' + userName; 
+      
 
       this.props.createContent(content)
       this.props.navigation.navigate('Home');

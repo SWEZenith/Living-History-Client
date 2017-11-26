@@ -88,7 +88,14 @@ const main = StyleSheet.create({
   	buttonText:{
   		textAlign:'center',
   		color:'#FFF'
-  	}
+  	},
+	areaSelector: {
+		position: 'absolute',
+		borderWidth:3,
+		borderColor: '#08ff20',
+		alignItems: 'center',
+		justifyContent: 'center'
+	}
 });
 
 export default main;

@@ -6,7 +6,7 @@ import ProfileScene from './ProfileScene/ProfileScene';
 import ContentDetailScene from './ContentDetailScene/ContentDetailScene';
 import CreateAnnotationScene from './CreateAnnotationScene/CreateAnnotationScene';
 import AnnotationDetailScene from './AnnotationDetailScene/AnnotationDetailScene';
-
+import CreateSemanticAnnotationScene from './CreateSemanticAnnotationScene/CreateSemanticAnnotationScene';
 
 export { 
 	LoginScene,
@@ -16,5 +16,6 @@ export {
 	ProfileScene,
 	ContentDetailScene,
 	CreateAnnotationScene,
-	AnnotationDetailScene
+	AnnotationDetailScene,
+	CreateSemanticAnnotationScene
 }

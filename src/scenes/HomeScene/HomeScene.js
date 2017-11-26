@@ -31,10 +31,6 @@ export class HomeScene extends Component {
       this.props.fetchContents();
     }
 
-    componentWillMount(){
-     this.props.fetchContents(); 
-    }
-
     render(){
       
       let contents = this.props.appData.contents;

@@ -45,7 +45,6 @@ function getContents() {
 
   return new Promise((resolve, reject) => {
 
-    //return resolve(NetworkManager.get(`/annotations?contentId=${contentId}`, ContentTypes.jsonLD));
     return resolve(NetworkManager.get(`/contents/`, ContentTypes.jsonLD));
     
   });
