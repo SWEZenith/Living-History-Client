@@ -10,8 +10,7 @@ const main = StyleSheet.create({
 		borderWidth:1,
 		borderColor: colors.mainColor,
 		padding:5,
-		marginBottom: 10,
-		alignItems:'center'
+		marginBottom: 10
 	},
 	contentBody:{
 		flex:1
@@ -30,7 +29,6 @@ const main = StyleSheet.create({
 	},
 	footer:{
 		flex:1,
-		alignItems:'center',
 		justifyContent:'flex-end'
 	},
 	button:{
@@ -59,7 +57,21 @@ const main = StyleSheet.create({
 	contentContainer:{
 		flex:1,
 		width:300
-	}
+	},
+	imageContentContainer:{
+		flex:1, 
+		alignItems:'center'
+	},
+	button:{
+    	height: 30,
+    	backgroundColor:'#9B51E0',
+    	padding:5,
+    	borderRadius:50,
+  	},
+  	buttonText:{
+  		textAlign:'center',
+  		color:'#FFF'
+  	}
 
 });
 

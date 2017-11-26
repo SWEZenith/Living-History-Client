@@ -19,7 +19,14 @@ export class AnnotationDetailScene extends Component {
           containerWidth:0,
           containerWidth:0,
           isAnnotationShown: false,
-          showAnnotationButtonCaption: 'Show annotations'
+          showAnnotationButtonCaption: 'Show annotations',
+
+          imageAnnotationValues: {
+            x: 0,
+            y: 0,
+            w: 0,
+            h: 0
+          }
         }
         
         this.createTextAnnotationRepresentations = this.createTextAnnotationRepresentations.bind(this);
@@ -73,6 +80,19 @@ export class AnnotationDetailScene extends Component {
       this.highlightAnnotationOnContent();
     }
 
+    componentDidUpdate(){
+
+      if(this.state.containerWidth == 0) {
+
+        let annotation = this.getAnnotation();
+        let separation = annotation.target.id.split('/');
+        let storyId = separation[separation.length - 1].split('#')[0];
+        let story = this.getContent().story_items.find(story_item => story_item.id == storyId);
+
+        this.calculateImageAnnotationSizeValues(story.content, annotation);
+      }
+    }
+
     createTextAnnotationRepresentations(story){
 
       let annotations = this.getContent().annotations.filter(a => a.target.id.indexOf(story.id) != -1);
@@ -98,6 +118,27 @@ export class AnnotationDetailScene extends Component {
       }
 
       return result;
+    }
+
+    calculateImageAnnotationSizeValues(imageUrl, annotation) {
+
+      if(annotation.target.id.indexOf('xywh') == -1)
+        return;
+
+      Image.getSize(imageUrl, async (actualWidth, actualHeight) => {
+        
+        let values = annotation.target.id.split('=')[1].split(',');
+        let x = ((this.state.containerWidth * parseInt(values[0])) / actualWidth);
+        let y = ((this.state.containerHeight * parseInt(values[1])) / actualHeight) + parseInt(values[2]);
+        let w = parseInt(values[2]);
+        let h = parseInt(values[3]);
+
+        this.setState({
+          imageAnnotationValues: {
+            x: x, y: y, w: w, h: h
+          }
+        })
+      })
     }
 
     render(){
@@ -126,16 +167,14 @@ export class AnnotationDetailScene extends Component {
                         {
                           if(annotation.target.id.indexOf(story.id) != -1) {
 
-                            let values = annotation.target.id.split('=')[1].split(',');
-
                             return(
                               <View key={annotation.id}
                                 pointerEvents='none'
                                 style={[privateStyle.areaSelector,{
-                                  marginLeft: parseInt(values[0]),
-                                  marginTop: parseInt(values[1]),
-                                  width: parseInt(values[2]),
-                                  height: parseInt(values[3]),
+                                  marginLeft: this.state.imageAnnotationValues.x,
+                                  marginTop: this.state.imageAnnotationValues.y,
+                                  width: this.state.imageAnnotationValues.w,
+                                  height: this.state.imageAnnotationValues.h,
                                   opacity: this.state.activeAnnotationId == annotation.id ? 1 : 0
                                 }]}
                               />
