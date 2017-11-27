@@ -256,6 +256,7 @@ export class CreateAnnotationScene extends Component {
 
         this.props.createAnnotation(annotation)
         console.log(annotation.getObjectRepresentation());
+        
 
       } else {
         console.log('nothing selected!');
