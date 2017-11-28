@@ -1,13 +1,16 @@
 import { StyleSheet } from 'react-native';
 import { colors, styles, constants } from '@style/main';
+import Dimensions from 'Dimensions';
 
 const values = {
 	componentMargin:10
 }
 
+const win = Dimensions.get('window');
+
 const main = StyleSheet.create({
 	propertyContainer:{
-		flex:2
+		flex:6
 	},
 	annotationSection:{
 		flex:6
@@ -30,6 +33,20 @@ const main = StyleSheet.create({
 		padding:5, 
 		borderRadius:10, 
 		marginRight:5
+	},
+	mapContainer:{
+		marginBottom: values.componentMargin,
+		height: win.height * 0.18,
+		width: win.width * 0.95,
+	},
+	map:{
+		left:0,
+		right:0,
+		top:0,
+		bottom:0,
+		position:'absolute',
+		height: win.height * 0.18,
+		width: win.width * 0.95,
 	},
 	dateContainer:{
 		flexDirection:'row',

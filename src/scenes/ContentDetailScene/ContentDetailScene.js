@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { style } from '@style/main';
+import { colors, style } from '@style/main';
 import privateStyle from './style';
 import { ZImageView, ZButton } from '@components/index';
 import { FlatList, Text, TouchableHighlight, View, Image, ScrollView  } from 'react-native';
 import { fetchAnnotations } from '@actions';
 //import Accordion from 'react-native-collapsible/Accordion';
 import HTMLView from 'react-native-htmlview';
+import MapView from 'react-native-maps';
 
 
 
@@ -91,6 +92,31 @@ export class ContentDetailScene extends Component {
                       })
                     }
                   </View>
+                }
+
+                {
+                  this.renderIf((content.location.latitude && content.location.longitude),
+                    <View style={privateStyle.mapContainer}>
+                      <MapView
+                        style={privateStyle.map}
+                        initialRegion={{
+                          latitude: content.location.latitude,
+                          longitude: content.location.longitude,
+                          latitudeDelta: 0.0270,
+                          longitudeDelta: 0.0120,
+                      }}>
+                        <MapView.Marker
+                          coordinate={{
+                            latitude: content.location.latitude,
+                            longitude: content.location.longitude,
+                          }}
+                          title={content.location.name}
+                          description={content.title}
+                          pinColor={colors.mainColor}
+                        />
+                      </MapView>
+                    </View>
+                  )
                 }
 
                 {
