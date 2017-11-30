@@ -97,6 +97,7 @@ export function fetchSemanticBodiesFailure(error) {
   }
 }
 
+
 function getSemanticBodies(keyword) {
 
   return new Promise((resolve, reject) => {
