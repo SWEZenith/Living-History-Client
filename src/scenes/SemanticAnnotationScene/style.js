@@ -7,14 +7,6 @@ const constants = {
 
 
 const main = StyleSheet.create({
-
-	content:{
-		flex:6,
-		borderWidth:1,
-		borderColor: colors.mainColor,
-		padding:5,
-		marginBottom: 10
-	},
 	pageContainer: {
 		flex:1, 
 		justifyContent:'center', 
@@ -24,9 +16,12 @@ const main = StyleSheet.create({
 		flex:2, 
 		marginTop:20
 	},
-
-	contentPresenter:{
-		flex:1
+	contentPresenter: {
+		height: '100%', 
+		width:300, 
+		borderColor: colors.mainColor, 
+		borderWidth: 1,
+		fontSize:constants.fontSize
 	},
 	contentView:{
 		paddingTop:6,
@@ -35,6 +30,7 @@ const main = StyleSheet.create({
 	},
 	editorContainer: {
 		flex:2,
+		width:300,
 		marginTop:20
 	},
 	textSelector:{
@@ -42,6 +38,7 @@ const main = StyleSheet.create({
 	},
 	dropdown:{
 		marginTop:20,
+		width:300,
 		height:31,
 		borderWidth:1,
 		borderColor: colors.mainColor
@@ -53,6 +50,7 @@ const main = StyleSheet.create({
 	    lineHeight: 28
 	},
   	dropdownBody: {
+	    width: 300,
 	    height: 150,
 	    borderColor: colors.mainColor,
 	    borderWidth: 2,
@@ -62,28 +60,10 @@ const main = StyleSheet.create({
 		fontSize: constants.fontSize,
   	},
 	footer: {
-		flex:1,
+		flex:1, 
 		justifyContent:'flex-end',
 		marginBottom:40
-	},
-	button:{
-    	height: 30,
-    	backgroundColor:'#9B51E0',
-    	padding:5,
-    	borderRadius:50,
-  	},
-  	buttonText:{
-  		textAlign:'center',
-  		color:'#FFF'
-  	},
-  	textContent:{
-  		fontSize:14
-  	},
-	imageContent:{
-		flex:1,
-		resizeMode: 'contain',
-		marginBottom: 10
-	},  	
+	}
 });
 
 export default main;

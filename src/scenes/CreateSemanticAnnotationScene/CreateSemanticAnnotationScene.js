@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { style, colors } from '@style/main';
 import privateStyle from './style';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, Image, ScrollView, TouchableHighlight, Alert } from 'react-native';
 import { ZButton, ZRichTextEditor } from '@components';
 import { createSemanticAnnotation, fetchSemanticBodies } from '@actions';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -17,6 +17,12 @@ import {
   UIActivityIndicator,
   WaveIndicator
 } from 'react-native-indicators';
+import { AnnotationTypes } from '@enums';
+import { AnnotationFactory } from '@common';
+import { TextTarget, ImageTarget, BaseAnnotationBody } from '@models';
+import * as constants from '@utils/constants';
+import { StorageHelper } from '@utils';
+import { createAnnotation } from '@actions';
 
 
 let textContentPats = [];
@@ -32,35 +38,61 @@ export class CreateSemanticAnnotationScene extends Component {
       super(props);
 
       this.state = {
-        textVal: `Raskolnikov is the protagonist of the novel, and the story is told almost exclusively from his point Berlin of view. His name derives from the Russian word raskolnik, meaning “schismatic” or “divided,” which is appropriate since his most fundamental character trait is his alienation from human society.`,
+        containerWidth:0,
         startIndex: -1,
         endIndex: -1,
         selectedText: '',
+        selectedBody:'',
+        isDropdownDisabled: true,
         isFocused: true,
-        isSpinnerShown: false
+        isSpinnerShown: false,
+        storyId:'-1'
+
       };
     }
 
-    componentWillMount(nextProps) {
+    calculateContentContainerSize(...params){
       
-      console.log('========')
-      console.log(nextProps)
+      this.setState({ 
+        containerWidth: params[0].width,
+        containerHeight: params[0].height 
+      }) 
+    }
 
-      if(this.props.isSuccessfull === false && this.nextProps.isSuccessfull === true)
-        this.props.navigation.goBack();
+    getContent() {
+
+      let content = this.props.contents.find(content => content.id === this.props.navigation.state.params.contentId);      
+      return content;
+    }
+
+    renderIf(condition, content){
+      
+      return condition ? content : null;
+    } 
+
+    handleTextSelection(event, story) {
+
+      this.setState({
+        startIndex: event.nativeEvent.selection.start,
+        endIndex: event.nativeEvent.selection.end,
+        storyId: story.id
+      })
     }
 
     confirmTextSelection() {
 
       if(this.state.isFocused == true) {
 
+        this.props.semanticBodyData.isFetchDone = false;
         this.setState({ isSpinnerShown: true });
 
-        let selectedText = this.state.textVal.substring(this.state.startIndex, this.state.endIndex);
+        let story = this.getContent().story_items.find(s => s.id == this.state.storyId);
+        let selectedText = story.content.substring(this.state.startIndex, this.state.endIndex);
 
         if(selectedText != '') {
 
-          this.highlightText(this.state.startIndex, this.state.endIndex);
+          this.highlightText(this.state.storyId, this.state.startIndex, this.state.endIndex);
+
           this.setState({ 
             isFocused: false,
             selectedText: selectedText
@@ -71,32 +103,10 @@ export class CreateSemanticAnnotationScene extends Component {
       }
     }
 
-    handleDropdownSelection(index, value) {
-
-      //BRK TODO
-      
-      if(index != -1 && index <= this.props.semanticBodyData.semanticBodies.results.bindings.length) {
-
-        let selectedBody = this.props.semanticBodyData.semanticBodies.results.bindings[index]
-        console.log('selected Body: ', selectedBody);
-      }
-    }
-
-    handleTextSelection(event) {
-
-      this.setState({
-        startIndex: event.nativeEvent.selection.start,
-        endIndex: event.nativeEvent.selection.end
-      })
-    }
-
-    highlightText(startIndex, endIndex) {
-
-        if(this.state.textVal != null && this.state.textVal != '') {
+    highlightText(storyId, startIndex, endIndex) {
           
-          annotations = [];
-          annotations.push({start: startIndex, end: endIndex});
-        }
+        annotations = [];
+        annotations.push({start: startIndex, end: endIndex});
     }
 
     createHiglightedText() {
@@ -104,15 +114,35 @@ export class CreateSemanticAnnotationScene extends Component {
       textContentPats = [];
       startIndex = 0;
 
+      let diff = 0;
+      this.getContent().story_items
+        .filter(i => i.type === 'text')
+        .forEach((content, index, arr) => {
+
+          if(content.id == this.state.storyId) {
+
+            for(let i = 0; i < index; i++) {
+
+              diff += arr[i].content.length + 2;
+            }
+          }
+        });
+
+
+      let textVal = this.getContent().story_items
+        .filter(i => i.type === 'text')
+        .map(s => s.content)
+        .reduce((acc, curr) => {return acc + '\n\n' + curr;});
+
       annotations.forEach((annotation, counter) => {
 
         let preText = "";
         let annotationText = "";
 
-        if(annotation.start != 0)
-          preText = this.state.textVal.substring(startIndex, annotation.start);
+        if(annotation.start + diff != 0)
+          preText = textVal.substring(startIndex, annotation.start + diff);
 
-        annotationText = this.state.textVal.substring(annotation.start, annotation.end);
+        annotationText = textVal.substring(annotation.start + diff, annotation.end + diff);
 
         if(preText != "")
           textContentPats.push({isAnnotation: false, text: preText});
@@ -121,26 +151,84 @@ export class CreateSemanticAnnotationScene extends Component {
           textContentPats.push({isAnnotation: true, text: annotationText})
         }
 
-        startIndex = annotation.end;
+        startIndex = annotation.end + diff;
 
         if(counter == annotations.length - 1)
-          textContentPats.push({isAnnotation: false, text: this.state.textVal.substring(annotation.end, this.state.textVal.length)})
+          textContentPats.push({isAnnotation: false, text: textVal.substring(annotation.end + diff, textVal.length)})
       });
 
       return textContentPats;
+    }        
+
+    handleDropdownSelection(index, value) {
+
+      if(index != -1 && index <= this.props.semanticBodyData.semanticBodies.results.bindings.length) {
+
+        let selectedBody = this.props.semanticBodyData.semanticBodies.results.bindings[index]
+        this.setState({
+          selectedBody: selectedBody.thing.value
+        })
+      }
     }
 
-    createAnnotation() {
+    componentWillMount(nextProps) {
+
+      if(this.props.isSuccessfull === false && this.nextProps.isSuccessfull === true)
+        this.props.navigation.goBack();
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+      if(this.props.semanticBodyData.isFetchDone === false && nextProps.semanticBodyData.isFetchDone === true) {
+
+        this.setState({
+          isSpinnerShown: false,
+          isDropdownDisabled: false
+        });
+      }
+
+      if(this.props.annotationData.isSuccessfull === false && nextProps.annotationData.isSuccessfull === true) {
+        this.props.navigation.navigate('Home');
+      }
+
+    }
+
+    async createAnnotation() {
+
+      if(this.state.selectedText != '' && this.state.selectedBody != '') {
+
+        let annotation = AnnotationFactory.createAnnotation(AnnotationTypes.TextAnnotation);
+        annotation.target = new TextTarget();
+        annotation.body = {'@id': this.state.selectedBody};
+
+        let userName = await StorageHelper.get(constants.USERNAME);
+        annotation.setProperty('creator', constants.API_URI + '/users/' + userName);
+        annotation.setProperty('created', Date.now());
+        annotation.setProperty('modified', Date.now());
+
+        annotation.target.url = constants.API_URI + "/stories/" + this.state.storyId;
+        annotation.target.start = this.state.startIndex;
+        annotation.target.end = this.state.endIndex;
+
+        console.log(annotation.getObjectRepresentation());
+
+        this.props.createSemanticAnnotation(annotation);
 
 
+      } else {
+
+        Alert.alert('Error', 'A body must be selected!');
+      }
     }
 
     render(){
 
-      const { navigate } = this.props.navigation;
+
       let semanticBodies = this.props.semanticBodyData.semanticBodies.results != null
-        ? this.props.semanticBodyData.semanticBodies.results.bindings.map(i => (i.name.value + '  (' + i.type.value + ')'))
+        ? this.props.semanticBodyData.semanticBodies.results.bindings
+          .map(i => (i.name.value + '  (' + i.type.value + ')'))
         : [];
+      let content = this.getContent();
 
     	return(
         <View style={[style.zPage]}>
@@ -153,66 +241,105 @@ export class CreateSemanticAnnotationScene extends Component {
             </View> 
           }
 
-          <View style={privateStyle.pageContainer}>
-              
+          {
+            this.renderIf(
+              this.state.isFocused,
+              <View style={privateStyle.content}>
+                <View style={{flex:1}} 
+                  onLayout={(event) => { this.calculateContentContainerSize(event.nativeEvent.layout) }}>
+                  <ScrollView style={{flex:1}}>
+                  {
+                    content.story_items.map((story, index) => {
+                      if(story.type === 'text') {
 
-            <View style={privateStyle.contentContainer}>
-             {
-                this.state.isFocused 
-                ?
-                <TextInput
-                    onPress={()=> { this.setState({ isFocused: false })}}
-                    style={privateStyle.contentPresenter}
-                    multiline={true}
-                    autoFocus={true}
-                    editable={false}
-                    value={this.state.textVal}
-                    onSelectionChange={(event) => this.handleTextSelection(event)}/>
-                :
-                <Text style={[privateStyle.contentPresenter, privateStyle.contentView]}
-                      onPress={()=> { this.setState({ isFocused: true })}}>
-                      {
-                        this.createHiglightedText().map((item, key) => {
-                          return (
-                            item.isAnnotation 
-                            ? 
-                            <Text key={key} 
-                              style={{ backgroundColor: 'yellow' }}>
-                                {item.text}
-                              </Text> 
-                              : 
-                              <Text key={key}>
+                        return(
+                          <TextInput 
+                            key={story.id}
+                            multiline={true}
+                            autoFocus={true}
+                            editable={false}
+                            value={story.content}
+                            style={privateStyle.textContent}
+                            onSelectionChange={(event) => this.handleTextSelection(event, story)}>
+                          </TextInput>
+                        )
+                      } else if (story.type === 'image') {
+
+                        return(
+                          <Image key={story.id} style={privateStyle.imageContent} 
+                            source={{uri: story.content}}
+                            style={{ width: this.state.containerWidth, height: this.state.containerHeight }}>
+                          </Image>                          
+                        )
+                      }
+                    })
+                  }
+                  </ScrollView>
+                </View>
+              </View>
+            )
+          }
+          {
+            this.renderIf(
+              !this.state.isFocused,
+              <View style={privateStyle.content}>
+                <View style={{flex:1}}>
+                  <Text style={[privateStyle.contentPresenter, privateStyle.contentView]}
+                        onPress={()=> { this.setState({ isFocused: true })}}>
+                        {
+                          this.createHiglightedText().map((item, key) => {
+                            return (
+                              item.isAnnotation 
+                              ? 
+                              <Text key={key} 
+                                style={{ backgroundColor: 'yellow' }}>
                                   {item.text}
-                              </Text>
-                          );
-                      })}
+                                </Text> 
+                                : 
+                                <Text key={key}>
+                                    {item.text}
+                                </Text>
+                            );
+                        })}
+                  </Text>           
+                </View> 
+              </View> 
+            )
+          }
+
+          {
+            <View style={{flex:1}}>
+              <TouchableHighlight style={privateStyle.button} onPress={()=> this.confirmTextSelection()}>
+                <Text style={privateStyle.buttonText}> 
+                  Approve Selection
                 </Text>
-              }
+              </TouchableHighlight>
             </View>
+          }
+            
+            
+          <View style={privateStyle.editorContainer}>
 
-
-            <View style={privateStyle.editorContainer}>
-
-              <Button title="Select Text"
-                style={privateStyle.textSelector}
-                onPress={() => this.confirmTextSelection()}/>
-
-              <ModalDropdown options={semanticBodies}
-                defaultValue="Please select body..."
-                showsVerticalScrollIndicator={true}
-                style={privateStyle.dropdown}
-                textStyle={privateStyle.dropdownText}
-                dropdownStyle={privateStyle.dropdownBody}
-                dropdownTextStyle={privateStyle.dropdownTextStyle}
-                onSelect={(idx, value) => this.handleDropdownSelection(idx, value)}/>
-            </View>
-
-            <View style={privateStyle.footer}>
-              <ZButton text="Annotate"
-                  onPress={() => this.createAnnotation()}/>
-            </View>
-
+            <ModalDropdown options={semanticBodies}
+              disabled={this.state.isDropdownEnabled}
+              defaultValue="Please select body..."
+              showsVerticalScrollIndicator={true}
+              style={privateStyle.dropdown}
+              textStyle={privateStyle.dropdownText}
+              dropdownStyle={privateStyle.dropdownBody}
+              dropdownTextStyle={privateStyle.dropdownTextStyle}
+              onSelect={(idx, value) => this.handleDropdownSelection(idx, value)}/>
           </View>
+
+
+          <View style={privateStyle.footer}>
+            <TouchableHighlight style={privateStyle.button} 
+              onPress={() =>  this.createAnnotation()}>
+              <Text style={privateStyle.buttonText}> 
+                Annotate
+              </Text>
+            </TouchableHighlight>
+          </View>          
         </View>
 		  )
     }
@@ -222,7 +349,8 @@ export class CreateSemanticAnnotationScene extends Component {
 function mapStateToProps (state) {
   return {
     semanticBodyData: state.SemanticBodiesReducer,
-    annotationData: state.SemanticAnnotationReducer
+    annotationData: state.SemanticAnnotationReducer,
+    contents: state.HomeReducer.contents
   }
 }
 

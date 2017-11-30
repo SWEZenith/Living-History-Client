@@ -83,8 +83,8 @@ const main = StyleSheet.create({
 		marginBottom: 10
 	},
 	footer:{
-		flex:1,
-		flexDirection:'row'
+		flex:2,
+		justifyContent:'flex-end'
 	},
 	footerLeftContainer:{
 		flex:1,

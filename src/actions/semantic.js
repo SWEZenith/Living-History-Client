@@ -48,7 +48,7 @@ function saveSemanticAnnotation(semanticAnnotation) {
 
   return new Promise((resolve, reject) => {
 
-    return resolve(NetworkManager.post('/annotations/', 
+    return resolve(NetworkManager.post('/semantic/', 
       semanticAnnotation.getObjectRepresentation(), 
       ContentTypes.jsonLD)
     );
@@ -96,6 +96,7 @@ export function fetchSemanticBodiesFailure(error) {
     error
   }
 }
+
 
 function getSemanticBodies(keyword) {
 

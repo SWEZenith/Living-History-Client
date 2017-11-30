@@ -188,21 +188,39 @@ export class ContentDetailScene extends Component {
           }
 
           <View style={privateStyle.footer}>
-            <View style={privateStyle.footerLeftContainer}>
+            <View style={{flex:1, marginBottom:10, justifyContent:'flex-end'}}>
                 <TouchableHighlight style={privateStyle.button} onPress={()=> this.changeAnnotationVisibility()}>
                   <Text style={privateStyle.buttonText}> 
                     {this.state.showAnnotationButtonCaption}
                   </Text>
                 </TouchableHighlight>
              </View>
-             <View style={privateStyle.footerRightContainer}>
-                <TouchableHighlight style={privateStyle.button}
-                onPress={() =>  this.props.navigation.navigate('CreateAnnotation', { contentId: content.id })}>
-                  <Text style={privateStyle.buttonText}> 
-                    Create Annotation
-                  </Text>
-                </TouchableHighlight>
-             </View>
+             {
+                this.renderIf(
+                  !this.state.isAnnotationShown,
+                  <View style={{flex:1, marginBottom:10}}>
+                    <TouchableHighlight style={privateStyle.button}
+                      onPress={() =>  this.props.navigation.navigate('CreateAnnotation', { contentId: content.id })}>
+                        <Text style={privateStyle.buttonText}> 
+                          Create Annotation
+                        </Text>
+                      </TouchableHighlight>
+                  </View>
+                )
+              }
+              {
+                this.renderIf(
+                  !this.state.isAnnotationShown,
+                  <View style={{flex:1}}>
+                    <TouchableHighlight style={privateStyle.button} 
+                      onPress={() =>  this.props.navigation.navigate('CreateSemanticAnnotation', { contentId: content.id })}>
+                      <Text style={privateStyle.buttonText}> 
+                        Create Semantic Annotation
+                      </Text>
+                    </TouchableHighlight>
+                  </View>
+                )
+              }
           </View>
 
         </View>
