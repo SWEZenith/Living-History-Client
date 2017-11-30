@@ -10,10 +10,9 @@ class Router extends Component {
   render() {
     const { appData } = this.props;
     return (
-      //BRKBRK
-      //!appData.isAuthenticated ?
-      //<SignStackNavigator onNavigationStateChange={null} />
-      //:
+      !appData.isAuthenticated ?
+      <SignStackNavigator onNavigationStateChange={null} />
+      :
       <MainTabNavigator onNavigationStateChange={null} />
     );
   }
