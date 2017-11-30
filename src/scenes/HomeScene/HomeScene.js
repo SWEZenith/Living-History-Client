@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import style from '@style/main';
+import { colors, style } from '@style/main';
 import privateStyle from './style';
 import { ZImageView, ZTextArea, ZButton } from '@components/index';
 import ReactNative from 'react-native';
@@ -16,19 +16,25 @@ const {
   Text,
   TouchableHighlight,
   StyleSheet,
+  RefreshControl,
 } = ReactNative
-
-
 
 export class HomeScene extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { searching: false, searchInput: '' }
+        this.state = { searching: false, searchInput: '', refreshing: false }
+        this._onRefresh = this._onRefresh.bind(this)
     }
     
     componentDidMount(){
       this.props.fetchContents();
+    }
+
+    _onRefresh() { 
+      this.setState({refreshing: true}); 
+      this.props.fetchContents();
+      this.setState({refreshing: false}); 
     }
 
     render(){
@@ -50,14 +56,23 @@ export class HomeScene extends Component {
           </TouchableHighlight>
         </View>
 
-        <ScrollView style={privateStyle.scrollSection}>
+        <ScrollView style={privateStyle.scrollSection}
+          refreshControl={ 
+            <RefreshControl 
+              refreshing={this.state.refreshing} 
+              onRefresh={this._onRefresh} 
+              colors={[colors.mainColor]}
+              tintColor={colors.mainColor}
+            /> 
+          }>
           {contents.map((content) => {
             return (
               <TouchableHighlight key={content.id} 
                   style={privateStyle.resultButton} 
                   onPress={ () => this.props.navigation.navigate('ContentDetail', { contentId: content.id }) }>
                 <View>
-                  <Image source={ { uri: content.cover_image } } style={privateStyle.resultImage} />
+                  <Image source={ (content.cover_image == "" ? require('../../assets/img/city.png') : { uri: content.cover_image })} 
+                    style={privateStyle.resultImage} />
                   <Text style={ privateStyle.resultText } >{content.title}</Text>
                 </View>
               </TouchableHighlight>
