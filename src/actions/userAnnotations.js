@@ -1,6 +1,6 @@
 import * as actionTypes from '@actions/actionTypes';
 import { NetworkManager, ContentTypes } from '@utils';
-
+import * as constants from '@utils/constants';
 ///
 /// Fetch user annotations
 
@@ -39,8 +39,8 @@ export function fetchUserAnnotationsFailure(error) {
   };
 }
 
-function getUserAnnotations(userId) {
+function getUserAnnotations() {
   return new Promise((resolve) => {
-    return resolve(NetworkManager.get(`/users/${userId}/annotations`, ContentTypes.jsonLD));
+    return resolve(NetworkManager.get(`/users/${constants.USERNAME}/annotations`, ContentTypes.jsonLD));
   });
 }

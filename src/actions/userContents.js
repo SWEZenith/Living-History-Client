@@ -1,5 +1,6 @@
 import * as actionTypes from '@actions/actionTypes';
 import { NetworkManager, ContentTypes } from '@utils';
+import * as constants from '@utils/constants';
 
 ///
 /// Fetch user contents
@@ -39,8 +40,8 @@ export function fetchUserContentsFailure(error) {
   };
 }
 
-function getUserContents(userId) {
+function getUserContents() {
   return new Promise((resolve) => {
-    return resolve(NetworkManager.get(`/users/${userId}/contents`, ContentTypes.jsonLD));
+    return resolve(NetworkManager.get(`/users/${constants.USERNAME}/contents`, ContentTypes.jsonLD));
   });
 }
