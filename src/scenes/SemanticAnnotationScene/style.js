@@ -39,7 +39,7 @@ const main = StyleSheet.create({
 	dropdown:{
 		marginTop:20,
 		width:300,
-		height:30,
+		height:31,
 		borderWidth:1,
 		borderColor: colors.mainColor
 	},
