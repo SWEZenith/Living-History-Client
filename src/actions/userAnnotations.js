@@ -1,14 +1,15 @@
 import * as actionTypes from '@actions/actionTypes';
 import { NetworkManager, ContentTypes } from '@utils';
 import * as constants from '@utils/constants';
+import { StorageHelper } from '@utils';
 ///
 /// Fetch user annotations
 
 
-export function fetchUserAnnotations(userId) {
+export function fetchUserAnnotations() {
    return (dispatch) => {
       dispatch(fetchUserAnnotationsStart());
-      getUserAnnotations(userId)
+      getUserAnnotations()
           .then((userAnnotations) => {
             dispatch(fetchUserAnnotationsSuccess(userAnnotations));
           })
@@ -41,6 +42,6 @@ export function fetchUserAnnotationsFailure(error) {
 
 function getUserAnnotations() {
   return new Promise((resolve) => {
-    return resolve(NetworkManager.get(`/users/${constants.USERNAME}/annotations`, ContentTypes.jsonLD));
+    return resolve(NetworkManager.get(`/users/${StorageHelper.get(constants.USERNAME)}/annotations`, ContentTypes.jsonLD));
   });
 }
