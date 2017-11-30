@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { style } from '@style/main';
 import privateStyle from './style';
 import { ZImageView, ZTextArea, ZButton, ZRichTextEditor } from '@components/index';
-import { View, Dimensions, Image, Text, ScrollView, TouchableHighlight, TextInput } from 'react-native';
+import { View, Dimensions, Image, Text, ScrollView, TouchableHighlight, TextInput, Alert } from 'react-native';
 import {createResponder} from 'react-native-gesture-responder';
 import { AnnotationTypes } from '@enums';
 import { AnnotationFactory } from '@common';
@@ -210,6 +210,13 @@ export class CreateAnnotationScene extends Component {
 
     async handleAnnotationCreation() {
 
+      if(this.state.annotationText == '' || this.state.annotationText.trim() == '') {
+
+        Alert.alert('Error', 'A body for annotation must be entered!');
+        return;
+      }
+
+
       if(this.state.annotationType == AnnotationTypes.ImageAnnotation) {
 
         let story = this.getCurrentImageStory();
@@ -263,6 +270,14 @@ export class CreateAnnotationScene extends Component {
       }
 
     }
+
+    componentWillReceiveProps(nextProps) {
+
+      if(this.props.annotationData.isSuccessfull === false && nextProps.annotationData.isSuccessfull === true) {
+        this.props.navigation.navigate('Home');
+      }
+
+    }    
 
     render(){
 
@@ -397,7 +412,9 @@ export class CreateAnnotationScene extends Component {
 
 function mapStateToProps (state) {
   return {
-    contents: state.HomeReducer.contents
+    contents: state.HomeReducer.contents,
+    annotationData: state.AnnotationReducer
+
   }
 }
 

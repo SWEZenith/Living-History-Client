@@ -6,27 +6,27 @@ const initialState = {
   error: ''
 }
 
-export default function textAnnotationReducer (state = initialState, action) {
+export default function AnnotationReducer (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.CREATING_TEXT_ANNOTATION:
+    case actionTypes.CREATE_ANNOTATION:
       return {
         ...state,
         started: true,
-        actionType: actionTypes.CREATING_TEXT_ANNOTATION
+        actionType: actionTypes.CREATE_ANNOTATION
       }
-    case actionTypes.CREATING_TEXT_ANNOTATION_SUCCESS:
+    case actionTypes.CREATE_ANNOTATION_SUCCESS:
       return {
         ...state,
         started:false,
         isSuccessfull: true,
-        actionType: actionTypes.CREATING_TEXT_ANNOTATION_SUCCESS
+        actionType: actionTypes.CREATE_ANNOTATION_SUCCESS
       }
-    case actionTypes.CREATING_TEXT_ANNOTATION_FAILURE:
+    case actionTypes.CREATE_ANNOTATION_FAILURE:
       return {
         ...state,
         started:false,
         error: action.error,
-        actionType: actionTypes.CREATING_TEXT_ANNOTATION_FAILURE
+        actionType: actionTypes.CREATE_ANNOTATION_FAILURE
       }
     default:
       return state

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { style, colors } from '@style/main';
 import privateStyle from './style';
-import { View, Text, TextInput, Button, Image, ScrollView, TouchableHighlight } from 'react-native';
+import { View, Text, TextInput, Button, Image, ScrollView, TouchableHighlight, Alert } from 'react-native';
 import { ZButton, ZRichTextEditor } from '@components';
 import { createSemanticAnnotation, fetchSemanticBodies } from '@actions';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -38,6 +38,7 @@ export class CreateSemanticAnnotationScene extends Component {
       super(props);
 
       this.state = {
+        containerWidth:0,
         startIndex: -1,
         endIndex: -1,
         selectedText: '',
@@ -50,6 +51,13 @@ export class CreateSemanticAnnotationScene extends Component {
       };
     }
 
+    calculateContentContainerSize(...params){
+      
+      this.setState({ 
+        containerWidth: params[0].width,
+        containerHeight: params[0].height 
+      }) 
+    }
 
     getContent() {
 
@@ -179,6 +187,10 @@ export class CreateSemanticAnnotationScene extends Component {
         });
       }
 
+      if(this.props.annotationData.isSuccessfull === false && nextProps.annotationData.isSuccessfull === true) {
+        this.props.navigation.navigate('Home');
+      }
+
     }
 
     async createAnnotation() {
@@ -187,7 +199,7 @@ export class CreateSemanticAnnotationScene extends Component {
 
         let annotation = AnnotationFactory.createAnnotation(AnnotationTypes.TextAnnotation);
         annotation.target = new TextTarget();
-        annotation.body = this.state.selectedBody;
+        annotation.body = {'@id': this.state.selectedBody};
 
         let userName = await StorageHelper.get(constants.USERNAME);
         annotation.setProperty('creator', constants.API_URI + '/users/' + userName);
@@ -197,16 +209,16 @@ export class CreateSemanticAnnotationScene extends Component {
         annotation.target.url = constants.API_URI + "/stories/" + this.state.storyId;
         annotation.target.start = this.state.startIndex;
         annotation.target.end = this.state.endIndex;
-        annotation.body.value = this.state.selectedText;
 
         console.log(annotation.getObjectRepresentation());
+
+        this.props.createSemanticAnnotation(annotation);
 
 
       } else {
 
+        Alert.alert('Error', 'A body must be selected!');
       }
-
-
     }
 
     render(){
@@ -233,7 +245,8 @@ export class CreateSemanticAnnotationScene extends Component {
             this.renderIf(
               this.state.isFocused,
               <View style={privateStyle.content}>
-                <View style={{flex:1}}>
+                <View style={{flex:1}} 
+                  onLayout={(event) => { this.calculateContentContainerSize(event.nativeEvent.layout) }}>
                   <ScrollView style={{flex:1}}>
                   {
                     content.story_items.map((story, index) => {
@@ -249,6 +262,14 @@ export class CreateSemanticAnnotationScene extends Component {
                             style={privateStyle.textContent}
                             onSelectionChange={(event) => this.handleTextSelection(event, story)}>
                           </TextInput>
+                        )
+                      } else if (story.type === 'image') {
+
+                        return(
+                          <Image key={story.id} style={privateStyle.imageContent} 
+                            source={{uri: story.content}}
+                            style={{ width: this.state.containerWidth, height: this.state.containerHeight }}>
+                          </Image>                          
                         )
                       }
                     })
