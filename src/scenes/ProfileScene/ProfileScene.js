@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import privateStyle from './style';
 import ReactNative from 'react-native';
-import { fetchContents } from '@actions';
+import { fetchUserContents } from '@actions';
 const {
   ScrollView,
   View,
@@ -14,12 +14,12 @@ const {
 export class ProfileScene extends Component {
 
     componentDidMount() {
-      this.props.fetchContents();
+      this.props.fetchUserContents();
     }
 
     render() {
       
-      const contents = this.props.appData.contents;
+      const contents = this.props.appData.userContents;
       
       return(
       <View style={privateStyle.scene}>
@@ -46,13 +46,13 @@ export class ProfileScene extends Component {
 
 function mapStateToProps(state) {
   return {
-    appData: state.HomeReducer
+    appData: state.ProfileReducer
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchContents: () => dispatch(fetchContents())
+    fetchUserContents: () => dispatch(fetchUserContents())
   };
 }
 
