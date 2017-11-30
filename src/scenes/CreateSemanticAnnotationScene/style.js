@@ -78,7 +78,12 @@ const main = StyleSheet.create({
   	},
   	textContent:{
   		fontSize:14
-  	}
+  	},
+	imageContent:{
+		flex:1,
+		resizeMode: 'contain',
+		marginBottom: 10
+	},  	
 });
 
 export default main;
