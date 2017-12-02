@@ -94,6 +94,18 @@ export class ContentDetailScene extends Component {
                 }
 
                 {
+                  this.renderIf((content.day || content.month || content.year),
+                    <View style={privateStyle.dateContainer}>
+                      { content.day && <Text style={privateStyle.date}>{content.day}</Text> }
+                      { content.day && content.month && <Text style={privateStyle.date}>.</Text>}
+                      { content.month && <Text style={privateStyle.date}>{content.month}</Text> }
+                      { content.month && content.year && <Text style={privateStyle.date}>.</Text>}
+                      { content.year && <Text style={privateStyle.date}>{content.year}</Text> }
+                    </View>
+                  )
+                }
+
+                {
                   this.renderIf((content.location.latitude && content.location.longitude),
                     <View style={privateStyle.mapContainer}>
                       <MapView
@@ -114,18 +126,6 @@ export class ContentDetailScene extends Component {
                           pinColor={colors.mainColor}
                         />
                       </MapView>
-                    </View>
-                  )
-                }
-
-                {
-                  this.renderIf((content.day || content.month || content.year),
-                    <View style={privateStyle.dateContainer}>
-                      { content.day && <Text>{content.day}</Text> }
-                      { content.day && content.month && <Text>.</Text>}
-                      { content.month && <Text>{content.month}</Text> }
-                      { content.month && content.year && <Text>.</Text>}
-                      { content.year && <Text>{content.year}</Text> }
                     </View>
                   )
                 }
@@ -187,7 +187,7 @@ export class ContentDetailScene extends Component {
           }
 
           <View style={privateStyle.footer}>
-            <View style={{flex:1, marginBottom:10, justifyContent:'flex-end'}}>
+            <View style={{flex:1, marginBottom:10}}>
                 <TouchableHighlight style={privateStyle.button} onPress={()=> this.changeAnnotationVisibility()}>
                   <Text style={privateStyle.buttonText}> 
                     {this.state.showAnnotationButtonCaption}
@@ -210,7 +210,7 @@ export class ContentDetailScene extends Component {
               {
                 this.renderIf(
                   !this.state.isAnnotationShown,
-                  <View style={{flex:1}}>
+                  <View style={{flex:1, marginBottom:10}}>
                     <TouchableHighlight style={privateStyle.button} 
                       onPress={() =>  this.props.navigation.navigate('CreateSemanticAnnotation', { contentId: content.id })}>
                       <Text style={privateStyle.buttonText}> 

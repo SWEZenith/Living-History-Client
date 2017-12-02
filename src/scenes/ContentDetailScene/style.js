@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
-import { colors, styles, constants } from '@style/main';
+import { colors, styles, values } from '@style/main';
 import Dimensions from 'Dimensions';
 
-const values = {
+const consts = {
 	componentMargin:10
 }
 
@@ -10,20 +10,20 @@ const win = Dimensions.get('window');
 
 const main = StyleSheet.create({
 	propertyContainer:{
-		flex:6
+		flex:5
 	},
 	annotationSection:{
 		flex:6
 	},
 	titleContainer:{
-		marginBottom: values.componentMargin
+		marginBottom: consts.componentMargin
 	},
 	title: {
 		fontSize: 20,
 		fontWeight: 'bold'
 	},
 	tagContainer:{
-		marginBottom: values.componentMargin,
+		marginBottom: consts.componentMargin,
 		flexDirection:'row',
 		flexWrap:'wrap'
 	},
@@ -34,9 +34,12 @@ const main = StyleSheet.create({
 		borderRadius:10, 
 		marginRight:5
 	},
+	date:{
+		fontSize:values.fontSize
+	},
 	mapContainer:{
-		marginBottom: values.componentMargin,
-		height: win.height * 0.18,
+		marginBottom: consts.componentMargin,
+		height: win.height * 0.12,
 		width: win.width * 0.95,
 	},
 	map:{
@@ -45,7 +48,7 @@ const main = StyleSheet.create({
 		top:0,
 		bottom:0,
 		position:'absolute',
-		height: win.height * 0.18,
+		height: win.height * 0.12,
 		width: win.width * 0.95,
 	},
 	dateContainer:{
@@ -83,17 +86,7 @@ const main = StyleSheet.create({
 		marginBottom: 10
 	},
 	footer:{
-		flex:2,
-		justifyContent:'flex-end'
-	},
-	footerLeftContainer:{
-		flex:1,
-		marginRight:10,
-		justifyContent:'flex-end'
-	},
-	footerRightContainer:{
-		flex:1,
-		marginLeft:10,
+		flex:3,
 		justifyContent:'flex-end'
 	},
 	button:{
