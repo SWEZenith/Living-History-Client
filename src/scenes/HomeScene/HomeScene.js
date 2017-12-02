@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { colors, style } from '@style/main';
 import privateStyle from './style';
-import { ZImageView, ZTextArea, ZButton } from '@components/index';
+import { ZImageView, ZTextArea, ZButton, ZTextBox } from '@components/index';
 import ReactNative from 'react-native';
 import { fetchContents } from '@actions';
 import { AnnotationFactory } from '@common';
 import { AnnotationTypes } from '@enums';
 import { ImageTarget, BaseAnnotationBody } from '@models';
+import { searchContent } from '@actions';
+
+
 const {
   ScrollView,
   View,
@@ -16,10 +19,11 @@ const {
   Text,
   TouchableHighlight,
   StyleSheet,
-  RefreshControl,
+  RefreshControl
 } = ReactNative
 
 export class HomeScene extends Component {
+
 
     constructor(props) {
         super(props);
@@ -28,6 +32,7 @@ export class HomeScene extends Component {
     }
     
     componentDidMount(){
+
       this.props.fetchContents();
     }
 
@@ -37,6 +42,13 @@ export class HomeScene extends Component {
       this.setState({refreshing: false}); 
     }
 
+    handleSearch() {
+
+      if(this.state.searchInput != '' || this.state.searchInput.trim() != '')
+        this.props.searchContent(this.state.searchInput);
+      
+    }    
+
     render(){
       
       let contents = this.props.appData.contents;
@@ -44,16 +56,24 @@ export class HomeScene extends Component {
 
     	return(
       <View style={privateStyle.scene}>
+
         <View style={privateStyle.searchSection}>
+
           <TextInput style={privateStyle.searchInput}
             returnKeyType="search"
             placeholder=" Browse Memories... "
             onChangeText={(searchInput) => this.setState({searchInput})}
             value={this.state.searchInput}
           />
-          <TouchableHighlight style={privateStyle.searchButton}>
-            <Text style= {privateStyle.searchText}>Search</Text>
+                    
+          <TouchableHighlight style={privateStyle.searchButton}
+            onPress={()=> this.handleSearch()}>
+            <Image
+              style={{width: 30, height: 30}}
+              source={require('../../assets/img/icons/search.png')}
+            />
           </TouchableHighlight>
+          
         </View>
 
         <ScrollView style={privateStyle.scrollSection}
@@ -93,7 +113,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    fetchContents: () => dispatch(fetchContents())
+    fetchContents: () => dispatch(fetchContents()),
+    searchContent: (keyword) => dispatch(searchContent(keyword))
   }
 }
 

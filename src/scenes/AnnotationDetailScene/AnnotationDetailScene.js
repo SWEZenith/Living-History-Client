@@ -5,7 +5,6 @@ import privateStyle from '../ContentDetailScene/style';
 import { ZImageView, ZButton } from '@components/index';
 import { FlatList, Text, TouchableHighlight, View, Image, ScrollView, Button } from 'react-native';
 import { fetchAnnotations } from '@actions';
-//import Accordion from 'react-native-collapsible/Accordion';
 import HTMLView from 'react-native-htmlview';
 
 
