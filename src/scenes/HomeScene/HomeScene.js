@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { colors, style } from '@style/main';
 import privateStyle from './style';
-import { ZImageView, ZTextArea, ZButton } from '@components/index';
+import { ZImageView, ZTextArea, ZButton, ZTextBox } from '@components/index';
 import ReactNative from 'react-native';
 import { fetchContents } from '@actions';
 import { AnnotationFactory } from '@common';
 import { AnnotationTypes } from '@enums';
 import { ImageTarget, BaseAnnotationBody } from '@models';
+
 const {
   ScrollView,
   View,
@@ -16,10 +17,11 @@ const {
   Text,
   TouchableHighlight,
   StyleSheet,
-  RefreshControl,
+  RefreshControl
 } = ReactNative
 
 export class HomeScene extends Component {
+
 
     constructor(props) {
         super(props);
@@ -28,6 +30,7 @@ export class HomeScene extends Component {
     }
     
     componentDidMount(){
+
       this.props.fetchContents();
     }
 
@@ -44,16 +47,23 @@ export class HomeScene extends Component {
 
     	return(
       <View style={privateStyle.scene}>
+
         <View style={privateStyle.searchSection}>
+
           <TextInput style={privateStyle.searchInput}
             returnKeyType="search"
             placeholder=" Browse Memories... "
             onChangeText={(searchInput) => this.setState({searchInput})}
             value={this.state.searchInput}
           />
+                    
           <TouchableHighlight style={privateStyle.searchButton}>
-            <Text style= {privateStyle.searchText}>Search</Text>
+            <Image
+              style={{width: 30, height: 30}}
+              source={require('../../assets/img/icons/search.png')}
+            />
           </TouchableHighlight>
+          
         </View>
 
         <ScrollView style={privateStyle.scrollSection}
