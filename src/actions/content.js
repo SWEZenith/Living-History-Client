@@ -104,3 +104,39 @@ function sendContent(content) {
     
   });
 }
+
+
+
+///
+/// Search content
+///
+
+export function searchContent(keyword) {
+
+   return (dispatch) => {
+
+      dispatch(fetchContentsStart());
+      findContent(keyword)
+          .then((contents) => {
+
+            dispatch(fetchContentsSuccess(contents));
+            
+          })
+          .catch((err) => {
+
+            console.log('err:', err)
+            dispatch(fetchContentsFailure(err))
+
+          })
+    }
+}
+
+
+function findContent(keyword) {
+
+  return new Promise((resolve, reject) => {
+
+    return resolve(NetworkManager.get(`/contents/search/${keyword}`, ContentTypes.json));
+    
+  });
+}
