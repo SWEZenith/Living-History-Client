@@ -8,6 +8,8 @@ import { fetchContents } from '@actions';
 import { AnnotationFactory } from '@common';
 import { AnnotationTypes } from '@enums';
 import { ImageTarget, BaseAnnotationBody } from '@models';
+import { searchContent } from '@actions';
+
 
 const {
   ScrollView,
@@ -40,6 +42,13 @@ export class HomeScene extends Component {
       this.setState({refreshing: false}); 
     }
 
+    handleSearch() {
+
+      if(this.state.searchInput != '' || this.state.searchInput.trim() != '')
+        this.props.searchContent(this.state.searchInput);
+      
+    }    
+
     render(){
       
       let contents = this.props.appData.contents;
@@ -57,7 +66,8 @@ export class HomeScene extends Component {
             value={this.state.searchInput}
           />
                     
-          <TouchableHighlight style={privateStyle.searchButton}>
+          <TouchableHighlight style={privateStyle.searchButton}
+            onPress={()=> this.handleSearch()}>
             <Image
               style={{width: 30, height: 30}}
               source={require('../../assets/img/icons/search.png')}
@@ -103,7 +113,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    fetchContents: () => dispatch(fetchContents())
+    fetchContents: () => dispatch(fetchContents()),
+    searchContent: (keyword) => dispatch(searchContent(keyword))
   }
 }
 
