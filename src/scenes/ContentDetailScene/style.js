@@ -87,6 +87,7 @@ const main = StyleSheet.create({
 	},
 	footer:{
 		flex:3,
+		marginTop:10,
 		justifyContent:'flex-end'
 	},
 	button:{

@@ -97,11 +97,60 @@ export function fetchSemanticBodiesFailure(error) {
   }
 }
 
-
 function getSemanticBodies(keyword) {
 
   return new Promise((resolve, reject) => {
 
     return resolve(NetworkManager.get(`/semantic/entities/${keyword}`, ContentTypes.json));
+  });
+}
+
+
+
+///
+/// Get semantic properties
+///
+
+export function fetchSemanticProperties(iri) {
+
+   return (dispatch) => {
+      dispatch(fetchSemanticPropertiesStart())
+      getSemanticProperties(iri)
+          .then((properties) => {
+            dispatch(fetchSemanticPropertiesSuccess(properties))
+          })
+          .catch((error) => {
+            console.log('error:', error)
+            dispatch(fetchSemanticPropertiesFailure(error))
+          })
+    }
+}
+
+export function fetchSemanticPropertiesStart() {
+  return {
+    type: actionTypes.FETCH_SEMANTIC_PROPERTIES
+  }
+}
+
+export function fetchSemanticPropertiesSuccess(semanticProperties) {
+  
+  return {
+    type: actionTypes.FETCH_SEMANTIC_PROPERTIES_SUCCESS,
+    semanticProperties
+  }
+}
+
+export function fetchSemanticPropertiesFailure(error) {
+  return {
+    type: actionTypes.FETCH_SEMANTIC_PROPERTIES_FAILURE,
+    error
+  }
+}
+
+function getSemanticProperties(iri) {
+
+  return new Promise((resolve, reject) => {
+
+    return resolve(NetworkManager.post('/semantic/properties/', { iri: iri }, ContentTypes.json));
   });
 }
