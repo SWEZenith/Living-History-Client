@@ -162,9 +162,9 @@ export class CreateSemanticAnnotationScene extends Component {
 
     handleDropdownSelection(index, value) {
 
-      if(index != -1 && index <= this.props.semanticBodyData.semanticBodies.results.bindings.length) {
+      if(index != -1 && index <= this.props.semanticBodyData.semanticBodies.length) {
 
-        let selectedBody = this.props.semanticBodyData.semanticBodies.results.bindings[index]
+        let selectedBody = this.props.semanticBodyData.semanticBodies[index]
         this.setState({
           selectedBody: selectedBody.thing.value
         })
@@ -224,9 +224,8 @@ export class CreateSemanticAnnotationScene extends Component {
     render(){
 
 
-      let semanticBodies = this.props.semanticBodyData.semanticBodies.results != null
-        ? this.props.semanticBodyData.semanticBodies.results.bindings
-          .map(i => (i.name.value + '  (' + i.type.value + ')'))
+      let semanticBodies = this.props.semanticBodyData.semanticBodies != null
+        ? this.props.semanticBodyData.semanticBodies.map(i => (i.name.value + '  (' + i.type.value + ')'))
         : [];
       let content = this.getContent();
 
