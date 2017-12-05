@@ -96,11 +96,19 @@ export class ContentDetailScene extends Component {
                 {
                   this.renderIf((content.day || content.month || content.year),
                     <View style={privateStyle.dateContainer}>
-                      { content.day && <Text style={privateStyle.date}>{content.day}</Text> }
-                      { content.day && content.month && <Text style={privateStyle.date}>.</Text>}
-                      { content.month && <Text style={privateStyle.date}>{content.month}</Text> }
-                      { content.month && content.year && <Text style={privateStyle.date}>.</Text>}
-                      { content.year && <Text style={privateStyle.date}>{content.year}</Text> }
+                      <Text style={privateStyle.date}>{content.day}</Text>
+                      { 
+                        this.renderIf(content.day != '' && content.month != '', 
+                          <Text style={privateStyle.date}>.</Text>
+                        )
+                      }
+                      <Text style={privateStyle.date}>{content.month}</Text>
+                      {
+                        this.renderIf(content.month != '' && content.year != '',
+                          <Text style={privateStyle.date}>.</Text>
+                        ) 
+                      }
+                      <Text style={privateStyle.date}>{content.year}</Text>
                     </View>
                   )
                 }
