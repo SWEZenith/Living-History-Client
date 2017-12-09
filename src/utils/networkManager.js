@@ -85,7 +85,7 @@ class NetworkManager {
     options.headers = await NetworkManager.headers(contentType, route);
     
     return fetch(url, options).then( response => {
-console.log(response)
+
       if (response.ok)
         return response.json();
       
