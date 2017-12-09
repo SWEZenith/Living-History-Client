@@ -1,4 +1,8 @@
 {
-  "name": "LivingHistory",
-  "displayName": "LivingHistory"
+  "expo": {
+    "name": "Living Memories",
+    "slug": "living-memories",
+    "sdkVersion": "23.0.0",
+    "privacy": "public"
+  }
 }
