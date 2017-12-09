@@ -52,7 +52,6 @@ export class HomeScene extends Component {
     render(){
       
       let contents = this.props.appData.contents;
-      console.log(contents);
 
     	return(
       <View style={privateStyle.scene}>
