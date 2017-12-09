@@ -14,7 +14,8 @@ This is a react native application to keep memories of human beings alive by cre
 ## How to run on local
 
 Open Terminal, then type command:
-```git clone git@github.com:SWEZenith/Living-History-Client.git```
+
+> ```git clone git@github.com:SWEZenith/Living-History-Client.git```
 
 Go to project folder :
 ```cd Living-History-Client```
