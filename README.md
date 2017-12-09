@@ -3,6 +3,21 @@
 
 This is a react native application to keep memories of human beings alive by creating web annotations on image or textual contents or viewing web annotations of contents. Web annotations will be standardized according to web annotation data model definition of W3C.
 
+## Sandbox Environment
+
+Firstly, you need to install expo in order to run Living History application on sandbox environment. Install expo through following links.
+
+
+
+Scan following QR code from expo application and let it amaze you!
+
+
+
+
+
+
+
+
 ## Prerequisites
 
 * [Node.js](https://nodejs.org/en/download/)
