@@ -8,18 +8,18 @@ This is a react native application to keep memories of human beings alive by cre
 Firstly, you need to install expo in order to run Living History application on sandbox environment. Install expo through following links.
 
 <div style="display:inline-block">
-<img src="https://github.com/bulentrahimkazanci/Living-History-Client/blob/master/assets/app-store.png" width="200" style="display:inline;"/>
-<img src="https://github.com/bulentrahimkazanci/Living-History-Client/blob/master/assets/play-store.png" width="200" style="display:inline;"/>
+	<img src="https://github.com/bulentrahimkazanci/Living-History-Client/blob/master/assets/app-store.png" 
+		 width="200" 
+		 style="display:inline;"/>
+	<img src="https://github.com/bulentrahimkazanci/Living-History-Client/blob/master/assets/play-store.png" 
+		 width="200" 
+		 style="display:inline;"/>
  </div>
 
 
 Scan following QR code from expo application and let it amaze you!
 
 <img src="https://github.com/bulentrahimkazanci/Living-History-Client/blob/master/assets/living-memories-qr.png"/>
-
-
-
-
 
 
 ## Prerequisites
