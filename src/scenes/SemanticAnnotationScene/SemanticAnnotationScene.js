@@ -42,9 +42,6 @@ export class SemanticAnnotationScene extends Component {
     }
 
     componentWillMount(nextProps) {
-      
-      console.log('========')
-      console.log(nextProps)
 
       if(this.props.isSuccessfull === false && this.nextProps.isSuccessfull === true)
         this.props.navigation.goBack();
@@ -73,12 +70,9 @@ export class SemanticAnnotationScene extends Component {
 
     handleDropdownSelection(index, value) {
 
-      //BRK TODO
-      
       if(index != -1 && index <= this.props.semanticBodyData.semanticBodies.results.bindings.length) {
 
         let selectedBody = this.props.semanticBodyData.semanticBodies.results.bindings[index]
-        console.log('selected Body: ', selectedBody);
       }
     }
 

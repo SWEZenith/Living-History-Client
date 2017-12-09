@@ -210,8 +210,6 @@ export class CreateSemanticAnnotationScene extends Component {
         annotation.target.start = this.state.startIndex;
         annotation.target.end = this.state.endIndex;
 
-        console.log(annotation.getObjectRepresentation());
-
         this.props.createSemanticAnnotation(annotation);
 
 
