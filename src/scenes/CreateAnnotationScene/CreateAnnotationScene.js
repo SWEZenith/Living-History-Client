@@ -318,9 +318,9 @@ export class CreateAnnotationScene extends Component {
                                     width: this.state.containerWidth,
                                     height: this.state.containerHeight
                                   }}>
-                                  <View pointerEvents='none' 
-                                    style={[privateStyle.areaSelector, areaSelectorDynamicStyle]}/>
                                 </Image>
+                                                                  <View pointerEvents='none' 
+                                    style={[privateStyle.areaSelector, areaSelectorDynamicStyle]}/>
                               </View>
                             </View>
                           </View>
