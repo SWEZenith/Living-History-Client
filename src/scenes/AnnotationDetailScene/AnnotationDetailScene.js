@@ -104,23 +104,29 @@ export class AnnotationDetailScene extends Component {
 
       let annotations = this.getContent().annotations.filter(a => a.target.id.indexOf(story.id) != -1);
       let result;
+      if(annotations.length > 0) {
+        for(let annotation of annotations) {
 
-      for(let annotation of annotations) {
+          let positions = annotation.target.id.split('=')[1].split(',');
 
-        let positions = annotation.target.id.split('=')[1].split(',');
+          result = (
+            <Text>
+              <Text>
+                {story.content.substring(0, positions[0])}
+              </Text>
+              <Text style={{backgroundColor: this.state.activeAnnotationId == annotation.id ? "yellow" : "white"}}>
+                {story.content.substring(positions[0], positions[1])}
+              </Text>
+              <Text>
+                {story.content.substring(positions[1], story.content.length)}
+              </Text>
+            </Text>
+          );
+        }
+      } else {
 
         result = (
-          <Text>
-            <Text>
-              {story.content.substring(0, positions[0])}
-            </Text>
-            <Text style={{backgroundColor: this.state.activeAnnotationId == annotation.id ? "yellow" : "white"}}>
-              {story.content.substring(positions[0], positions[1])}
-            </Text>
-            <Text>
-              {story.content.substring(positions[1], story.content.length)}
-            </Text>
-          </Text>
+          <Text>{story.content}</Text>  
         );
       }
 
@@ -171,10 +177,11 @@ export class AnnotationDetailScene extends Component {
                 if(story.type === 'image'){
 
                   return(
-                    <Image key={story.id} style={privateStyle.imageContent} 
+                    <View key={story.id}>
+                    <Image  style={privateStyle.imageContent} 
                       source={{uri: story.content}}
                       style={{ width: this.state.containerWidth, height: this.state.containerHeight }}>
-
+                    </Image>
                       {
                         content.annotations.map((annotation) =>
                         {
@@ -195,8 +202,7 @@ export class AnnotationDetailScene extends Component {
                           }
                         })
                       }
-
-                    </Image>
+                    </View>
                   )
 
                 } else if(story.type === 'text') {
