@@ -19,15 +19,16 @@ const {
   Text,
   TouchableHighlight,
   StyleSheet,
-  RefreshControl
+  RefreshControl,
+  Keyboard,
+  Alert
 } = ReactNative
 
 export class HomeScene extends Component {
 
-
     constructor(props) {
         super(props);
-        this.state = { searching: false, searchInput: '', refreshing: false }
+        this.state = { searching: false, searchInput: '', refreshing: false}
         this._onRefresh = this._onRefresh.bind(this)
     }
     
@@ -61,6 +62,7 @@ export class HomeScene extends Component {
           <TextInput style={privateStyle.searchInput}
             returnKeyType="search"
             placeholder=" Browse Memories... "
+            autoFocus={false}
             onChangeText={(searchInput) => this.setState({searchInput})}
             value={this.state.searchInput}
           />
