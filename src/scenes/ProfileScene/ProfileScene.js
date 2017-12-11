@@ -22,17 +22,16 @@ export class ProfileScene extends Component {
     }
 
     async componentDidMount() {
-      //this.loadInitialState().done();
-      let username = await StorageHelper.get(constants.USERNAME);
+      const username = await StorageHelper.get(constants.USERNAME);
       this.setState({ username: username });
       this.props.fetchUserContents(username);
       this.props.fetchUserAnnotations(username);
     }
 
     findContentId(annotationId) {
-      for(let content of this.props.contents) {
-        for(let annotation of content.annotations) {
-          if(annotation.id == annotationId) {
+      for (const content of this.props.contents) {
+        for (const annotation of content.annotations) {
+          if (annotation.id === annotationId) {
             result = content.id;
             break;
           }
@@ -46,15 +45,14 @@ export class ProfileScene extends Component {
       this.props.navigation.navigate('AnnotationDetail', {
         annotationId: annotationId,
         contentId: this.findContentId(annotationId)
-      })
+      });
     }
 
     render() {
-      
       const contents = this.props.appData.userContents;
       const annotations = this.props.appData.userAnnotations;
 
-      return(
+      return (
       <View style={privateStyle.scene}>
 
       <View style={privateStyle.headerStyle}>
@@ -67,8 +65,8 @@ export class ProfileScene extends Component {
             return (
               <TouchableHighlight 
                   key={content.id} 
-                  style={privateStyle.resultButton,{paddingLeft: 15}} 
-                  onPress={() => this.props.navigation.navigate('ContentDetail', { contentId: content.id }) }>
+                  style={privateStyle.resultButton, { paddingLeft: 15 }} 
+                  onPress={() => this.props.navigation.navigate('ContentDetail', { contentId: content.id })} >
                 <View>
                   <Image source={{ uri: content.cover_image }} style={privateStyle.resultImage} />
                   <Text style={privateStyle.resultText} >{content.title}</Text>
@@ -78,18 +76,18 @@ export class ProfileScene extends Component {
           })}
         </ScrollView>
 
-        <View style={{paddingLeft: 15}}/>
+        <View style={{ paddingLeft: 15 }} />
 
         <View style={privateStyle.annotationSection}>
           <View style={privateStyle.annotationContainer}>
             <FlatList
               data={annotations}
               keyExtractor={(item, index) => item.id}
-              renderItem={ ({item}) => 
+              renderItem={({ item }) => 
                 <View>
                   <TouchableHighlight style={privateStyle.annotationItem}
                     onPress={()=> this.handleAnnotationSelection(item.id)}>
-                    <Text style={{fontSize: 12}}>
+                    <Text style={{ fontSize: 12 }}>
                       {item.id}
                     </Text>
                   </TouchableHighlight>
@@ -120,6 +118,5 @@ function mapDispatchToProps(dispatch) {
     fetchUserAnnotations: (username) => dispatch(fetchUserAnnotations(username)),
   };
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScene);
