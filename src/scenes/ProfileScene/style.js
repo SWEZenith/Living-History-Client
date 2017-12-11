@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { colors, styles, constants } from '@style/main';
 
 
 
@@ -8,21 +9,37 @@ const main = StyleSheet.create({
     backgroundColor: 'white',
   },
   searchSection: {
-    height: 40,
-    flexDirection: 'row',
-    borderBottomColor: '#000',
-    borderBottomWidth: 1,
-    padding: 5,
+    flexDirection:'row',
+    backgroundColor:colors.mainColor,
+    padding:12,
+    height:64
   },
-  scrollSection: {
-    flex: 0.8
+  searchInput: {
+    height:40,
+    width:300,
+    backgroundColor: 'white',
+    borderColor:'#FFF',
+    color: colors.mainColor,
+    borderRadius:10
   },
   searchButton: {
-    flex: 0.12,
-    height: 30,
-    backgroundColor:'#9B51E0',
-    padding:5,
-    borderRadius:50,
+
+    marginLeft:12,
+    height: 40,
+    width:40,
+    backgroundColor:'#FFF',
+    borderRadius:10,
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  searchText: {
+    color:'#fff'
+  },
+  scrollSection: {
+    flex: 1
+  },
+  annotationSection:{
+    flex:1
   },
   createButton: {
     flex: 1,
@@ -31,17 +48,8 @@ const main = StyleSheet.create({
     padding:5,
     borderRadius:50,
   },
-  searchText: {
-    color:'#fff',
-    textAlign:'center',
-  },
   resultButton: {
     flex: 0.3,
-  },
-  searchInput: {
-    flex: 0.88,
-    height: 40,
-    backgroundColor: 'white'
   },
   resultText: {
     backgroundColor: '#000',
@@ -50,7 +58,32 @@ const main = StyleSheet.create({
   },
   resultImage: {
     height: 150,
-  }
+  },
+  annotationContainer:{
+     flex: 1,
+      borderWidth: 1,
+      borderColor: colors.mainColor,
+      overflow:'scroll',
+  },
+  annotationItem:{
+      padding: 10,
+      height: 44,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.mainColor,
+  },
+  headerStyle: {
+    backgroundColor: '#F8F8F8',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 60,
+    paddingTop: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    elevation: 2,
+    position: 'relative',
+    fontSize: 20
+  },
 });
 
 export default main;
