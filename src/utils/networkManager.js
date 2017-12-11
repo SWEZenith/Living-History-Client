@@ -82,12 +82,10 @@ class NetworkManager {
     const url = `${constants.API_URI}${route}`;
 
     let options = Object.assign({ method: verb }, body ? { body: JSON.stringify(body) } : null );
-
     options.headers = await NetworkManager.headers(contentType, route);
- console.log(url)
- console.log(options)   
+    
     return fetch(url, options).then( response => {
-console.log(response)
+
       if (response.ok)
         return response.json();
       

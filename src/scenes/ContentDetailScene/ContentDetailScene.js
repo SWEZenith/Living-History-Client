@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { style } from '@style/main';
+import { colors, style } from '@style/main';
 import privateStyle from './style';
 import { ZImageView, ZButton } from '@components/index';
 import { FlatList, Text, TouchableHighlight, View, Image, ScrollView  } from 'react-native';
 import { fetchAnnotations } from '@actions';
-import Accordion from 'react-native-collapsible/Accordion';
 import HTMLView from 'react-native-htmlview';
+import MapView from 'react-native-maps';
 
 
 
@@ -96,11 +96,44 @@ export class ContentDetailScene extends Component {
                 {
                   this.renderIf((content.day || content.month || content.year),
                     <View style={privateStyle.dateContainer}>
-                      { content.day && <Text>{content.day}</Text> }
-                      { content.day && content.month && <Text>.</Text>}
-                      { content.month && <Text>{content.month}</Text> }
-                      { content.month && content.year && <Text>.</Text>}
-                      { content.year && <Text>{content.year}</Text> }
+                      <Text style={privateStyle.date}>{content.day}</Text>
+                      { 
+                        this.renderIf(content.day != '' && content.month != '', 
+                          <Text style={privateStyle.date}>.</Text>
+                        )
+                      }
+                      <Text style={privateStyle.date}>{content.month}</Text>
+                      {
+                        this.renderIf(content.month != '' && content.year != '',
+                          <Text style={privateStyle.date}>.</Text>
+                        ) 
+                      }
+                      <Text style={privateStyle.date}>{content.year}</Text>
+                    </View>
+                  )
+                }
+
+                {
+                  this.renderIf((content.location.latitude && content.location.longitude),
+                    <View style={privateStyle.mapContainer}>
+                      <MapView
+                        style={privateStyle.map}
+                        initialRegion={{
+                          latitude: content.location.latitude,
+                          longitude: content.location.longitude,
+                          latitudeDelta: 0.0270,
+                          longitudeDelta: 0.0120,
+                      }}>
+                        <MapView.Marker
+                          coordinate={{
+                            latitude: content.location.latitude,
+                            longitude: content.location.longitude,
+                          }}
+                          title={content.location.name}
+                          description={content.title}
+                          pinColor={colors.mainColor}
+                        />
+                      </MapView>
                     </View>
                   )
                 }
@@ -162,21 +195,39 @@ export class ContentDetailScene extends Component {
           }
 
           <View style={privateStyle.footer}>
-            <View style={privateStyle.footerLeftContainer}>
+            <View style={{flex:1, marginBottom:10}}>
                 <TouchableHighlight style={privateStyle.button} onPress={()=> this.changeAnnotationVisibility()}>
                   <Text style={privateStyle.buttonText}> 
                     {this.state.showAnnotationButtonCaption}
                   </Text>
                 </TouchableHighlight>
              </View>
-             <View style={privateStyle.footerRightContainer}>
-                <TouchableHighlight style={privateStyle.button}
-                onPress={() =>  this.props.navigation.navigate('CreateAnnotation', { contentId: content.id })}>
-                  <Text style={privateStyle.buttonText}> 
-                    Create Annotation
-                  </Text>
-                </TouchableHighlight>
-             </View>
+             {
+                this.renderIf(
+                  !this.state.isAnnotationShown,
+                  <View style={{flex:1, marginBottom:10}}>
+                    <TouchableHighlight style={privateStyle.button}
+                      onPress={() =>  this.props.navigation.navigate('CreateAnnotation', { contentId: content.id })}>
+                        <Text style={privateStyle.buttonText}> 
+                          Create Annotation
+                        </Text>
+                      </TouchableHighlight>
+                  </View>
+                )
+              }
+              {
+                this.renderIf(
+                  !this.state.isAnnotationShown,
+                  <View style={{flex:1, marginBottom:10}}>
+                    <TouchableHighlight style={privateStyle.button} 
+                      onPress={() =>  this.props.navigation.navigate('CreateSemanticAnnotation', { contentId: content.id })}>
+                      <Text style={privateStyle.buttonText}> 
+                        Create Semantic Annotation
+                      </Text>
+                    </TouchableHighlight>
+                  </View>
+                )
+              }
           </View>
 
         </View>

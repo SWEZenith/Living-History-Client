@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { style } from '@style/main';
 import privateStyle from '../ContentDetailScene/style';
+import annotationStyle from './style';
 import { ZImageView, ZButton } from '@components/index';
 import { FlatList, Text, TouchableHighlight, View, Image, ScrollView, Button } from 'react-native';
-import { fetchAnnotations } from '@actions';
-import Accordion from 'react-native-collapsible/Accordion';
+import { fetchSemanticProperties } from '@actions';
 import HTMLView from 'react-native-htmlview';
 
 
@@ -77,6 +77,13 @@ export class AnnotationDetailScene extends Component {
 
     componentDidMount(){
       
+      let annotation = this.getAnnotation();
+      let isSemanticAnnotation = annotation.body['@id'] ? true : false;
+      this.setState({ isSemanticAnnotation });
+
+      if(isSemanticAnnotation)
+        this.getSemanticProperties(annotation.body['@id']);
+        
       this.highlightAnnotationOnContent();
     }
 
@@ -141,10 +148,16 @@ export class AnnotationDetailScene extends Component {
       })
     }
 
+    getSemanticProperties(iri) {
+
+      this.props.fetchSemanticProperties(iri);
+    }
+
     render(){
 
       let content = this.getContent();
       let annotation = this.getAnnotation();
+      let semanticProperties = this.props.semanticProperties;
 
       return(
         <View style={[style.zPage]}>
@@ -201,15 +214,135 @@ export class AnnotationDetailScene extends Component {
           </View>
 
           {
-            <View style={privateStyle.annotationSection}>
-              <View style={privateStyle.annotationContainer}>
-              <ScrollView style={privateStyle.contentBody}>
-                <HTMLView
-                  value={annotation.body.value}
-                />
-                </ScrollView>
+            this.renderIf(!this.state.isSemanticAnnotation,
+              <View style={privateStyle.annotationSection}>
+                <View style={privateStyle.annotationContainer}>
+                <ScrollView style={privateStyle.contentBody}>
+                  <HTMLView
+                    value={annotation.body.value}
+                  />
+                  </ScrollView>
+                </View>
               </View>
-            </View>
+            )
+          }
+          {
+            this.renderIf(this.state.isSemanticAnnotation,
+              <View style={privateStyle.annotationSection}>
+                <View style={privateStyle.annotationContainer}>
+                {
+                  semanticProperties && semanticProperties.type === 'City' &&
+                  <ScrollView style={privateStyle.contentBody}>
+                    <View>
+                      <View style={annotationStyle.semanticPropertyContainer}>
+                        <Text style={annotationStyle.label}>
+                          Name:
+                        </Text>
+                        <Text style={annotationStyle.semanticProperty}>
+                          {semanticProperties && semanticProperties.name.value}
+                        </Text>
+                      </View>
+                      <View style={annotationStyle.semanticPropertyContainer}>
+                        <Text style={annotationStyle.label}>
+                          Country:
+                        </Text>
+                        <Text style={annotationStyle.semanticProperty}>
+                          {semanticProperties && semanticProperties.counrtyName.value}
+                        </Text>
+                      </View>
+                      <View style={annotationStyle.semanticPropertyContainer}>
+                        <Text style={annotationStyle.label}>
+                          Population:
+                        </Text>
+                        <Text style={annotationStyle.semanticProperty}>
+                          {semanticProperties && semanticProperties.population.value}
+                        </Text>
+                      </View>
+                      <View style={annotationStyle.semanticPropertyContainer}>
+                        <Text style={annotationStyle.label}>
+                          Web Page:
+                        </Text>
+                        <Text style={annotationStyle.semanticProperty}>
+                          {semanticProperties && semanticProperties.webPage.value}
+                        </Text>
+                      </View>                                
+                      <View>
+                        <Text style={[annotationStyle.label,{marginBottom:12}]}>
+                          Image:
+                        </Text>
+                        {
+                          semanticProperties &&
+                          <Image style={privateStyle.imageContent} 
+                            source={{uri: semanticProperties.image.value}}
+                            style={{ width: this.state.containerWidth, height: this.state.containerHeight }}>
+                          </Image>
+                        }
+                      </View>                                                   
+                    </View>
+                  </ScrollView>
+                }
+                {
+                  semanticProperties && semanticProperties.type === 'Person' &&
+                  <ScrollView style={privateStyle.contentBody}>
+                    <View>
+                      <View style={annotationStyle.semanticPropertyContainer}>
+                        <Text style={annotationStyle.label}>
+                          Name:
+                        </Text>
+                        <Text style={annotationStyle.semanticProperty}>
+                          {semanticProperties && semanticProperties.name.value}
+                        </Text>
+                      </View>
+                      <View style={annotationStyle.semanticPropertyContainer}>
+                        <Text style={annotationStyle.label}>
+                          Birth Date:
+                        </Text>
+                        <Text style={annotationStyle.semanticProperty}>
+                          {semanticProperties && semanticProperties.birthDate.value}
+                        </Text>
+                      </View>
+                      <View style={annotationStyle.semanticPropertyContainer}>
+                        <Text style={annotationStyle.label}>
+                          Birth Place:
+                        </Text>
+                        <Text style={annotationStyle.semanticProperty}>
+                          {semanticProperties && semanticProperties.birthPlace.value}
+                        </Text>
+                      </View>
+                      <View style={annotationStyle.semanticPropertyContainer}>
+                        <Text style={annotationStyle.label}>
+                          Occupation:
+                        </Text>
+                        <Text style={annotationStyle.semanticProperty}>
+                          {semanticProperties && semanticProperties.jobTitle.value}
+                        </Text>
+                      </View>                      
+                      <View style={annotationStyle.semanticPropertyContainer}>
+                        <Text style={annotationStyle.label}>
+                          Web Page:
+                        </Text>
+                        <Text style={annotationStyle.semanticProperty}>
+                          {semanticProperties && semanticProperties.webPage.value}
+                        </Text>
+                      </View>                                
+                      <View>
+                        <Text style={[annotationStyle.label,{marginBottom:12}]}>
+                          Image:
+                        </Text>
+                        {
+                          semanticProperties && 
+                          <Image style={privateStyle.imageContent} 
+                            source={{uri: semanticProperties.image.value}}
+                            style={{ width: this.state.containerWidth, height: this.state.containerHeight }}>
+                          </Image>
+                        }
+                      </View>                                                   
+                    </View>
+                  </ScrollView>
+                }
+                </View>              
+              </View>
+            )
           }
 
         </View>
@@ -220,12 +353,14 @@ export class AnnotationDetailScene extends Component {
 
 function mapStateToProps (state) {
   return {
-    contents: state.HomeReducer.contents
+    contents: state.HomeReducer.contents,
+    semanticProperties: state.SemanticPropertiesReducer.semanticProperties
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
+    fetchSemanticProperties: (iri) => dispatch(fetchSemanticProperties(iri))
   }
 }
 

@@ -51,20 +51,27 @@ export class ProfileScene extends Component {
           })}
         </ScrollView>
 
-        <ScrollView style={privateStyle.scrollSection}>
-          {annotations.map((annotation) => {
-            return (
-              <TouchableHighlight 
-                  key={annotation.id} 
-                  style={privateStyle.resultButton,{paddingLeft: 15}} 
-                  onPress={() => this.props.navigation.navigate('ContentDetail', { contentId: annotation.id }) }>
+
+        <View style={privateStyle.annotationSection}>
+          <View style={privateStyle.annotationContainer}>
+            <FlatList
+              data={annotations}
+              keyExtractor={(item, index) => item.id}
+              renderItem={ ({item}) => 
                 <View>
-                  <Text style={privateStyle.resultText} >{annotation.id}</Text>
-                </View>
-              </TouchableHighlight>
-            );
-          })}
-        </ScrollView>
+                  <TouchableHighlight style={privateStyle.annotationItem,{paddingLeft: 15}}
+                    onPress={()=> alert(item.body.value)}>
+                    <Text>
+                      {item.id}
+                    </Text>
+                  </TouchableHighlight>
+                </View> 
+              }
+            />
+          </View>
+        </View>
+
+
       </View>
 
       </View>

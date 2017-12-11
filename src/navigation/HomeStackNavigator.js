@@ -14,7 +14,7 @@ const HomeStackNavigator = StackNavigator({
   ContentDetail: { screen: ContentDetailScene },
   AnnotationDetail:{ screen: AnnotationDetailScene },
   CreateAnnotation: { screen: CreateAnnotationScene },
-  CreateSemanticAnnotation: { screen: CreateSemanticAnnotationScene },
+  CreateSemanticAnnotation: { screen: CreateSemanticAnnotationScene }
 });
 
 export default HomeStackNavigator;

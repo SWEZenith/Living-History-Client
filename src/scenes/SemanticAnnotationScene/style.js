@@ -33,6 +33,32 @@ const main = StyleSheet.create({
 		width:300,
 		marginTop:20
 	},
+	textSelector:{
+		
+	},
+	dropdown:{
+		marginTop:20,
+		width:300,
+		height:31,
+		borderWidth:1,
+		borderColor: colors.mainColor
+	},
+	dropdownText:{
+	    fontSize: constants.fontSize,
+	    marginTop:1,
+	    marginBottom:1,
+	    lineHeight: 28
+	},
+  	dropdownBody: {
+	    width: 300,
+	    height: 150,
+	    borderColor: colors.mainColor,
+	    borderWidth: 2,
+	    borderRadius: 3,
+	  },
+  	dropdownTextStyle: {
+		fontSize: constants.fontSize,
+  	},
 	footer: {
 		flex:1, 
 		justifyContent:'flex-end',
