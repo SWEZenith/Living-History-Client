@@ -32,7 +32,7 @@ export default function ProfileReducer(state = initialState, action) {
     case actionTypes.FETCH_USER_ANNOTATIONS_SUCCESS:
       return {
         ...state,
-        userAnnotations: action.annotations,
+        userAnnotations: action.userAnnotations,
         actionType: actionTypes.FETCH_USER_ANNOTATIONS_SUCCESS
       };
     case actionTypes.FETCH_USER_ANNOTATIONS_FAILURE:

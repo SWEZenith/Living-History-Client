@@ -2,24 +2,29 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import privateStyle from './style';
 import ReactNative from 'react-native';
-import { fetchUserContents } from '@actions';
+import { fetchUserContents, fetchUserAnnotations } from '@actions';
 const {
   ScrollView,
   View,
   Image,
   Text,
   TouchableHighlight,
+  FlatList,
 } = ReactNative;
 
 export class ProfileScene extends Component {
 
     componentDidMount() {
       this.props.fetchUserContents();
+      this.props.fetchUserAnnotations();
     }
 
     render() {
       
       const contents = this.props.appData.userContents;
+      const annotations = this.props.appData.userAnnotations;
+      //console.log(contents.find(content => content.id === '5a146ebffc2199000146cd7f'));
+      //console.log(annotations.find(content => content.id === '5a11dd5cfc2199000146c922'));
       const { headerStyle, containerStyle, itemStyle } = styles;
       
       return(
@@ -37,7 +42,7 @@ export class ProfileScene extends Component {
                   key={content.id} 
                   style={privateStyle.resultButton,{paddingLeft: 15}} 
                   onPress={() => this.props.navigation.navigate('ContentDetail', { contentId: content.id }) }>
-                <ScrollView>
+                <View>
                   <Image source={{ uri: content.cover_image }} style={privateStyle.resultImage} />
                   <Text style={privateStyle.resultText} >{content.title}</Text>
                 </View>
@@ -47,14 +52,14 @@ export class ProfileScene extends Component {
         </ScrollView>
 
         <ScrollView style={privateStyle.scrollSection}>
-          {contents.map((content) => {
+          {annotations.map((annotation) => {
             return (
               <TouchableHighlight 
-                  key={content.id} 
+                  key={annotation.id} 
                   style={privateStyle.resultButton,{paddingLeft: 15}} 
-                  onPress={() => this.props.navigation.navigate('ContentDetail', { contentId: content.id }) }>
+                  onPress={() => this.props.navigation.navigate('ContentDetail', { contentId: annotation.id }) }>
                 <View>
-                  <Text style={privateStyle.resultText} >{content.title}</Text>
+                  <Text style={privateStyle.resultText} >{annotation.id}</Text>
                 </View>
               </TouchableHighlight>
             );
@@ -75,7 +80,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchUserContents: () => dispatch(fetchUserContents())
+    fetchUserContents: () => dispatch(fetchUserContents()),
+    fetchUserAnnotations: () => dispatch(fetchUserAnnotations())
   };
 }
 
