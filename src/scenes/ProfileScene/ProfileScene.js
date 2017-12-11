@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import privateStyle from './style';
 import ReactNative from 'react-native';
 import { fetchUserContents, fetchUserAnnotations } from '@actions';
+import { StorageHelper } from '@utils';
 
 const {
   ScrollView,
@@ -20,6 +21,26 @@ export class ProfileScene extends Component {
       this.props.fetchUserAnnotations();
     }
 
+    findContentId(annotationId) {
+      for(let content of this.props.contents) {
+        for(let annotation of content.annotations) {
+          if(annotation.id == annotationId) {
+            result = content.id;
+            break;
+          }
+       }
+      }
+      return result;
+    }
+
+    handleAnnotationSelection(annotationId) {
+
+      this.props.navigation.navigate('AnnotationDetail', {
+        annotationId: annotationId,
+        contentId: this.findContentId(annotationId)
+      })
+    }
+
     render() {
       
       const contents = this.props.appData.userContents;
@@ -27,6 +48,17 @@ export class ProfileScene extends Component {
       //console.log(contents.find(content => content.id === '5a146ebffc2199000146cd7f'));
       //console.log(annotations.find(content => content.id === '5a11dd5cfc2199000146c922'));
       
+      //const acDict = this.props.contents.map(function(c) {
+        //for (let a of c.annotations) {
+          //return {
+            //a: a.id,
+            //c: c.id
+          //};
+        //}
+      //});
+
+
+        
       return(
       <View style={privateStyle.scene}>
 
@@ -61,7 +93,7 @@ export class ProfileScene extends Component {
               renderItem={ ({item}) => 
                 <View>
                   <TouchableHighlight style={privateStyle.annotationItem}
-                    onPress={()=> alert(item.body.value)}>
+                    onPress={()=> this.handleAnnotationSelection(item.id)}>
                     <Text style={{fontSize: 12}}>
                       {item.id}
                     </Text>
@@ -82,14 +114,15 @@ export class ProfileScene extends Component {
 
 function mapStateToProps(state) {
   return {
-    appData: state.ProfileReducer
+    appData: state.ProfileReducer,
+    contents: state.HomeReducer.contents,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchUserContents: () => dispatch(fetchUserContents()),
-    fetchUserAnnotations: () => dispatch(fetchUserAnnotations())
+    fetchUserAnnotations: () => dispatch(fetchUserAnnotations()),
   };
 }
 
