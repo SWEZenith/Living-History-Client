@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import privateStyle from './style';
 import ReactNative from 'react-native';
 import { fetchUserContents, fetchUserAnnotations } from '@actions';
-import HTMLView from 'react-native-htmlview';
 
 const {
   ScrollView,
@@ -62,12 +61,8 @@ export class ProfileScene extends Component {
               renderItem={ ({item}) => 
                 <View>
                   <TouchableHighlight style={privateStyle.annotationItem}
-                    onPress={()=> alert(
-                      <HTMLView
-                        value={item.body.value}
-                      />
-                      )}>
-                    <Text>
+                    onPress={()=> alert(item.body.value)}>
+                    <Text style={{fontSize: 12}}>
                       {item.id}
                     </Text>
                   </TouchableHighlight>
