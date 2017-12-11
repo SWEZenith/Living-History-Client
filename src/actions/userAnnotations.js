@@ -40,6 +40,7 @@ export function fetchUserAnnotationsFailure(error) {
   };
 }
 
+
 function getUserAnnotations() {
   return new Promise((resolve) => {
     return resolve(NetworkManager.get(`/users/${StorageHelper.get(constants.USERNAME)}/annotations`, ContentTypes.jsonLD));

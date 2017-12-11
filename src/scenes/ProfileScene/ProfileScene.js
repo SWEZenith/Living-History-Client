@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import privateStyle from './style';
 import ReactNative from 'react-native';
 import { fetchUserContents, fetchUserAnnotations } from '@actions';
+import { StorageHelper } from '@utils';
+
 const {
   ScrollView,
   View,
@@ -19,18 +21,48 @@ export class ProfileScene extends Component {
       this.props.fetchUserAnnotations();
     }
 
+    findContentId(annotationId) {
+      for(let content of this.props.contents) {
+        for(let annotation of content.annotations) {
+          if(annotation.id == annotationId) {
+            result = content.id;
+            break;
+          }
+       }
+      }
+      return result;
+    }
+
+    handleAnnotationSelection(annotationId) {
+
+      this.props.navigation.navigate('AnnotationDetail', {
+        annotationId: annotationId,
+        contentId: this.findContentId(annotationId)
+      })
+    }
+
     render() {
       
       const contents = this.props.appData.userContents;
       const annotations = this.props.appData.userAnnotations;
       //console.log(contents.find(content => content.id === '5a146ebffc2199000146cd7f'));
       //console.log(annotations.find(content => content.id === '5a11dd5cfc2199000146c922'));
-      const { headerStyle, containerStyle, itemStyle } = styles;
       
+      //const acDict = this.props.contents.map(function(c) {
+        //for (let a of c.annotations) {
+          //return {
+            //a: a.id,
+            //c: c.id
+          //};
+        //}
+      //});
+
+
+        
       return(
       <View style={privateStyle.scene}>
 
-      <View style={headerStyle}>
+      <View style={privateStyle.headerStyle}>
         <Text> User Profile </Text>
       </View>
 
@@ -51,6 +83,7 @@ export class ProfileScene extends Component {
           })}
         </ScrollView>
 
+        <View style={{paddingLeft: 15}}/>
 
         <View style={privateStyle.annotationSection}>
           <View style={privateStyle.annotationContainer}>
@@ -59,9 +92,9 @@ export class ProfileScene extends Component {
               keyExtractor={(item, index) => item.id}
               renderItem={ ({item}) => 
                 <View>
-                  <TouchableHighlight style={privateStyle.annotationItem,{paddingLeft: 15}}
-                    onPress={()=> alert(item.body.value)}>
-                    <Text>
+                  <TouchableHighlight style={privateStyle.annotationItem}
+                    onPress={()=> this.handleAnnotationSelection(item.id)}>
+                    <Text style={{fontSize: 12}}>
                       {item.id}
                     </Text>
                   </TouchableHighlight>
@@ -81,43 +114,16 @@ export class ProfileScene extends Component {
 
 function mapStateToProps(state) {
   return {
-    appData: state.ProfileReducer
+    appData: state.ProfileReducer,
+    contents: state.HomeReducer.contents,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchUserContents: () => dispatch(fetchUserContents()),
-    fetchUserAnnotations: () => dispatch(fetchUserAnnotations())
+    fetchUserAnnotations: () => dispatch(fetchUserAnnotations()),
   };
 }
-
-const styles = {
-  headerStyle: {
-    backgroundColor: '#F8F8F8',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 60,
-    paddingTop: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    elevation: 2,
-    position: 'relative',
-    fontSize: 20
-  },
-  containerStyle: {
-    borderBottomWidth: 1,
-    padding: 5,
-    backgroundColor: '#fff',
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-    borderColor: '#ddd',
-    position: 'relative'
-  },
-  itemStyle: {
-    paddingLeft: 15
-  }
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScene);
