@@ -1,8 +1,8 @@
 {
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 2162,
-  "expoServerNgrokUrl": "https://j6-sd7.bulentrahimkazanci.living-history-client.exp.direct",
-  "packagerNgrokUrl": "https://packager.j6-sd7.bulentrahimkazanci.living-history-client.exp.direct",
-  "ngrokPid": 2173
+  "packagerPort": 19002,
+  "packagerPid": 12209,
+  "expoServerNgrokUrl": "https://j5-8pf.bulentrahimkazanci.living-history-client.exp.direct",
+  "packagerNgrokUrl": "https://packager.j5-8pf.bulentrahimkazanci.living-history-client.exp.direct",
+  "ngrokPid": 12221
 }

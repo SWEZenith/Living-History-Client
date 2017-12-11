@@ -3,7 +3,18 @@ import { connect } from 'react-redux';
 import { style } from '@style/main';
 import privateStyle from './style';
 import { ZImageView, ZTextArea, ZButton, ZRichTextEditor } from '@components/index';
-import { View, Dimensions, Image, Text, ScrollView, TouchableHighlight, TextInput, Alert } from 'react-native';
+import { 
+  View, 
+  Dimensions, 
+  Image, 
+  Text, 
+  ScrollView, 
+  TouchableHighlight, 
+  TextInput, 
+  Alert,
+  TouchableWithoutFeedback, 
+  Keyboard 
+} from 'react-native';
 import {createResponder} from 'react-native-gesture-responder';
 import { AnnotationTypes } from '@enums';
 import { AnnotationFactory } from '@common';
@@ -107,7 +118,7 @@ export class CreateAnnotationScene extends Component {
         onResponderMove: (evt, gestureState) => {
 
           let selectorSize = this.state.selectorSize;
-          
+         
           if (gestureState.pinch && gestureState.previousPinch)
             selectorSize *= (gestureState.pinch / gestureState.previousPinch)
 
@@ -290,80 +301,88 @@ export class CreateAnnotationScene extends Component {
       };
 
       return(
+        
         <View style={[style.zPage]}>
-
           {
             this.renderIf(
               this.state.currentView == ViewTypes.ContentView,
               <View style={privateStyle.content}>
-                <View style={privateStyle.imageContentContainer}>
-                  {
-                    content.story_items.map((story, index) => {
-                      if(story.type === 'image') {
+                { this.renderIf(
+                    content.story_items.find(s => s.type === 'image'),
+                    <View style={privateStyle.imageContentContainer}>
+                      {
+                        content.story_items.map((story, index) => {
+                          if(story.type === 'image') {
 
-                        return(
-                          <View key={story.id} 
-                            style={[
-                              privateStyle.contentContainer,
-                              {
-                                display: this.state.currentVisibleImageIndex == index ? 'flex' : 'none'
-                              }
-                            ]}>
-                            <View  style={privateStyle.contentContainer}
-                              onLayout={(event) => { this.calculateContentContainerSize(event.nativeEvent.layout) }}>
-                              <View style={privateStyle.contentPresenter} {...this.gestureResponder}>
-                                <Image style={privateStyle.imageContent}
-                                  source={{uri: story.content}}
-                                  style={{ 
-                                    width: this.state.containerWidth,
-                                    height: this.state.containerHeight
-                                  }}>
-                                  <View pointerEvents='none' 
-                                    style={[privateStyle.areaSelector, areaSelectorDynamicStyle]}/>
-                                </Image>
+                            return(
+                              <View key={story.id} 
+                                style={[
+                                  privateStyle.contentContainer,
+                                  {
+                                    display: this.state.currentVisibleImageIndex == index ? 'flex' : 'none'
+                                  }
+                                ]}>
+                                <View  style={privateStyle.contentContainer}
+                                  onLayout={(event) => { this.calculateContentContainerSize(event.nativeEvent.layout) }}>
+                                  <View style={privateStyle.contentPresenter} {...this.gestureResponder}>
+                                    <Image style={privateStyle.imageContent}
+                                      source={{uri: story.content}}
+                                      style={{ 
+                                        width: this.state.containerWidth,
+                                        height: this.state.containerHeight
+                                      }}>
+                                    </Image>
+                                    <View pointerEvents='none' 
+                                        style={[privateStyle.areaSelector, areaSelectorDynamicStyle]}/>
+                                  </View>
+                                </View>
                               </View>
-                            </View>
-                          </View>
-                        )
+                            )
+                          }
+                        })
                       }
-                    })
-                  }
-                  <TouchableHighlight onPress={()=> this.showPreviousImage()}>
-                    <Text>
-                      Show Previous Image
-                    </Text>
-                  </TouchableHighlight>
+                      <TouchableHighlight onPress={()=> this.showPreviousImage()}>
+                        <Text>
+                          Show Previous Image
+                        </Text>
+                      </TouchableHighlight>
 
-                  <TouchableHighlight onPress={()=> this.showNextImage()}>
-                    <Text>
-                      Show Next Image
-                    </Text>
-                  </TouchableHighlight>
-                </View>
+                      <TouchableHighlight onPress={()=> this.showNextImage()}>
+                        <Text>
+                          Show Next Image
+                        </Text>
+                      </TouchableHighlight>
+                    </View>
+                  )
+                }
 
+                {
+                  this.renderIf(
+                    content.story_items.find(s => s.type === 'text'),
+                    <View style={{flex:1}}>
+                      <ScrollView style={{flex:1}}>
+                      {
+                        content.story_items.map((story, index) => {
+                          if(story.type === 'text') {
 
-                <View style={{flex:1}}>
-                  <ScrollView style={{flex:1}}>
-                  {
-                    content.story_items.map((story, index) => {
-                      if(story.type === 'text') {
-
-                        return(
-                          <TextInput 
-                            key={story.id}
-                            multiline={true}
-                            autoFocus={true}
-                            editable={false}
-                            value={story.content}
-                            style={privateStyle.textContent}
-                            onSelectionChange={(event) => this.handleAnnotationTextSelection(event, story)}>
-                          </TextInput>
-                        )
+                            return(
+                              <TextInput 
+                                key={story.id}
+                                multiline={true}
+                                autoFocus={true}
+                                editable={false}
+                                value={story.content}
+                                style={privateStyle.textContent}
+                                onSelectionChange={(event) => this.handleAnnotationTextSelection(event, story)}>
+                              </TextInput>
+                            )
+                          }
+                        })
                       }
-                    })
-                  }
-                  </ScrollView>
-                </View>
+                      </ScrollView>
+                    </View>                    
+                  )
+                }
               </View>
             )
           }
@@ -384,10 +403,14 @@ export class CreateAnnotationScene extends Component {
           {
             this.renderIf(
               this.state.currentView == ViewTypes.EditorView,
-              <View style={privateStyle.editorContainer}>
-                <ZRichTextEditor placeholder={'Enter annotation content here.'}
-                  onTextChange={(text)=> this.handleEditorTextChange(text)}/>
+              <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+              <View style={privateStyle.editorContainerContainer}>
+                <View style={privateStyle.editorContainer}>
+                  <ZRichTextEditor placeholder={'Enter annotation content here.'}
+                    onTextChange={(text)=> this.handleEditorTextChange(text)}/>
+                </View>
               </View>
+              </TouchableWithoutFeedback>
             )
           }
 

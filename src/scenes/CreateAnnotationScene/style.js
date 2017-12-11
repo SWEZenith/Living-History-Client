@@ -23,9 +23,13 @@ const main = StyleSheet.create({
 	textContent:{
 		marginBottom: 10
 	},
+	editorContainerContainer:{
+		flex:4,
+		alignItems: 'center'
+	},
 	editorContainer:{
-		flex:6,
-		height:300
+		flex:1,
+		width:300
 	},
 	footer:{
 		flex:1,

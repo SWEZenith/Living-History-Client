@@ -8,12 +8,16 @@ This is a react native application to keep memories of human beings alive by cre
 Firstly, you need to install expo in order to run Living History application on sandbox environment. Install expo through following links.
 
 <div style="display:inline-block">
+	<a target="_blank" href="https://itunes.apple.com/app/apple-store/id982107779?ct=www&mt=8" >
 	<img src="https://github.com/bulentrahimkazanci/Living-History-Client/blob/master/assets/app-store.png" 
 		 width="200" 
 		 style="display:inline;"/>
+	</a>
+	<a target="_blank" href="https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www" >
 	<img src="https://github.com/bulentrahimkazanci/Living-History-Client/blob/master/assets/play-store.png" 
 		 width="200" 
 		 style="display:inline;"/>
+	</a>
  </div>
 
 
