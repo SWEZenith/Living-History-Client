@@ -17,10 +17,16 @@ const {
 
 export class ProfileScene extends Component {
 
+    state = {
+      username: [],
+    }
+
     async componentDidMount() {
-      let userName = await StorageHelper.get(constants.USERNAME);
-      this.props.fetchUserContents(userName);
-      this.props.fetchUserAnnotations(userName);
+      //this.loadInitialState().done();
+      let username = await StorageHelper.get(constants.USERNAME);
+      this.setState({ username: username });
+      this.props.fetchUserContents(username);
+      this.props.fetchUserAnnotations(username);
     }
 
     findContentId(annotationId) {
@@ -47,26 +53,12 @@ export class ProfileScene extends Component {
       
       const contents = this.props.appData.userContents;
       const annotations = this.props.appData.userAnnotations;
-      //console.log(contents.find(content => content.id === '5a146ebffc2199000146cd7f'));
-      //console.log(annotations.find(content => content.id === '5a11dd5cfc2199000146c922'));
-      
-      //const acDict = this.props.contents.map(function(c) {
-        //for (let a of c.annotations) {
-          //return {
-            //a: a.id,
-            //c: c.id
-          //};
-        //}
-      //});
 
-
-
-        
       return(
       <View style={privateStyle.scene}>
 
       <View style={privateStyle.headerStyle}>
-        <Text> User Profile </Text>
+        <Text> {this.state.username}'s Profile </Text>
       </View>
 
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', padding: 5 }} >
