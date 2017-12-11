@@ -4,6 +4,7 @@ import privateStyle from './style';
 import ReactNative from 'react-native';
 import { fetchUserContents, fetchUserAnnotations } from '@actions';
 import { StorageHelper } from '@utils';
+import * as constants from '@utils/constants';
 
 const {
   ScrollView,
@@ -16,9 +17,10 @@ const {
 
 export class ProfileScene extends Component {
 
-    componentDidMount() {
-      this.props.fetchUserContents();
-      this.props.fetchUserAnnotations();
+    async componentDidMount() {
+      let userName = await StorageHelper.get(constants.USERNAME);
+      this.props.fetchUserContents(userName);
+      this.props.fetchUserAnnotations(userName);
     }
 
     findContentId(annotationId) {
@@ -56,6 +58,7 @@ export class ProfileScene extends Component {
           //};
         //}
       //});
+
 
 
         
@@ -121,9 +124,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchUserContents: () => dispatch(fetchUserContents()),
-    fetchUserAnnotations: () => dispatch(fetchUserAnnotations()),
+    fetchUserContents: (username) => dispatch(fetchUserContents(username)),
+    fetchUserAnnotations: (username) => dispatch(fetchUserAnnotations(username)),
   };
 }
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScene);
