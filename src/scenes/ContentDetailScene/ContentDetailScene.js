@@ -61,7 +61,6 @@ export class ContentDetailScene extends Component {
     render(){
 
       let content = this.getContent();
-
     	return(
         <View style={[style.zPage]}>
 
@@ -182,8 +181,8 @@ export class ContentDetailScene extends Component {
                       <View>
                         <TouchableHighlight style={privateStyle.annotationItem}
                           onPress={()=> this.handleAnnotationSelection(item)}>
-                          <Text>
-                            {item.id}
+                          <Text numberOfLines={1}>
+                            {item.body.value}
                           </Text>
                         </TouchableHighlight>
                       </View> 
