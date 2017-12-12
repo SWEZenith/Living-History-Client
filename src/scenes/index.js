@@ -1,6 +1,7 @@
 import LoginScene from './LoginScene/LoginScene';
 import SignUpScene from './SignUpScene/SignUpScene';
 import HomeScene from './HomeScene/HomeScene';
+import MapScene from './MapScene/MapScene';
 import CreateContentScene from './CreateContentScene/CreateContentScene';
 import ProfileScene from './ProfileScene/ProfileScene';
 import ContentDetailScene from './ContentDetailScene/ContentDetailScene';
@@ -12,6 +13,7 @@ export {
 	LoginScene,
 	SignUpScene,
 	HomeScene,
+	MapScene,
 	CreateContentScene,
 	ProfileScene,
 	ContentDetailScene,

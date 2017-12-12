@@ -74,6 +74,14 @@ export class HomeScene extends Component {
               source={require('../../assets/img/icons/search.png')}
             />
           </TouchableHighlight>
+
+          <TouchableHighlight style={privateStyle.searchButton}
+            onPress={()=> this.props.navigation.navigate('Map')}>
+            <Image
+              style={{width: 30, height: 30}}
+              source={require('../../assets/img/icons/map.png')}
+            />
+          </TouchableHighlight>
           
         </View>
 
