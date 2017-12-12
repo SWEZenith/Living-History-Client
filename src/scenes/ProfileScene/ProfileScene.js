@@ -87,8 +87,8 @@ export class ProfileScene extends Component {
                 <View>
                   <TouchableHighlight style={privateStyle.annotationItem}
                     onPress={()=> this.handleAnnotationSelection(item.id)}>
-                    <Text style={{ fontSize: 12 }}>
-                      {item.id}
+                    <Text style={{ fontSize: 12 }} numberOfLines={1}>
+                      {item.body.value}
                     </Text>
                   </TouchableHighlight>
                 </View> 
