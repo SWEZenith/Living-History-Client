@@ -81,12 +81,14 @@ export class ContentDetailScene extends Component {
                   content.tags.length > 0 &&
                   <View style={privateStyle.tagContainer}>
                     {
-                      content.tags.map((tag) => {
-                        return (
-                          <Text key={tag} style={privateStyle.tag}>
-                            {tag}
-                          </Text>
-                        )
+                      content.tags.map((tag, index) => {
+                        if(index < 5) {
+                          return (
+                            <Text key={tag} style={privateStyle.tag}>
+                              {tag}
+                            </Text>
+                          )
+                        }
                       })
                     }
                   </View>
