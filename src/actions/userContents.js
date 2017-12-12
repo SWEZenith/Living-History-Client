@@ -1,16 +1,15 @@
 import * as actionTypes from '@actions/actionTypes';
 import { NetworkManager, ContentTypes } from '@utils';
-import * as constants from '@utils/constants';
-import { StorageHelper } from '@utils';
+
 
 ///
 /// Fetch user contents
 
-export function fetchUserContents() {
+export function fetchUserContents(username) {
 
    return (dispatch) => {
       dispatch(fetchUserContentsStart());
-      getUserContents()
+      getUserContents(username)
           .then((userContents) => {
             dispatch(fetchUserContentsSuccess(userContents));
           })
@@ -41,8 +40,8 @@ export function fetchUserContentsFailure(error) {
   };
 }
 
-function getUserContents() {
+function getUserContents(username) {
   return new Promise((resolve) => {
-    return resolve(NetworkManager.get(`/users/${StorageHelper.get(constants.USERNAME)}/contents`, ContentTypes.jsonLD));
+    return resolve(NetworkManager.get(`/users/${username}/contents`, ContentTypes.jsonLD));
   });
 }
