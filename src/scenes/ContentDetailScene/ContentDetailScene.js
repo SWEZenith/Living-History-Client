@@ -82,7 +82,7 @@ export class ContentDetailScene extends Component {
                   <View style={privateStyle.tagContainer}>
                     {
                       content.tags.map((tag, index) => {
-                        if(index < 5) {
+                        if(index < 4) {
                           return (
                             <Text key={tag} style={privateStyle.tag}>
                               {tag}
@@ -184,7 +184,13 @@ export class ContentDetailScene extends Component {
                         <TouchableHighlight style={privateStyle.annotationItem}
                           onPress={()=> this.handleAnnotationSelection(item)}>
                           <Text numberOfLines={1}>
-                            {item.body.value}
+                            {
+                              item.body.value 
+                              ? 
+                              item.body.value 
+                              :
+                              item.body['@id'].split('/').pop()
+                            }
                           </Text>
                         </TouchableHighlight>
                       </View> 
