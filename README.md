@@ -82,16 +82,16 @@ Open following project with XCode
 
 Plug on your iPhone to computer and select it from XCode
 
-![](https://github.com/SWEZenith/Fall2017Swe574-Zenith/blob/master/resources/ios/device-selection.png)
+> ![](https://github.com/SWEZenith/Fall2017Swe574-Zenith/blob/master/resources/ios/device-selection.png)
 
 Click on project
 
-![](https://github.com/SWEZenith/Fall2017Swe574-Zenith/blob/master/resources/ios/xcode-project.png)
+> ![](https://github.com/SWEZenith/Fall2017Swe574-Zenith/blob/master/resources/ios/xcode-project.png)
 
 Select your developer account or open your iCloud accunt and select your developer account from below
 
-![](https://github.com/SWEZenith/Fall2017Swe574-Zenith/blob/master/resources/ios/developer-account.png)
+> ![](https://github.com/SWEZenith/Fall2017Swe574-Zenith/blob/master/resources/ios/developer-account.png)
 
 Click to run button to deploy application to your iPhone.
 
-![](https://github.com/SWEZenith/Fall2017Swe574-Zenith/blob/master/resources/ios/run-button.png)
+> ![](https://github.com/SWEZenith/Fall2017Swe574-Zenith/blob/master/resources/ios/run-button.png)
