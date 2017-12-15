@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { colors, styles, constants } from '@style/main';
 
+const statics = {
+	fontSize: 15
+}
 
 
 const main = StyleSheet.create({
@@ -75,7 +78,30 @@ const main = StyleSheet.create({
   	buttonText:{
   		textAlign:'center',
   		color:'#FFF'
-  	}
+  	},
+	dropdown:{
+		marginTop:20,
+		width:300,
+		height:31,
+		borderWidth:1,
+		borderColor: colors.mainColor
+	},
+	dropdownText:{
+	    fontSize: statics.fontSize,
+	    marginTop:1,
+	    marginBottom:1,
+	    lineHeight: 28
+	},
+  	dropdownBody: {
+	    width: 300,
+	    height: 150,
+	    borderColor: colors.mainColor,
+	    borderWidth: 2,
+	    borderRadius: 3,
+	  },
+  	dropdownTextStyle: {
+		fontSize: statics.fontSize,
+  	}	  	
 
 });
 

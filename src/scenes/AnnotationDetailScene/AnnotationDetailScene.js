@@ -220,6 +220,18 @@ export class AnnotationDetailScene extends Component {
           </View>
 
           {
+            this.renderIf(
+              !this.state.isSemanticAnnotation && annotation.motivation != null,
+              <View style={[annotationStyle.semanticPropertyContainer, {marginTop:20, marginBottom:20}]}>
+                <Text style={annotationStyle.label}> Motivation: </Text>
+                <Text style={annotationStyle.semanticProperty}>
+                  {annotation.motivation}
+                </Text>
+              </View>
+            )
+          }
+
+          {
             this.renderIf(!this.state.isSemanticAnnotation,
               <View style={privateStyle.annotationSection}>
                 <View style={privateStyle.annotationContainer}>

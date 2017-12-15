@@ -16,12 +16,13 @@ import {
   Keyboard 
 } from 'react-native';
 import {createResponder} from 'react-native-gesture-responder';
-import { AnnotationTypes } from '@enums';
+import { AnnotationTypes, AnnotationMotivations } from '@enums';
 import { AnnotationFactory } from '@common';
 import { TextTarget, ImageTarget, BaseAnnotationBody } from '@models';
 import * as constants from '@utils/constants';
 import { StorageHelper } from '@utils';
 import { createAnnotation } from '@actions';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 
 class ViewTypes {
@@ -41,6 +42,8 @@ export class CreateAnnotationScene extends Component {
       let selectorSize = 100;
       let x = 50;
       let y = 50;
+      let motivations = Object.keys(AnnotationMotivations);
+
 
       this.state = {
         containerWidth:0,
@@ -58,8 +61,10 @@ export class CreateAnnotationScene extends Component {
         targetId:'',
 
         startIndex: -1,
-        endIndex: -1
+        endIndex: -1,
 
+        motivations: motivations,
+        selectedMotivation: ''
 
       }
     }
@@ -219,6 +224,11 @@ export class CreateAnnotationScene extends Component {
       })
     }
 
+    handleDropdownSelection(index, value) {
+
+      this.setState({ selectedMotivation: AnnotationMotivations[value] });
+    }
+
     async handleAnnotationCreation() {
 
       if(this.state.annotationText == '' || this.state.annotationText.trim() == '') {
@@ -250,9 +260,10 @@ export class CreateAnnotationScene extends Component {
           annotation.target.h = this.state.selectorSize;
           annotation.body.value = this.state.annotationText;
 
-          this.props.createAnnotation(annotation)
+          if(this.state.selectedMotivation != '')
+            annotation.setProperty('motivation', this.state.selectedMotivation);
 
-          console.log(annotation.getObjectRepresentation());
+          this.props.createAnnotation(annotation)
         })
 
 
@@ -272,9 +283,10 @@ export class CreateAnnotationScene extends Component {
         annotation.target.end = this.state.endIndex;
         annotation.body.value = this.state.annotationText;
 
+        if(this.state.selectedMotivation != '')
+          annotation.setProperty('motivation', this.state.selectedMotivation);        
+
         this.props.createAnnotation(annotation)
-        console.log(annotation.getObjectRepresentation());
-        
 
       } else {
         console.log('nothing selected!');
@@ -396,6 +408,22 @@ export class CreateAnnotationScene extends Component {
                     Approve Selection
                   </Text>
                 </TouchableHighlight>
+              </View>
+            )
+          }
+
+          {
+            this.renderIf(
+              this.state.currentView == ViewTypes.EditorView,
+              <View style={{flex:1, alignItems:'center'}}>
+                <ModalDropdown options={this.state.motivations}
+                  defaultValue="Please select motivation..."
+                  showsVerticalScrollIndicator={true}
+                  style={privateStyle.dropdown}
+                  textStyle={privateStyle.dropdownText}
+                  dropdownStyle={privateStyle.dropdownBody}
+                  dropdownTextStyle={privateStyle.dropdownTextStyle}
+                  onSelect={(idx, value) => this.handleDropdownSelection(idx, value)}/>                
               </View>
             )
           }
