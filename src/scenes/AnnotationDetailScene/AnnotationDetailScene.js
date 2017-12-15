@@ -4,10 +4,18 @@ import { style } from '@style/main';
 import privateStyle from '../ContentDetailScene/style';
 import annotationStyle from './style';
 import { ZImageView, ZButton } from '@components/index';
-import { FlatList, Text, TouchableHighlight, View, Image, ScrollView, Button } from 'react-native';
 import { fetchSemanticProperties } from '@actions';
 import HTMLView from 'react-native-htmlview';
-
+import { 
+  FlatList, 
+  Text, 
+  TouchableHighlight, 
+  View, 
+  Image, 
+  ScrollView, 
+  Button,
+  Linking 
+} from 'react-native';
 
 
 export class AnnotationDetailScene extends Component {
@@ -102,27 +110,29 @@ export class AnnotationDetailScene extends Component {
 
     createTextAnnotationRepresentations(story){
 
+      let annotation = this.getAnnotation();
       let annotations = this.getContent().annotations.filter(a => a.target.id.indexOf(story.id) != -1);
       let result;
-      if(annotations.length > 0) {
-        for(let annotation of annotations) {
 
-          let positions = annotation.target.id.split('=')[1].split(',');
+      let isInside = annotations.find(a => a.id == annotation.id);
 
-          result = (
+      if(isInside != null){  
+
+        let positions = annotation.target.id.split('=')[1].split(',');
+
+        result = (
+          <Text>
             <Text>
-              <Text>
-                {story.content.substring(0, positions[0])}
-              </Text>
-              <Text style={{backgroundColor: this.state.activeAnnotationId == annotation.id ? "yellow" : "white"}}>
-                {story.content.substring(positions[0], positions[1])}
-              </Text>
-              <Text>
-                {story.content.substring(positions[1], story.content.length)}
-              </Text>
+              {story.content.substring(0, positions[0])}
             </Text>
-          );
-        }
+            <Text style={{backgroundColor: this.state.activeAnnotationId == annotation.id ? "yellow" : "white"}}>
+              {story.content.substring(positions[0], positions[1])}
+            </Text>
+            <Text>
+              {story.content.substring(positions[1], story.content.length)}
+            </Text>
+          </Text>
+        );
       } else {
 
         result = (
@@ -164,6 +174,7 @@ export class AnnotationDetailScene extends Component {
       let content = this.getContent();
       let annotation = this.getAnnotation();
       let semanticProperties = this.props.semanticProperties;
+      console.log(semanticProperties)
 
       return(
         <View style={[style.zPage]}>
@@ -232,7 +243,7 @@ export class AnnotationDetailScene extends Component {
           }
 
           {
-            this.renderIf(!this.state.isSemanticAnnotation,
+            this.state.isSemanticAnnotation == false &&
               <View style={privateStyle.annotationSection}>
                 <View style={privateStyle.annotationContainer}>
                 <ScrollView style={privateStyle.contentBody}>
@@ -242,7 +253,6 @@ export class AnnotationDetailScene extends Component {
                   </ScrollView>
                 </View>
               </View>
-            )
           }
           {
             this.renderIf(this.state.isSemanticAnnotation,
@@ -252,50 +262,67 @@ export class AnnotationDetailScene extends Component {
                   semanticProperties && semanticProperties.type === 'City' &&
                   <ScrollView style={privateStyle.contentBody}>
                     <View>
-                      <View style={annotationStyle.semanticPropertyContainer}>
-                        <Text style={annotationStyle.label}>
-                          Name:
-                        </Text>
-                        <Text style={annotationStyle.semanticProperty}>
-                          {semanticProperties && semanticProperties.name.value}
-                        </Text>
-                      </View>
-                      <View style={annotationStyle.semanticPropertyContainer}>
-                        <Text style={annotationStyle.label}>
-                          Country:
-                        </Text>
-                        <Text style={annotationStyle.semanticProperty}>
-                          {semanticProperties && semanticProperties.counrtyName.value}
-                        </Text>
-                      </View>
-                      <View style={annotationStyle.semanticPropertyContainer}>
-                        <Text style={annotationStyle.label}>
-                          Population:
-                        </Text>
-                        <Text style={annotationStyle.semanticProperty}>
-                          {semanticProperties && semanticProperties.population.value}
-                        </Text>
-                      </View>
-                      <View style={annotationStyle.semanticPropertyContainer}>
-                        <Text style={annotationStyle.label}>
-                          Web Page:
-                        </Text>
-                        <Text style={annotationStyle.semanticProperty}>
-                          {semanticProperties && semanticProperties.webPage.value}
-                        </Text>
-                      </View>                                
-                      <View>
-                        <Text style={[annotationStyle.label,{marginBottom:12}]}>
-                          Image:
-                        </Text>
-                        {
-                          semanticProperties &&
-                          <Image style={privateStyle.imageContent} 
-                            source={{uri: semanticProperties.image.value}}
-                            style={{ width: this.state.containerWidth, height: this.state.containerHeight }}>
-                          </Image>
-                        }
-                      </View>                                                   
+                      {
+                        semanticProperties && semanticProperties.name &&
+                        <View style={annotationStyle.semanticPropertyContainer}>
+                          <Text style={annotationStyle.label}>
+                            Name:
+                          </Text>
+                          <Text style={annotationStyle.semanticProperty}>
+                            {semanticProperties.name.value}
+                          </Text>
+                        </View>
+                      }
+                      {
+                        semanticProperties && semanticProperties.counrtyName &&
+                        <View style={annotationStyle.semanticPropertyContainer}>
+                          <Text style={annotationStyle.label}>
+                            Country:
+                          </Text>
+                          <Text style={annotationStyle.semanticProperty}>
+                            {semanticProperties.counrtyName.value}
+                          </Text>
+                        </View>
+                      }
+                      {
+                        semanticProperties && semanticProperties.population &&
+                        <View style={annotationStyle.semanticPropertyContainer}>
+                          <Text style={annotationStyle.label}>
+                            Population:
+                          </Text>
+                          <Text style={annotationStyle.semanticProperty}>
+                            {semanticProperties.population.value}
+                          </Text>
+                        </View>
+                      }
+                      {
+                        semanticProperties && semanticProperties.webPage &&
+                        <View style={annotationStyle.semanticPropertyContainer}>
+                          <Text style={annotationStyle.label}>
+                            Web Page:
+                          </Text>
+                          <Text style={annotationStyle.semanticProperty}>
+                            <Text style={{color: 'blue'}}
+                              onPress={() => Linking.openURL(semanticProperties.webPage.value)}>
+                              Web Site
+                            </Text>
+                          </Text>
+                        </View>                            
+                      }
+                      {
+                        semanticProperties && semanticProperties.image &&                              
+                        <View>
+                          <Text style={[annotationStyle.label,{marginBottom:12}]}>
+                            Image:
+                          </Text>
+                          {
+                            <Image style={privateStyle.imageContent} 
+                              source={{uri: semanticProperties.image.value}}
+                              style={{ width: this.state.containerWidth, height: this.state.containerHeight }}>
+                            </Image>
+                          }
+                        </View>  
+                      }                                                 
                     </View>
                   </ScrollView>
                 }
@@ -303,58 +330,78 @@ export class AnnotationDetailScene extends Component {
                   semanticProperties && semanticProperties.type === 'Person' &&
                   <ScrollView style={privateStyle.contentBody}>
                     <View>
-                      <View style={annotationStyle.semanticPropertyContainer}>
-                        <Text style={annotationStyle.label}>
-                          Name:
-                        </Text>
-                        <Text style={annotationStyle.semanticProperty}>
-                          {semanticProperties && semanticProperties.name.value}
-                        </Text>
-                      </View>
-                      <View style={annotationStyle.semanticPropertyContainer}>
-                        <Text style={annotationStyle.label}>
-                          Birth Date:
-                        </Text>
-                        <Text style={annotationStyle.semanticProperty}>
-                          {semanticProperties && semanticProperties.birthDate.value}
-                        </Text>
-                      </View>
-                      <View style={annotationStyle.semanticPropertyContainer}>
-                        <Text style={annotationStyle.label}>
-                          Birth Place:
-                        </Text>
-                        <Text style={annotationStyle.semanticProperty}>
-                          {semanticProperties && semanticProperties.birthPlace.value}
-                        </Text>
-                      </View>
-                      <View style={annotationStyle.semanticPropertyContainer}>
-                        <Text style={annotationStyle.label}>
-                          Occupation:
-                        </Text>
-                        <Text style={annotationStyle.semanticProperty}>
-                          {semanticProperties && semanticProperties.jobTitle.value}
-                        </Text>
-                      </View>                      
-                      <View style={annotationStyle.semanticPropertyContainer}>
-                        <Text style={annotationStyle.label}>
-                          Web Page:
-                        </Text>
-                        <Text style={annotationStyle.semanticProperty}>
-                          {semanticProperties && semanticProperties.webPage.value}
-                        </Text>
-                      </View>                                
-                      <View>
-                        <Text style={[annotationStyle.label,{marginBottom:12}]}>
-                          Image:
-                        </Text>
-                        {
-                          semanticProperties && 
-                          <Image style={privateStyle.imageContent} 
-                            source={{uri: semanticProperties.image.value}}
-                            style={{ width: this.state.containerWidth, height: this.state.containerHeight }}>
-                          </Image>
-                        }
-                      </View>                                                   
+                      { 
+                        semanticProperties && semanticProperties.name &&
+                        <View style={annotationStyle.semanticPropertyContainer}>
+                          <Text style={annotationStyle.label}>
+                            Name:
+                          </Text>
+                          <Text style={annotationStyle.semanticProperty}>
+                            {semanticProperties.name.value}
+                          </Text>
+                        </View>
+                      }
+                      {
+                        semanticProperties && semanticProperties.birthDate && 
+                        <View style={annotationStyle.semanticPropertyContainer}>
+                          <Text style={annotationStyle.label}>
+                            Birth Date:
+                          </Text>
+                          <Text style={annotationStyle.semanticProperty}>
+                            {semanticProperties.birthDate.value}
+                          </Text>
+                        </View>
+                      }
+                      {
+                        semanticProperties && semanticProperties.birthPlace &&
+                        <View style={annotationStyle.semanticPropertyContainer}>
+                          <Text style={annotationStyle.label}>
+                            Birth Place:
+                          </Text>
+                          <Text style={annotationStyle.semanticProperty}>
+                            {semanticProperties.birthPlace.value}
+                          </Text>
+                        </View>
+                      }  
+                      {
+                        semanticProperties && semanticProperties.jobTitle && 
+                        <View style={annotationStyle.semanticPropertyContainer}>
+                          <Text style={annotationStyle.label}>
+                            Occupation:
+                          </Text>
+                          <Text style={annotationStyle.semanticProperty}>
+                            {semanticProperties.jobTitle.value}
+                          </Text>
+                        </View>                      
+                      }
+                      {
+                        semanticProperties && semanticProperties.webPage &&
+                        <View style={annotationStyle.semanticPropertyContainer}>
+                          <Text style={annotationStyle.label}>
+                            Web Page:
+                          </Text>
+                          <Text style={annotationStyle.semanticProperty}>
+                            <Text style={{color: 'blue'}}
+                              onPress={() => Linking.openURL(semanticProperties.webPage.value)}>
+                              Web Site
+                            </Text>
+                          </Text>
+                        </View>                                
+                      }
+                      {
+                        semanticProperties && semanticProperties.image && 
+                        <View>
+                          <Text style={[annotationStyle.label,{marginBottom:12}]}>
+                            Image:
+                          </Text>
+                          {
+                            <Image style={privateStyle.imageContent} 
+                              source={{uri: semanticProperties.image.value}}
+                              style={{ width: this.state.containerWidth, height: this.state.containerHeight }}>
+                            </Image>
+                          }
+                        </View>                                                   
+                      }
                     </View>
                   </ScrollView>
                 }
