@@ -142,7 +142,7 @@ export class AnnotationDetailScene extends Component {
         
         let values = annotation.target.id.split('=')[1].split(',');
         let x = ((this.state.containerWidth * parseInt(values[0])) / actualWidth);
-        let y = ((this.state.containerHeight * parseInt(values[1])) / actualHeight) + parseInt(values[2]);
+        let y = ((this.state.containerHeight * parseInt(values[1])) / actualHeight);
         let w = parseInt(values[2]);
         let h = parseInt(values[3]);
 
