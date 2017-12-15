@@ -69,3 +69,29 @@ Or if you want to run at iOS simulator, run:
 If you have error message like Execution failed for task ':app:dexDebug'. run this on your terminal :
 
 > ```npm run android-clean```
+
+
+## How to Deploy to iPhone
+
+Open following folder
+> ```cd \Living-History-Client\ios```
+
+Open following project with XCode
+
+> ```LivingHistory.xcworkspace```
+
+Plug on your iPhone to computer and select it from XCode
+
+![](https://github.com/SWEZenith/Fall2017Swe574-Zenith/blob/master/resources/ios/device-selection.png)
+
+Click on project
+
+![](https://github.com/SWEZenith/Fall2017Swe574-Zenith/blob/master/resources/ios/xcode-project.png)
+
+Select your developer account or open your iCloud accunt and select your developer account from below
+
+![](https://github.com/SWEZenith/Fall2017Swe574-Zenith/blob/master/resources/ios/developer-account.png)
+
+Click to run button to deploy application to your iPhone.
+
+![](https://github.com/SWEZenith/Fall2017Swe574-Zenith/blob/master/resources/ios/run-button.png)
