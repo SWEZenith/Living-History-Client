@@ -68,7 +68,8 @@ export class ProfileScene extends Component {
                   style={privateStyle.resultButton, { paddingLeft: 15 }} 
                   onPress={() => this.props.navigation.navigate('ContentDetail', { contentId: content.id })} >
                 <View>
-                  <Image source={{ uri: content.cover_image }} style={privateStyle.resultImage} />
+                  <Image source={ (content.cover_image == "" ? require('../../assets/img/city.png') : { uri: content.cover_image })} 
+                    style={privateStyle.resultImage} />
                   <Text style={privateStyle.resultText} >{content.title}</Text>
                 </View>
               </TouchableHighlight>

@@ -54,6 +54,7 @@ export class MapScene extends Component {
               {contents.map(content => (
                 (content.location != null && content.location.latitude != null && content.location.longitude != null) &&
                 <MapView.Marker
+                  key={content.location.latitude}
                   coordinate={{longitude: content.location.longitude, latitude: content.location.latitude}}
                   onPress={ () => this.props.navigation.navigate('ContentDetail', { contentId: content.id }) }
                   title={content.title}
