@@ -115,28 +115,29 @@ export class ContentDetailScene extends Component {
                 }
 
                 {
-                  this.renderIf((content.location.latitude && content.location.longitude),
-                    <View style={privateStyle.mapContainer}>
-                      <MapView
-                        style={privateStyle.map}
-                        initialRegion={{
+                  (content.location != null && 
+                    content.location.latitude != null && 
+                    content.location.longitude != null) &&
+                  <View style={privateStyle.mapContainer}>
+                    <MapView
+                      style={privateStyle.map}
+                      initialRegion={{
+                        latitude: content.location.latitude,
+                        longitude: content.location.longitude,
+                        latitudeDelta: 0.0270,
+                        longitudeDelta: 0.0120,
+                    }}>
+                      <MapView.Marker
+                        coordinate={{
                           latitude: content.location.latitude,
                           longitude: content.location.longitude,
-                          latitudeDelta: 0.0270,
-                          longitudeDelta: 0.0120,
-                      }}>
-                        <MapView.Marker
-                          coordinate={{
-                            latitude: content.location.latitude,
-                            longitude: content.location.longitude,
-                          }}
-                          title={content.location.name}
-                          description={content.title}
-                          pinColor={colors.mainColor}
-                        />
-                      </MapView>
-                    </View>
-                  )
+                        }}
+                        title={content.location.name}
+                        description={content.title}
+                        pinColor={colors.mainColor}
+                      />
+                    </MapView>
+                  </View>
                 }
               </View>
             )
