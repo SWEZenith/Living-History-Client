@@ -95,3 +95,14 @@ Select your developer account or open your iCloud accunt and select your develop
 Click to run button to deploy application to your iPhone.
 
 > ![](https://github.com/SWEZenith/Fall2017Swe574-Zenith/blob/master/resources/ios/run-button.png)
+
+## How to Deploy to Android
+
+Open following folder
+> ```cd /Living-History-Client/android```
+
+Open following file with Android Studio (or even import project)
+> ```build.gradle```
+
+Plug on your Android device to computer and select it from Android Studio (or even an emulator)
+> ![](https://raw.githubusercontent.com/SWEZenith/Fall2017Swe574-Zenith/master/resources/run-app-android-studio.png)
